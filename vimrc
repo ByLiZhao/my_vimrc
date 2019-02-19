@@ -238,8 +238,7 @@ augroup filegroup
                 \readme, README, ReadMe, Readme, 
                 \*.md, *.markdown, *.MARKDOWN, *.MarkDown, *.Markdown
                 \:call <SID>StripTrailingWhitespaces()
-    autocmd BufRead,BufNewFile *.h,*.c set filetype=c 
-    ".h file only for C projects.
+    autocmd BufRead,BufNewFile *.c set filetype=c 
     autocmd FileType cs setlocal noexpandtab
     autocmd FileType cs setlocal list
     autocmd FileType cs setlocal listchars=tab:+\ ,eol:-
