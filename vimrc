@@ -52,6 +52,7 @@ Plug 'vim-scripts/a.vim'
 " in project vimrc, define makeprg, set path like let &path.="src/include,/usr/include/AL,"
 " so that gf shorcut or <leader>ih of A.vim would work
 Plug 'embear/vim-localvimrc'
+Plug 'mdempsky/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
 
 call plug#end()
 "}}}
@@ -85,7 +86,7 @@ set wildmenu            " visual autocomplete for command menu
 set wildmode=longest:full,full  "matches full match 
 set lazyredraw          " redraw only when we need to.
 set showmatch           " highlight matching [{()}]
-let &colorcolumn=join(range(81,999),",") "set background color of line exceeding 80 letters.
+let &colorcolumn=join(range(121,999),",") "set background color of line exceeding 120 letters.
 set wrap  " will automatically wrap long lines to multiple virtual lines.
 set linebreak  "only wrap at a character in the breakat option
 set nolist  " list disables linebreak
@@ -108,7 +109,8 @@ set guifontwide=Microsoft\ Yahei\ 14
 set spell spelllang=en_us
 set dictionary-=/usr/share/dict/words dictionary+=/usr/share/dict/words
 set spellfile=~/.vim/spell/lizhao-spell.add
-inoremap <F2> <C-x><C-k> " for word completeion
+inoremap <F2> <C-x><C-k>
+" for word completeion
 " }}}
 
 " Searching {{{
@@ -190,7 +192,17 @@ endif
 " }}}
 
 " Set YouCompleteMe {{{
-let g:ycm_path_to_python_interpreter='/usr/bin/python'
+let g:ycm_path_to_python_interpreter='/usr/local/bin/python3'
+
+"press to invoke completion
+let g:ycm_key_invoke_completion = '<F3>'
+"Enter 3 letters string will invoke auto-completion
+let g:ycm_semantic_triggers =  {
+			\ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
+			\ 'cs,lua,javascript': ['re!\w{2}'],
+			\ }
+"no diagnostic message
+let g:ycm_show_diagnostics_ui = 0
 " }}}
 
 " Tex Settings {{{
@@ -216,15 +228,18 @@ augroup filegroup
     autocmd! 
     "clear autocmds for current group
     autocmd VimEnter * highlight clear SignColumn
-    autocmd BufEnter,BufNewFile *.tex, *.latex setlocal spell
-    autocmd BufEnter,BufNewFile *.txt, *.text setlocal spell
-    autocmd BufEnter readme, README, ReadMe, Readme  setlocal spell
-    autocmd BufEnter *.md, *.markdown, *.MARKDOWN, *.MarkDown, *.Markdown setlocal spell
-    autocmd BufWritePre *.php,*.py,*.js,*.txt,*.text,*.hs,*.java,
+    autocmd BufEnter,BufNewFile *.tex setlocal spell
+    autocmd BufEnter,BufNewFile *.latex setlocal spell
+    autocmd BufEnter,BufNewFile *.txt setlocal spell
+    autocmd BufEnter,BufNewFile *.text setlocal spell
+    autocmd BufEnter,BufNewFile readme, README, ReadMe, Readme  setlocal spell
+    autocmd BufEnter,BufNewFile *.md, *.markdown, *.MARKDOWN, *.MarkDown, *.Markdown setlocal spell
+    autocmd BufWritePre *.php, *.py, *.js, *.txt, *.text, *.hs, *.java,
                 \readme, README, ReadMe, Readme, 
-                \*.md,*.markdown,*.MARKDOWN,*.MarkDown,*.Markdown
+                \*.md, *.markdown, *.MARKDOWN, *.MarkDown, *.Markdown
                 \:call <SID>StripTrailingWhitespaces()
-    autocmd BufRead,BufNewFile *.h,*.c set filetype=c ".h file only for C projects.
+    autocmd BufRead,BufNewFile *.h,*.c set filetype=c 
+    ".h file only for C projects.
     autocmd FileType cs setlocal noexpandtab
     autocmd FileType cs setlocal list
     autocmd FileType cs setlocal listchars=tab:+\ ,eol:-
@@ -308,7 +323,11 @@ nnoremap <F11> <Esc>::NeomakeToggle<CR>
 nnoremap <F12> <Esc>:Neoformat<CR>
 
 function! MyOnBattery()
+  if filereadable('/sys/class/power_supply/AC/online')
   return readfile('/sys/class/power_supply/AC/online') == ['0']
+  else
+          return '1'=='0'
+  endif
 endfunction
 
 if MyOnBattery()
@@ -339,7 +358,7 @@ let g:asyncrun_open = 6
 let g:asyncrun_bell = 1
 " define the following for cpp projects
 " Press F4 to compile current buffer
-autocmd  FileType cpp nnoremap <silent> <F4> :AsyncRun gcc -std=c++17 -Wall -O2 "$(VIM_FILEPATH)" -o "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+autocmd  FileType cpp nnoremap <silent> <F4> :AsyncRun g++ -Wall -Wextra -Werror -std=c++17 -pthread -O2 "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
 " Press F5 run the executable from current file 
 autocmd  FileType cpp nnoremap <silent> <F5> :AsyncRun -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
 " Press F6 to make the whole project
