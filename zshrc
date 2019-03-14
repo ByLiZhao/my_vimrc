@@ -45,10 +45,33 @@ alias pip='/usr/local/bin/pip3'
 
 alias truestudio='cd  /opt/Atollic_TrueSTUDIO_for_STM32_x86_64_9.2.0/ide && ./TrueSTUDIO'
 
-export GOPATH=$HOME/src/go
-export PATH=$PATH:$GOPATH/bin
+if [[ $GOPATH != *"$HOME/src/go"* ]];then
+    export GOPATH=$HOME/src/go
+fi
 
-export PATH=$PATH:$HOME/.cargo/bin
+if [[ $PATH != *"$GOPATH/bin"* ]];then
+    export PATH=$PATH:$GOPATH/bin
+fi
+
+if [[ $PATH != *"$HOME/home_local/texlive/2018/bin/x86_64-linux"* ]];then
+    export PATH=$PATH:$HOME/home_local/texlive/2018/bin/x86_64-linux
+fi
+
+if [[ $MANPATH == "" ]];then
+    MANPATH="$HOME/home_local/texlive/2018/texmf-dist/doc/man"; export MANPATH
+fi
+
+if [[ $MANPATH != *"$HOME/home_local/texlive/2018/texmf-dist/doc/man"* ]];then
+    export MANPATH=$MANPATH:$HOME/home_local/texlive/2018/texmf-dist/doc/man
+fi
+
+if [[ $INFOPATH == "" ]];then
+    INFOPATH="$HOME/home_local/texlive/2018/texmf-dist/doc/info"; export INFOPATH
+fi
+
+if [[ $INFOPATH != *"$HOME/home_local/texlive/2018/texmf-dist/doc/info"* ]];then
+    export INFOPATH=$INFOPATH:$HOME/home_local/texlive/2018/texmf-dist/doc/info
+fi
 
 source ~/.zplug/init.zsh
 zplug "Tarrasch/zsh-bd"
@@ -57,3 +80,9 @@ zplug "zdharma/fast-syntax-highlighting"
 zplug load --verbose
 
 
+
+PATH="/home/lizhao/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="/home/lizhao/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/home/lizhao/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/home/lizhao/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/home/lizhao/perl5"; export PERL_MM_OPT;
