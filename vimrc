@@ -31,7 +31,7 @@ Plug 'honza/vim-snippets'
 "special file formats
 Plug 'vim-latex/vim-latex'
 Plug 'elzr/vim-json'
-Plug 'plasticboy/vim-markdown' 
+Plug 'vimwiki/vimwiki', { 'branch': 'dev' }
 
 "color
 Plug 'morhetz/gruvbox'
@@ -53,6 +53,7 @@ Plug 'vim-scripts/a.vim'
 " so that gf shorcut or <leader>ih of A.vim would work
 Plug 'embear/vim-localvimrc'
 Plug 'mdempsky/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 call plug#end()
 "}}}
@@ -232,8 +233,9 @@ augroup filegroup
     autocmd BufEnter,BufNewFile *.latex setlocal spell
     autocmd BufEnter,BufNewFile *.txt setlocal spell
     autocmd BufEnter,BufNewFile *.text setlocal spell
-    autocmd BufEnter,BufNewFile readme, README, ReadMe, Readme  setlocal spell
-    autocmd BufEnter,BufNewFile *.md, *.markdown, *.MARKDOWN, *.MarkDown, *.Markdown setlocal spell
+    autocmd BufEnter,BufNewFile readme setlocal spell
+    autocmd BufEnter,BufNewFile ReadMe setlocal spell
+    autocmd BufEnter,BufNewFile *.md setlocal spell
     autocmd BufWritePre *.php, *.py, *.js, *.txt, *.text, *.hs, *.java,
                 \readme, README, ReadMe, Readme, 
                 \*.md, *.markdown, *.MARKDOWN, *.MarkDown, *.Markdown
