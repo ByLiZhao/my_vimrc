@@ -117,7 +117,7 @@ fi
 alias tclsh='tclsh9.0'
 alias python='/usr/local/bin/python3'
 alias pip='/usr/local/bin/pip3'
-alias truestudio='cd  /opt/Atollic_TrueSTUDIO_for_STM32_x86_64_9.2.0/ide && ./TrueSTUDIO'
+alias truestudio='cd  $HOME/truestudio/ide && ./TrueSTUDIO'
 
 if [[ $GOPATH != *"$HOME/src/go"* ]];then
     export GOPATH=$HOME/src/go
@@ -154,3 +154,7 @@ PERL5LIB="/home/lizhao/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LI
 PERL_LOCAL_LIB_ROOT="/home/lizhao/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
 PERL_MB_OPT="--install_base \"/home/lizhao/perl5\""; export PERL_MB_OPT;
 PERL_MM_OPT="INSTALL_BASE=/home/lizhao/perl5"; export PERL_MM_OPT;
+
+alias ana='bash $HOME/home_local/scripts/ana.sh'
+alias anarun='ana && $HOME/anaconda3/bin/anaconda-navigator'
+

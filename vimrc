@@ -32,6 +32,9 @@ Plug 'honza/vim-snippets'
 Plug 'vim-latex/vim-latex'
 Plug 'elzr/vim-json'
 Plug 'vimwiki/vimwiki', { 'branch': 'dev' }
+Plug 'plasticboy/vim-markdown'
+Plug 'suan/vim-instant-markdown'
+
 
 "color
 Plug 'morhetz/gruvbox'
@@ -206,7 +209,7 @@ let g:ycm_semantic_triggers =  {
 let g:ycm_show_diagnostics_ui = 0
 " }}}
 
-" Tex Settings {{{
+" Tex  and Markdown Settings {{{
 " IMPORTANT: grep will sometimes skip displaying the file name if you
 " search in a singe file. This will confuse Latex-Suite. Set your grep
 " program to always generate a file-name.
@@ -222,6 +225,9 @@ function! SyncTexForward()
         exec exec execstr
 endfunction
 autocmd FileType tex nnoremap <Leader>ls :call SyncTexForward()<CR>
+let g:vimwiki_list = [{'path': '~/Documents/notes',
+                       \ 'syntax': 'markdown', 'ext': '.md'}]
+
 " }}}
 
 " File specific settings {{{
@@ -235,10 +241,12 @@ augroup filegroup
     autocmd BufEnter,BufNewFile *.text setlocal spell
     autocmd BufEnter,BufNewFile readme setlocal spell
     autocmd BufEnter,BufNewFile ReadMe setlocal spell
+    autocmd BufEnter,BufNewFile README setlocal spell 
+    autocmd BufEnter,BufNewFile Readme setlocal spell
     autocmd BufEnter,BufNewFile *.md setlocal spell
     autocmd BufWritePre *.php, *.py, *.js, *.txt, *.text, *.hs, *.java,
                 \readme, README, ReadMe, Readme, 
-                \*.md, *.markdown, *.MARKDOWN, *.MarkDown, *.Markdown
+                \*.md 
                 \:call <SID>StripTrailingWhitespaces()
     autocmd BufRead,BufNewFile *.c set filetype=c 
     autocmd FileType cs setlocal noexpandtab
@@ -267,6 +275,10 @@ augroup filegroup
     autocmd BufEnter *.sh setlocal tabstop=2
     autocmd BufEnter *.sh setlocal shiftwidth=2
     autocmd BufEnter *.sh setlocal softtabstop=2
+    autocmd BufEnter *.md setlocal noexpandtab
+    autocmd BufEnter *.md setlocal tabstop=4
+    autocmd BufEnter *.md setlocal shiftwidth=4
+    autocmd BufEnter *.md setlocal softtabstop=4
 augroup END
 " }}}
 

@@ -1,3 +1,4 @@
+# configuration file for YouCompleteMe with Cpp 
 def Settings( **kwargs ):
   return {
       'flags': [ '-x', 'c++', \
