@@ -58,11 +58,11 @@ if [[ $PATH != *"$HOME/home_local/texlive/2018/bin/x86_64-linux"* ]];then
 fi
 
 if [[ $MANPATH == "" ]];then
-    MANPATH="$HOME/home_local/texlive/2018/texmf-dist/doc/man"; export MANPATH
+    MANPATH=":$HOME/home_local/texlive/2018/texmf-dist/doc/man"; export MANPATH
 fi
 
 if [[ $MANPATH != *"$HOME/home_local/texlive/2018/texmf-dist/doc/man"* ]];then
-    export MANPATH=$MANPATH:$HOME/home_local/texlive/2018/texmf-dist/doc/man
+    export MANPATH=":$HOME/home_local/texlive/2018/texmf-dist/doc/man$MANPATH"
 fi
 
 if [[ $INFOPATH == "" ]];then
