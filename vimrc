@@ -373,18 +373,31 @@ let g:asyncrun_bell = 1
 " define the following for cpp projects
 " Press F4 to compile current buffer
 autocmd  FileType cpp nnoremap <silent> <F4> :AsyncRun g++ -Wall -Wextra -Werror -std=c++17 -pthread -O2 "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+autocmd  FileType c nnoremap <silent> <F4> :AsyncRun gcc -Wall -Wextra -Werror -pedantic -std=c99 -pthread -O2 "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+
 " Press F5 run the executable from current file 
 autocmd  FileType cpp nnoremap <silent> <F5> :AsyncRun -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+autocmd  FileType c nnoremap <silent> <F5> :AsyncRun -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+
 " Press F6 to make the whole project
 autocmd  FileType cpp nnoremap <silent> <F6> :AsyncRun -cwd=<root> make <cr>
+autocmd  FileType c nnoremap <silent> <F6> :AsyncRun -cwd=<root> make <cr>
+
 " Press F7 to run all tests
 autocmd  FileType cpp nnoremap <silent> <F7> :AsyncRun -cwd=<root> -raw make test <cr>
+autocmd  FileType c nnoremap <silent> <F7> :AsyncRun -cwd=<root> -raw make test <cr>
+
 " Press F8 to run the current project
 autocmd  FileType cpp nnoremap <silent> <F8> :AsyncRun -cwd=<root> -raw make run <cr>
+autocmd  FileType c nnoremap <silent> <F8> :AsyncRun -cwd=<root> -raw make run <cr>
+
 " Press F9 to generate make file using cmake
 autocmd  FileType cpp nnoremap <silent> <F9> :AsyncRun -cwd=<root> cmake . <cr>
+autocmd  FileType c nnoremap <silent> <F9> :AsyncRun -cwd=<root> cmake . <cr>
+
 " use F10 toggle quick fix window
 autocmd  FileType cpp nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
+autocmd  FileType c nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
 
 " }}}
 
