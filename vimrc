@@ -196,7 +196,7 @@ endif
 " }}}
 
 " Set YouCompleteMe {{{
-let g:ycm_path_to_python_interpreter='/usr/local/bin/python3'
+let g:ycm_path_to_python_interpreter='/usr/bin/python3'
 
 "press to invoke completion
 let g:ycm_key_invoke_completion = '<F3>'
@@ -250,6 +250,9 @@ augroup filegroup
                 \*.md 
                 \:call <SID>StripTrailingWhitespaces()
     autocmd BufRead,BufNewFile *.c set filetype=c 
+    autocmd FileType tex setlocal tabstop=2
+    autocmd FileType tex setlocal shiftwidth=2
+    autocmd FileType tex setlocal softtabstop=2
     autocmd FileType cs setlocal noexpandtab
     autocmd FileType cs setlocal list
     autocmd FileType cs setlocal listchars=tab:+\ ,eol:-
@@ -289,6 +292,8 @@ set backupdir=~/.vim_tmp,~/.temp,/var/tmp,/tmp "for backup files
 set backupskip=/tmp/*,/temp/*
 set directory=~/.vim_tmp,~/.temp,/var/tmp,/tmp "for swap files
 set writebackup
+set undofile " Maintain undo history between sessions
+set undodir=~/.vim_temp/undodir
 " }}}
 
 " Work with TMux {{{
@@ -357,6 +362,10 @@ let g:neomake_c_enabled_makers = ['clang', 'cppcheck']
 let g:neoformat_enabled_c = ['clangformat']
 "C++
 let g:neomake_cpp_enabled_makers = ['clang', 'cppcheck']
+let g:neomake_cpp_clang_maker = {
+   \ 'exe': 'clang',
+   \ 'args': ['-Wall', '-Wextra', '-Weverything', '-pedantic', '-Wno-sign-conversion'],
+   \ }
 let g:neoformat_enabled_cpp = ['clangformat']
 "python
 let g:neomake_python_enabled_makers = ['python3', 'pylint']
