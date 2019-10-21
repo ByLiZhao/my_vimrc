@@ -31,9 +31,8 @@ Plug 'honza/vim-snippets'
 "special file formats
 Plug 'vim-latex/vim-latex'
 Plug 'elzr/vim-json'
-Plug 'vimwiki/vimwiki', { 'branch': 'dev' }
 Plug 'plasticboy/vim-markdown'
-Plug 'suan/vim-instant-markdown'
+Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 
 
 "color
@@ -68,16 +67,13 @@ filetype plugin on
 
 " Highlight{{{
 syntax enable
-if has("gui_running")
-	colorscheme solarized
-	set background=light
-	let g:airline_theme='solarized'
-	let g:airline_solarized_bg='light'
-else
-	colorscheme gruvbox
-	set background=light
-	let g:airline_theme='powerlineish'
-endif
+colorscheme solarized
+set background=light
+let g:airline_theme='solarized'
+let g:airline_solarized_bg='light'
+let g:solarized_contrast = "high"
+let g:solarized_visibility= "high"
+
 " }}}
 
 " UI config {{{
@@ -90,7 +86,7 @@ set wildmenu            " visual autocomplete for command menu
 set wildmode=longest:full,full  "matches full match 
 set lazyredraw          " redraw only when we need to.
 set showmatch           " highlight matching [{()}]
-let &colorcolumn=join(range(121,999),",") "set background color of line exceeding 120 letters.
+let &colorcolumn=join(range(81,999),",") "set background color of line exceeding 81 letters.
 set wrap  " will automatically wrap long lines to multiple virtual lines.
 set linebreak  "only wrap at a character in the breakat option
 set nolist  " list disables linebreak
@@ -105,7 +101,7 @@ set fileencoding=utf-8
 set encoding=utf-8
 set termencoding=utf-8  
 set guifontset=
-set guifont=Consolas\ 14
+set guifont=Consolas\ 14 
 set guifontwide=Microsoft\ Yahei\ 14
 " }}}
 
@@ -226,8 +222,14 @@ function! SyncTexForward()
         exec exec execstr
 endfunction
 autocmd FileType tex nnoremap <Leader>ls :call SyncTexForward()<CR>
-let g:vimwiki_list = [{'path': '~/Documents/notes',
-                       \ 'syntax': 'markdown', 'ext': '.md'}]
+
+" vim-instant-markdown settings
+let g:instant_markdown_autostart = 0 " don't auto-start preview
+"server startup and curl activity is logged in the specified log.
+let g:instant_markdown_logfile = '~/.vim_tmp/instant_markdown.log'
+let g:instant_markdown_mathjax = 1 " embed latex math in markdown
+autocmd FileType markdown nnoremap <leader>lv :InstantMarkdownPreview<CR>
+autocmd FileType markdown nnoremap <leader>ls :InstantMarkdownStop<CR>
 
 " }}}
 
