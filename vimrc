@@ -101,7 +101,7 @@ set fileencoding=utf-8
 set encoding=utf-8
 set termencoding=utf-8  
 set guifontset=
-set guifont=Consolas\ 14 
+set guifont=Consolas\ 14
 set guifontwide=Microsoft\ Yahei\ 14
 " }}}
 
@@ -230,7 +230,6 @@ let g:instant_markdown_logfile = '~/.vim_tmp/instant_markdown.log'
 let g:instant_markdown_mathjax = 1 " embed latex math in markdown
 autocmd FileType markdown nnoremap <leader>lv :InstantMarkdownPreview<CR>
 autocmd FileType markdown nnoremap <leader>ls :InstantMarkdownStop<CR>
-
 " }}}
 
 " File specific settings {{{
@@ -366,7 +365,9 @@ let g:neoformat_enabled_c = ['clangformat']
 let g:neomake_cpp_enabled_makers = ['clang', 'cppcheck']
 let g:neomake_cpp_clang_maker = {
    \ 'exe': 'clang',
-   \ 'args': ['-Wall', '-Wextra', '-Weverything', '-pedantic', '-Wno-sign-conversion'],
+   \ 'args': ['-Wall', '-Wextra', '-pedantic', '-Wno-sign-conversion',
+   \ '-Wno-zero-as-null-pointer-constant', '-Wno-missing-prototypes'
+   \ '-Wno-padded', '-Wc++98-compat', '-Wunused-parameter'],
    \ }
 let g:neoformat_enabled_cpp = ['clangformat']
 "python
@@ -383,8 +384,8 @@ let g:asyncrun_open = 6
 let g:asyncrun_bell = 1
 " define the following for cpp projects
 " Press F4 to compile current buffer
-autocmd  FileType cpp nnoremap <silent> <F4> :AsyncRun g++ -Wall -Wextra -Werror -std=c++17 -pthread -O2 "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
-autocmd  FileType c nnoremap <silent> <F4> :AsyncRun gcc -Wall -Wextra -Werror -pedantic -std=c99 -pthread -O2 "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+autocmd  FileType cpp nnoremap <silent> <F4> :AsyncRun g++ -Wall -Wextra -pedantic -std=c++17 -pthread -O2 "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+autocmd  FileType c nnoremap <silent> <F4> :AsyncRun gcc -Wall -Wextra -pedantic -std=c99 -pthread -O2 "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
 
 " Press F5 run the executable from current file 
 autocmd  FileType cpp nnoremap <silent> <F5> :AsyncRun -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
