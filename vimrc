@@ -366,7 +366,7 @@ let g:neomake_cpp_enabled_makers = ['clang', 'cppcheck']
 let g:neomake_cpp_clang_maker = {
    \ 'exe': 'clang',
    \ 'args': ['-Wall', '-Wextra', '-pedantic', '-Wno-sign-conversion',
-   \ '-Wno-zero-as-null-pointer-constant', '-Wno-missing-prototypes'
+   \ '-Wno-zero-as-null-pointer-constant', '-Wno-missing-prototypes',
    \ '-Wno-padded', '-Wc++98-compat', '-Wunused-parameter'],
    \ }
 let g:neoformat_enabled_cpp = ['clangformat']
