@@ -359,7 +359,11 @@ else
 endif
 "C
 let g:c_syntax_for_h=1
-let g:neomake_c_enabled_makers = ['clang', 'cppcheck']
+let g:neomake_c_enabled_makers = ['clang']
+let g:neomake_c_clang_maker = {
+  \ 'exe': 'clang',
+  \ 'args': ['-Wall', '-Wextra', '-pedantic'],
+  \ }
 let g:neoformat_enabled_c = ['clangformat']
 "C++
 let g:neomake_cpp_enabled_makers = ['clang', 'cppcheck']
@@ -385,7 +389,7 @@ let g:asyncrun_bell = 1
 " define the following for cpp projects
 " Press F4 to compile current buffer
 autocmd  FileType cpp nnoremap <silent> <F4> :AsyncRun g++ -Wall -Wextra -pedantic -std=c++17 -pthread -O2 "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
-autocmd  FileType c nnoremap <silent> <F4> :AsyncRun gcc -Wall -Wextra -pedantic -std=c99 -pthread -O2 "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+autocmd  FileType c nnoremap <silent> <F4> :AsyncRun gcc -Wall -Wextra -pedantic -std=c11 -pthread -O2 "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
 
 " Press F5 run the executable from current file 
 autocmd  FileType cpp nnoremap <silent> <F5> :AsyncRun -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
