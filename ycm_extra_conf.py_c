@@ -4,7 +4,6 @@ def Settings( **kwargs ):
       'flags': [ '-x', 'c', \
           '-Wall', '-Wextra', '-Werror', '-pedantic', \
           '-std=c11', '-pthread', \
-          '-isystem', '/usr/local/lib/gcc/x86_64-pc-linux-gnu/8.2.0/include', \
           '-I', 'src', \
           '-I', 'include', \
           '-isystem', '/usr/include', \
