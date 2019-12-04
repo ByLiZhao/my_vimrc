@@ -50,7 +50,7 @@ Plug 'mileszs/ack.vim'
 Plug 'neomake/neomake'
 Plug 'sbdchd/neoformat'
 Plug 'skywind3000/asyncrun.vim' 
-Plug 'vim-scripts/a.vim'
+Plug 'ericcurtin/CurtineIncSw.vim' "to replace a.vim
 " in project vimrc, define makeprg, set path like let &path.="src/include,/usr/include/AL,"
 " so that gf shorcut or <leader>ih of A.vim would work
 Plug 'embear/vim-localvimrc'
@@ -415,6 +415,9 @@ autocmd  FileType c nnoremap <silent> <F9> :AsyncRun -cwd=<root> cmake . <cr>
 autocmd  FileType cpp nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
 autocmd  FileType c nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
 
+nnoremap <leader>h :call CurtineIncSw()<CR>
+inoremap <leader>h :call CurtineIncSw()<CR>
+
 " }}}
 
 " Some useful shortcuts. {{{
@@ -446,7 +449,9 @@ nnoremap rw <Esc>: /\(\<\w\+\>\)\_s*\<\1\><CR>
 " type r-w will find repeated words in text.
 nnoremap <F3> <Esc>:syntax sync fromstart<CR>
 inoremap <F3> <C-o>:syntax sync fromstart<CR>
-" press F11 will sync syntax from start
+" press F3 will sync syntax from start
+nnoremap gf <C-W>gf
+vnoremap gf <C-W>gf "gf open file under cursor in new tab.
 "  }}}
 
 "Folding method for this file {{{
