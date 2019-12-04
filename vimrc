@@ -54,6 +54,10 @@ Plug 'ericcurtin/CurtineIncSw.vim' "to replace a.vim
 " in project vimrc, define makeprg, set path like let &path.="src/include,/usr/include/AL,"
 " so that gf shorcut or <leader>ih of A.vim would work
 Plug 'embear/vim-localvimrc'
+Plug 'tpope/vim-obsession'
+Plug 'dhruvasagar/vim-prosession'
+" for c programming language
+Plug 'WolfgangMehner/c-support'
 Plug 'mdempsky/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
