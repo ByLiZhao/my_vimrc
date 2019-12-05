@@ -251,9 +251,9 @@ augroup filegroup
     autocmd BufEnter,BufNewFile Readme setlocal spell
     autocmd BufEnter,BufNewFile *.md setlocal spell
     autocmd BufWritePre *.php, *.py, *.js, *.txt, *.text, *.hs, *.java,
-                \readme, README, ReadMe, Readme, 
-                \*.md 
-                \:call <SID>StripTrailingWhitespaces()
+                \ readme, README, ReadMe, Readme, 
+                \ *.md 
+                \ :call <SID>StripTrailingWhitespaces()
     autocmd BufRead,BufNewFile *.c set filetype=c 
     autocmd FileType tex setlocal tabstop=2
     autocmd FileType tex setlocal shiftwidth=2
@@ -392,8 +392,12 @@ let g:asyncrun_open = 6
 let g:asyncrun_bell = 1
 " define the following for cpp projects
 " Press F4 to compile current buffer
-autocmd  FileType cpp nnoremap <silent> <F4> :AsyncRun g++ -Wall -Wextra -pedantic -std=c++17 -pthread -O2 "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
-autocmd  FileType c nnoremap <silent> <F4> :AsyncRun gcc -Wall -Wextra -pedantic -std=c11 -pthread -O2 "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+autocmd  FileType cpp nnoremap <silent> <F4> :AsyncRun g++ -Wall -Wextra -pedantic
+                        \ -std=c++17 -fwrapv -fno-delete-null-pointer-checks -pthread -O2 
+                        \ "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+autocmd  FileType c nnoremap <silent> <F4> :AsyncRun gcc -Wall -Wextra -pedantic
+                        \ -std=c11 -fwrapv -fno-delete-null-pointer-checks -pthread -O2
+                        \ "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
 
 " Press F5 run the executable from current file 
 autocmd  FileType cpp nnoremap <silent> <F5> :AsyncRun -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
