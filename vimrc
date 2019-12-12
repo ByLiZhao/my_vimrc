@@ -207,7 +207,8 @@ let g:ycm_semantic_triggers =  {
 			\ }
 "no diagnostic message
 let g:ycm_show_diagnostics_ui = 0
-let g:UltiSnipsExpandTrigger="<c-j>"
+let g:UltiSnipsExpandTrigger="<c-p>"
+
 " }}}
 
 " Tex  and Markdown Settings {{{
@@ -379,7 +380,7 @@ let g:neomake_cpp_clang_maker = {
    \ }
 let g:neoformat_enabled_cpp = ['clangformat']
 "python
-let g:neomake_python_enabled_makers = ['python3', 'pylint']
+let g:neomake_python_enabled_makers = ['python3', 'pylint3']
 let g:neoformat_enabled_python = ['yapf3']
 "Shell
 let g:neomake_shell_enabled_makers = ['shellcheck']
