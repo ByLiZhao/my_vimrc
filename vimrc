@@ -380,8 +380,8 @@ let g:neomake_cpp_clang_maker = {
    \ }
 let g:neoformat_enabled_cpp = ['clangformat']
 "python
-let g:neomake_python_enabled_makers = ['python3', 'pylint3']
-let g:neoformat_enabled_python = ['yapf3']
+let g:neomake_python_enabled_makers = ['python', 'pylint']
+let g:neoformat_enabled_python = ['yapf']
 "Shell
 let g:neomake_shell_enabled_makers = ['shellcheck']
 
