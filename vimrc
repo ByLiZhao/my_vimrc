@@ -19,12 +19,17 @@ Plug 'tpope/vim-vinegar'
 Plug 'vim-scripts/winmanager'
 
 "tags
-Plug 'universal-ctags/ctags', { 'dir': '~/home_local/src/ctags', 'do': ''}
+Plug 'universal-ctags/ctags', { 'dir': '~/home_local/src/ctags', 
+  \ 'do': './autogen.sh && ./configure --prefix=$HOME/home_local
+  \ && make && make install'}
 Plug 'vim-scripts/taglist.vim'
 Plug 'ludovicchabant/vim-gutentags'
 
 "auto completion
-Plug 'Valloric/YouCompleteMe'
+Plug 'Valloric/YouCompleteMe', {'do': 'python3 ./install.py --clangd-completer
+  \ --cs-completer --go-completer 
+  \ --ts-completer --rust-completer --java-completer'}
+Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
@@ -52,7 +57,8 @@ Plug 'sbdchd/neoformat'
 Plug 'skywind3000/asyncrun.vim' 
 Plug 'ericcurtin/CurtineIncSw.vim' "to replace a.vim
 " in project vimrc, define makeprg, set path like let &path.="src/include,/usr/include/AL,"
-" so that gf shorcut or <leader>ih of A.vim would work
+" so that <leader-h> shortcut works, compiler options can be passed to
+" noemake, or anything that needs to be configured project-wise
 Plug 'embear/vim-localvimrc'
 Plug 'tpope/vim-obsession'
 Plug 'dhruvasagar/vim-prosession'
@@ -195,19 +201,27 @@ if !isdirectory(s:vim_tags)
 endif
 " }}}
 
-" Set YouCompleteMe {{{
-let g:ycm_path_to_python_interpreter='/usr/bin/python3'
+" Set YouCompleteMe YCM-generator and UltiSnops{{{
+" set python interpreter for ycm server
+let g:ycm_server_python_interpreter='/usr/bin/python3'
 
-"press to invoke completion
-let g:ycm_key_invoke_completion = '<F3>'
-"Enter 3 letters string will invoke auto-completion
-let g:ycm_semantic_triggers =  {
-			\ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
-			\ 'cs,lua,javascript': ['re!\w{2}'],
-			\ }
+" show detail information of a completion candidate in a top window
+let g:ycm_add_preview_to_completeopt = 1
+let g:ycm_autoclose_preview_window_after_completion = 1
+
+" Use installed clangd, not YCM-bundled clangd which doesn't get updates.
+let g:ycm_clangd_binary_path = exepath("clangd")
+" use clangd's caching and filtering algorithm
+let g:ycm_clangd_uses_ycmd_caching = 0
+
 "no diagnostic message
 let g:ycm_show_diagnostics_ui = 0
-let g:UltiSnipsExpandTrigger="<c-p>"
+let g:ycm_use_ultisnips_completer = 1
+
+" config ycm-generator, generate .ycm_extra.config.py for c/c++ project
+nnoremap <leader>yc <Esc>:YcmGenerateConfig<CR>
+
+let g:UltiSnipsExpandTrigger="<c-l>"
 
 " }}}
 
@@ -343,9 +357,11 @@ endfunction
 let g:neomake_open_list = 2
 let g:neoformat_only_msg_on_error = 1 "only msg when there is an error
 "toggle Neomake with F11
-nnoremap <F11> <Esc>::NeomakeToggle<CR>
+nnoremap <F11> <Esc>:NeomakeToggle<CR>
+inoremap <F11> <Esc>:NeomakeToggle<CR>
 "invoke the formatter for current buffer 
 nnoremap <F12> <Esc>:Neoformat<CR>
+inoremap <F12> <Esc>:Neoformat<CR>
 
 function! MyOnBattery()
   if filereadable('/sys/class/power_supply/AC/online')
@@ -367,16 +383,24 @@ let g:c_syntax_for_h=1
 let g:neomake_c_enabled_makers = ['clang']
 let g:neomake_c_clang_maker = {
   \ 'exe': 'clang',
-  \ 'args': ['-Wall', '-Wextra', '-pedantic'],
+  \ 'args': ['-Wall', '-Wextra', '-pedantic',
+  \ '-std=c11', '-fwrapv', '-fno-delete-null-pointer-checks', '-pthread',
+  \ '-I', 'src', '-I', 'include', 
+  \ ],
   \ }
 let g:neoformat_enabled_c = ['clangformat']
 "C++
 let g:neomake_cpp_enabled_makers = ['clang', 'cppcheck']
 let g:neomake_cpp_clang_maker = {
    \ 'exe': 'clang',
-   \ 'args': ['-Wall', '-Wextra', '-pedantic', '-Wno-sign-conversion',
-   \ '-Wno-zero-as-null-pointer-constant', '-Wno-missing-prototypes',
-   \ '-Wno-padded', '-Wc++98-compat', '-Wunused-parameter'],
+   \ 'args': ['-Wall', '-Wextra', '-pedantic',
+   \ 'std=c++17', '-fno-exceptions', '-fwrapv', '-fno-delete-null-pointer-checks',
+   \ '-pthreads',
+   \ '-Wno-sign-conversion',
+   \ '-Wno-zero-as-null-pointer-constant', 
+   \ '-Wno-padded', '-Wno-unused-parameter',
+   \ '-I', 'src', '-I', 'include', 
+   \ ],
    \ }
 let g:neoformat_enabled_cpp = ['clangformat']
 "python
@@ -394,10 +418,16 @@ let g:asyncrun_bell = 1
 " define the following for cpp projects
 " Press F4 to compile current buffer
 autocmd  FileType cpp nnoremap <silent> <F4> :AsyncRun g++ -Wall -Wextra -pedantic
-                        \ -std=c++17 -fwrapv -fno-delete-null-pointer-checks -pthread -O2 
+                        \ -std=c++17 -fno-exceptions -fwrapv -fno-delete-null-pointer-checks
+                        \ -pthread -O2
+                        \ -Wno-sign-conversion
+                        \ -Wno-zero-as-null-pointer-constant 
+                        \ -Wno-padded -Wno-unused-parameter
+                        \ -I src -I include 
                         \ "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
 autocmd  FileType c nnoremap <silent> <F4> :AsyncRun gcc -Wall -Wextra -pedantic
                         \ -std=c11 -fwrapv -fno-delete-null-pointer-checks -pthread -O2
+                        \ -I src -I include
                         \ "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
 
 " Press F5 run the executable from current file 
@@ -424,8 +454,11 @@ autocmd  FileType c nnoremap <silent> <F9> :AsyncRun -cwd=<root> cmake . <cr>
 autocmd  FileType cpp nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
 autocmd  FileType c nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
 
-nnoremap <leader>h :call CurtineIncSw()<CR>
-inoremap <leader>h :call CurtineIncSw()<CR>
+" toggle c/cpp and header file
+autocmd FileType cpp nnoremap <leader>h :call CurtineIncSw()<CR>
+autocmd FileType cpp inoremap <leader>h :call CurtineIncSw()<CR>
+autocmd FileType c nnoremap <leader>h :call CurtineIncSw()<CR>
+autocmd FileType c inoremap <leader>h :call CurtineIncSw()<CR>
 
 " }}}
 

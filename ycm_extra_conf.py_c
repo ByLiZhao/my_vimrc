@@ -1,11 +1,10 @@
-# configuration file for YouCompleteMe with Cpp 
-def Settings( **kwargs ):
-  return {
-      'flags': [ '-x', 'c', \
-          '-Wall', '-Wextra', '-pedantic', \
-          '-std=c11', '-pthread', \
-          '-I', 'src', \
-          '-I', 'include', \
-          '-isystem', '/usr/include', \
-          '-isystem', '/usr/local/include',],
-  }
+# configuration file for YouCompleteMe with Cpp
+def Settings(**kwargs):
+    return {
+        'flags': [ '-x', 'c', \
+            '-Wall', '-Wextra', '-pedantic', \
+            '-std=c11', '-fwrapv', '-fno-delete-null-pointer-checks', '-pthread', \
+            '-I', 'src', \
+            '-I', 'include', \
+            ],
+    }
