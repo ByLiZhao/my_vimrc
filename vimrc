@@ -22,7 +22,7 @@ Plug 'vim-scripts/winmanager'
 Plug 'universal-ctags/ctags', { 'dir': '~/home_local/src/ctags', 
   \ 'do': './autogen.sh && ./configure --prefix=$HOME/home_local
   \ && make && make install'}
-Plug 'vim-scripts/taglist.vim'
+Plug 'majutsushi/tagbar'
 Plug 'ludovicchabant/vim-gutentags'
 
 " enhance sessions
@@ -179,19 +179,11 @@ set expandtab       " tabs are spaces
 " }}}
 
  " Set winmanager and gutentags {{{ 
-let g:winManagerWindowLayout = "BufExplorer|TagList"
+let g:winManagerWindowLayout = "FileExplorer|BufExplorer"
 let g:winManagerWidth = 30
 nnoremap wm :WMToggle<cr>
 
-" Set Taglist
-" Only tags of current file is shown
-let Tlist_Show_One_File=1
-" If Taglist window is the last window, exit vim.
-let Tlist_Exit_OnlyWindow=1
- " Fold methods list for files not currently edited.
-let Tlist_File_Fold_Auto_Close=1
- " Add a menu on GUI
-let Tlist_Show_Menu=1
+nnoremap wt :TagbarToggle<cr>
 
 "set vim-gutentags
 "set root of project folder
