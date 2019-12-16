@@ -179,8 +179,8 @@ set expandtab       " tabs are spaces
 " }}}
 
  " Set winmanager and gutentags {{{ 
-let g:winManagerWindowLayout = "FileExplorer|BufExplorer"
-let g:winManagerWidth = 30
+let g:winManagerWindowLayout = "BufExplorer"
+let g:winManagerWidth = 40
 nnoremap wm :WMToggle<cr>
 
 nnoremap wt :TagbarToggle<cr>
