@@ -25,6 +25,10 @@ Plug 'universal-ctags/ctags', { 'dir': '~/home_local/src/ctags',
 Plug 'vim-scripts/taglist.vim'
 Plug 'ludovicchabant/vim-gutentags'
 
+" enhance sessions
+Plug 'tpope/vim-obsession'
+Plug 'dhruvasagar/vim-prosession'
+
 "auto completion
 Plug 'Valloric/YouCompleteMe', {'do': 'python3 ./install.py --clangd-completer
   \ --cs-completer --go-completer 
@@ -60,8 +64,7 @@ Plug 'ericcurtin/CurtineIncSw.vim' "to replace a.vim
 " so that <leader-h> shortcut works, compiler options can be passed to
 " noemake, or anything that needs to be configured project-wise
 Plug 'embear/vim-localvimrc'
-Plug 'tpope/vim-obsession'
-Plug 'dhruvasagar/vim-prosession'
+
 " for c programming language
 Plug 'WolfgangMehner/c-support'
 Plug 'mdempsky/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
@@ -103,6 +106,13 @@ set nolist  " list disables linebreak
 set textwidth=0 "disable automatic word wrapping
 set wrapmargin=0 " prevent Vim from automatically inserting line breaks in newly entered text. 
 " }}}
+
+" Editing enhancement {{{
+" because easyclip has mapped m to cut
+nnoremap gm m " gm to add marker
+imap <c-v> <plug>EasyClipInsertModePaste
+cmap <c-v> <plug>EasyClipCommandModePaste
+"}}}
 
 " Set encoding {{{
 set fileencodings=utf-8,ucs-bom,shift-jis,latin1,big5,gb18030,gbk,gb2312,cp936 
@@ -189,7 +199,7 @@ let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
 "name of tags file
 let g:gutentags_ctags_tagfile = '.tags'
 " put tag files in ~/.cache/tags
-let s:vim_tags = expand('~/.cache/tags')
+let s:vim_tags = expand('~/.vim_temp/tags')
 let g:gutentags_cache_dir = s:vim_tags
 "set ctags parameters
 let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
@@ -308,13 +318,43 @@ augroup END
 
 " Set backup {{{
 set backup
-set backupdir=~/.vim_tmp,~/.temp,/var/tmp,/tmp "for backup files
+let s:backup_dir = expand('~/.vim_temp/backup')
+" if backup_dir doesn't exist, create it.
+if !isdirectory(s:backup_dir)
+   silent! call mkdir(s:backup_dir, 'p')
+endif
+set backupdir=s:backup_dir,~/.temp,/var/tmp,/tmp "for backup files
+" set backupdir=~/.vim_tmp,~/.temp,/var/tmp,/tmp "for backup files
 set backupskip=/tmp/*,/temp/*
-set directory=~/.vim_tmp,~/.temp,/var/tmp,/tmp "for swap files
+" set directory=~/.vim_tmp,~/.temp,/var/tmp,/tmp "for swap files
+
+let s:swap_dir = expand('~/.vim_temp/swap')
+set directory^=s:swap_dir// "append path to head of directory, use absolute path
+if !isdirectory(s:swap_dir)
+   silent! call mkdir(s:swap_dir, 'p')
+endif
 set writebackup
+
 set undofile " Maintain undo history between sessions
-set undodir=~/.vim_temp/undodir
+" set undodir=~/.vim_temp/undodir
+let s:undo_dir = expand('~/.vim_temp/undodir')
+set undodir=s:undo_dir 
+" create undo_dir if not existent. 
+if !isdirectory(s:undo_dir)
+   silent! call mkdir(s:undo_dir, 'p')
+endif
+
 " }}}
+
+" Obsession and prosession setting-up {{{
+let s:ps_dir = expand('~/.vim_temp/sessions')
+let g:prosession_dir = s:ps_dir
+" create directory for prosessions if not existent. 
+if !isdirectory(s:ps_dir)
+   silent! call mkdir(s:ps_dir, 'p')
+endif
+
+"  }}}
 
 " Work with TMux {{{
 " allows cursor change in tmux mode. Show cursor as a vertical bar in Tmux
