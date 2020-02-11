@@ -3,7 +3,7 @@ def Settings(**kwargs):
     return {
         'flags': [ '-x', 'c', \
             '-Wall', '-Wextra', \
-            '-std=c11', '-fwrapv', '-fno-delete-null-pointer-checks', '-pthread', \
+            '-fwrapv', '-fno-delete-null-pointer-checks', '-pthread', \
             '-I', 'src', \
             '-I', 'include', \
             ],

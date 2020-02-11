@@ -3,7 +3,6 @@ def Settings(**kwargs):
     return {
         'flags': [ '-x', 'c++', \
             '-Wall', '-Wextra', \
-            '-std=c++17', \
             '-fnoexceptions', '-fwrapv', '-fno-delete-null-pointer-checks', \
             '-pthread', \
             '-Wno-sign-conversion', \

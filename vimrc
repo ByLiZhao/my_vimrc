@@ -451,7 +451,7 @@ let g:neomake_c_enabled_makers = ['clang']
 let g:neomake_c_clang_maker = {
   \ 'exe': 'clang',
   \ 'args': ['-Wall', '-Wextra',
-  \ '-std=c11', '-fwrapv', '-fno-delete-null-pointer-checks', '-pthread',
+  \ '-fwrapv', '-fno-delete-null-pointer-checks', '-pthread',
   \ '-I', 'src', '-I', 'include', 
   \ ],
   \ }
@@ -461,7 +461,7 @@ let g:neomake_cpp_enabled_makers = ['clang', 'cppcheck']
 let g:neomake_cpp_clang_maker = {
    \ 'exe': 'clang',
    \ 'args': ['-Wall', '-Wextra', 
-   \ 'std=c++17', '-fno-exceptions', '-fwrapv', '-fno-delete-null-pointer-checks',
+   \ '-fno-exceptions', '-fwrapv', '-fno-delete-null-pointer-checks',
    \ '-pthreads',
    \ '-Wno-sign-conversion',
    \ '-Wno-zero-as-null-pointer-constant', 
@@ -485,7 +485,7 @@ let g:asyncrun_bell = 1
 " define the following for cpp projects
 " Press F4 to compile current buffer
 autocmd  FileType cpp nnoremap <silent> <F4> :AsyncRun g++ -Wall -Wextra
-                        \ -std=c++17 -fno-exceptions -fwrapv -fno-delete-null-pointer-checks
+                        \ -fno-exceptions -fwrapv -fno-delete-null-pointer-checks
                         \ -pthread -O2
                         \ -Wno-sign-conversion
                         \ -Wno-zero-as-null-pointer-constant 
@@ -493,7 +493,7 @@ autocmd  FileType cpp nnoremap <silent> <F4> :AsyncRun g++ -Wall -Wextra
                         \ -I src -I include 
                         \ "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
 autocmd  FileType c nnoremap <silent> <F4> :AsyncRun gcc -Wall -Wextra
-                        \ -std=c11 -fwrapv -fno-delete-null-pointer-checks -pthread -O2
+                        \ -fwrapv -fno-delete-null-pointer-checks -pthread -O2
                         \ -I src -I include
                         \ "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
 
