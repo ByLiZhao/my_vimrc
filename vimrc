@@ -125,10 +125,10 @@ nnoremap M D
 
 " set vim-yoink, press p<c+f> to current yank record
 let g:yoinkIncludeDeleteOperations = 1
-nmap <c-d> <plug>(YoinkPostPasteSwapBack)
-nmap <c-f> <plug>(YoinkPostPasteSwapForward)
+nmap <c-p> <plug>(YoinkPostPasteSwapBack)
+nmap <c-n> <plug>(YoinkPostPasteSwapForward)
 nmap p <plug>(YoinkPaste_p)
-nmap P <plug>(YoinkPaste_P)
+nmap P <plug>(YoinkPaste_P) " captital P
 
 " configure vim-subsersive
 " s for substitute
@@ -139,7 +139,8 @@ nmap S <plug>(SubversiveSubstituteToEndOfLine)
 nmap <leader>s <plug>(SubversiveSubstituteRange)
 xmap <leader>s <plug>(SubversiveSubstituteRange)
 " replace current word, only match complete words
-nmap <leader>ss <plug>(SubversiveSubstituteWordRange)
+" this short cut conflicts with the C/C++ plugin.
+" nmap <leader>ss <plug>(SubversiveSubstituteWordRange)
 
 " set up EasyAlign
 " Start interactive EasyAlign in visual mode (e.g. vipga)
