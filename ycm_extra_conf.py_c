@@ -2,7 +2,7 @@
 def Settings(**kwargs):
     return {
         'flags': [ '-x', 'c', \
-            '-Wall', '-Wextra', '-pedantic', \
+            '-Wall', '-Wextra', \
             '-std=c11', '-fwrapv', '-fno-delete-null-pointer-checks', '-pthread', \
             '-I', 'src', \
             '-I', 'include', \

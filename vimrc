@@ -8,10 +8,15 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-speeddating'
 
 "editing 
-Plug 'svermeulen/vim-easyclip'
+" Plug 'svermeulen/vim-easyclip'
+" replace vim-easyclip with the following three
+Plug 'svermeulen/vim-cutlass' "make cut better
+Plug 'svermeulen/vim-yoink' " yank history
+Plug 'svermeulen/vim-subversive' " replace
 Plug 'sjl/gundo.vim'
 Plug 'tomtom/tcomment_vim'
 Plug 'godlygeek/tabular'
+Plug 'junegunn/vim-easy-align'
 
 "directories and buffers
 Plug 'jlanzarotta/bufexplorer'
@@ -108,10 +113,40 @@ set wrapmargin=0 " prevent Vim from automatically inserting line breaks in newly
 " }}}
 
 " Editing enhancement {{{
-" because easyclip has mapped m to cut
-nnoremap gm m " gm to add marker
-imap <c-v> <plug>EasyClipInsertModePaste
-cmap <c-v> <plug>EasyClipCommandModePaste
+" gm to add marker, because m is remapped
+nnoremap gm m 
+
+" set vim-cutlass
+" let m, mm, and M denote "move"
+nnoremap m d
+xnoremap m d
+nnoremap mm dd
+nnoremap M D
+
+" set vim-yoink, press p<c+f> to current yank record
+let g:yoinkIncludeDeleteOperations = 1
+nmap <c-d> <plug>(YoinkPostPasteSwapBack)
+nmap <c-f> <plug>(YoinkPostPasteSwapForward)
+nmap p <plug>(YoinkPaste_p)
+nmap P <plug>(YoinkPaste_P)
+
+" configure vim-subsersive
+" s for substitute
+nmap s <plug>(SubversiveSubstitute)
+nmap ss <plug>(SubversiveSubstituteLine)
+nmap S <plug>(SubversiveSubstituteToEndOfLine)
+
+nmap <leader>s <plug>(SubversiveSubstituteRange)
+xmap <leader>s <plug>(SubversiveSubstituteRange)
+" replace current word, only match complete words
+nmap <leader>ss <plug>(SubversiveSubstituteWordRange)
+
+" set up EasyAlign
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
 "}}}
 
 " Set encoding {{{
@@ -415,7 +450,7 @@ let g:c_syntax_for_h=1
 let g:neomake_c_enabled_makers = ['clang']
 let g:neomake_c_clang_maker = {
   \ 'exe': 'clang',
-  \ 'args': ['-Wall', '-Wextra', '-pedantic',
+  \ 'args': ['-Wall', '-Wextra',
   \ '-std=c11', '-fwrapv', '-fno-delete-null-pointer-checks', '-pthread',
   \ '-I', 'src', '-I', 'include', 
   \ ],
@@ -425,7 +460,7 @@ let g:neoformat_enabled_c = ['clangformat']
 let g:neomake_cpp_enabled_makers = ['clang', 'cppcheck']
 let g:neomake_cpp_clang_maker = {
    \ 'exe': 'clang',
-   \ 'args': ['-Wall', '-Wextra', '-pedantic',
+   \ 'args': ['-Wall', '-Wextra', 
    \ 'std=c++17', '-fno-exceptions', '-fwrapv', '-fno-delete-null-pointer-checks',
    \ '-pthreads',
    \ '-Wno-sign-conversion',
@@ -449,7 +484,7 @@ let g:asyncrun_open = 6
 let g:asyncrun_bell = 1
 " define the following for cpp projects
 " Press F4 to compile current buffer
-autocmd  FileType cpp nnoremap <silent> <F4> :AsyncRun g++ -Wall -Wextra -pedantic
+autocmd  FileType cpp nnoremap <silent> <F4> :AsyncRun g++ -Wall -Wextra
                         \ -std=c++17 -fno-exceptions -fwrapv -fno-delete-null-pointer-checks
                         \ -pthread -O2
                         \ -Wno-sign-conversion
@@ -457,7 +492,7 @@ autocmd  FileType cpp nnoremap <silent> <F4> :AsyncRun g++ -Wall -Wextra -pedant
                         \ -Wno-padded -Wno-unused-parameter
                         \ -I src -I include 
                         \ "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
-autocmd  FileType c nnoremap <silent> <F4> :AsyncRun gcc -Wall -Wextra -pedantic
+autocmd  FileType c nnoremap <silent> <F4> :AsyncRun gcc -Wall -Wextra
                         \ -std=c11 -fwrapv -fno-delete-null-pointer-checks -pthread -O2
                         \ -I src -I include
                         \ "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
@@ -504,6 +539,7 @@ nnoremap gk k
 " So if there's a very long line that gets visually wrapped to two lines,
 " j won't skip over the "fake" part of the visual line in favor of the next "real" line.
 " toggle gundo
+let g:gundo_prefer_python3 = 1
 nnoremap <leader>u :GundoToggle<CR>
 " highlight last inserted text
 "
