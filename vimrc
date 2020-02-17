@@ -6,6 +6,8 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-speeddating'
+" enhance sessions
+Plug 'tpope/vim-obsession'
 
 "editing 
 " Plug 'svermeulen/vim-easyclip'
@@ -29,10 +31,6 @@ Plug 'universal-ctags/ctags', { 'dir': '~/home_local/src/ctags',
   \ && make && make install'}
 Plug 'majutsushi/tagbar'
 Plug 'ludovicchabant/vim-gutentags'
-
-" enhance sessions
-Plug 'tpope/vim-obsession'
-Plug 'dhruvasagar/vim-prosession'
 
 "auto completion
 Plug 'Valloric/YouCompleteMe', {'do': 'python3 ./install.py --clangd-completer
@@ -374,15 +372,6 @@ endif
 
 " }}}
 
-" Obsession and prosession setting-up {{{
-let s:ps_dir = expand('~/.vim_temp/sessions')
-let g:prosession_dir = s:ps_dir
-" create directory for prosessions if not existent. 
-if !isdirectory(s:ps_dir)
-   silent! call mkdir(s:ps_dir, 'p')
-endif
-
-"  }}}
 
 " Work with TMux {{{
 " allows cursor change in tmux mode. Show cursor as a vertical bar in Tmux
