@@ -4,7 +4,9 @@ def Settings(**kwargs):
         'flags': [ '-x', 'c', \
             '-Wall', '-Wextra', \
             '-fwrapv', '-fno-delete-null-pointer-checks', '-pthread', \
+            '-I', '.', \
             '-I', 'src', \
             '-I', 'include', \
+            '-I', '..', \
             ],
     }

@@ -8,7 +8,9 @@ def Settings(**kwargs):
             '-Wno-sign-conversion', \
             '-Wno-zero-as-null-pointer-constant', \
             '-Wno-padded', '-Wnoc++98-compat', '-Wunused-parameter', \
+            '-I', '.', \
             '-I', 'src', \
             '-I', 'include', \
+            '-I', '..', \
             ],
     }

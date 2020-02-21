@@ -68,7 +68,7 @@ Plug 'ericcurtin/CurtineIncSw.vim' "to replace a.vim
 " noemake, or anything that needs to be configured project-wise
 Plug 'embear/vim-localvimrc'
 
-" for c programming language
+" for c and go programming language
 Plug 'WolfgangMehner/c-support'
 Plug 'mdempsky/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
@@ -343,35 +343,31 @@ augroup END
 " }}}
 
 " Set backup {{{
+"set writebackup " set backup actually override set writebackup
 set backup
-let s:backup_dir = expand('~/.vim_temp/backup')
+let s:backup_dir = expand('$HOME/.vim_temp/backup')
 " if backup_dir doesn't exist, create it.
 if !isdirectory(s:backup_dir)
    silent! call mkdir(s:backup_dir, 'p')
 endif
-set backupdir=s:backup_dir,~/.temp,/var/tmp,/tmp "for backup files
-" set backupdir=~/.vim_tmp,~/.temp,/var/tmp,/tmp "for backup files
-set backupskip=/tmp/*,/temp/*
-" set directory=~/.vim_tmp,~/.temp,/var/tmp,/tmp "for swap files
+set backupdir=~/.vim_temp/backup,~/.temp,/var/tmp,/tmp "for backup files
+set backupskip+=/tmp/*,/temp/*
 
 let s:swap_dir = expand('~/.vim_temp/swap')
-set directory^=s:swap_dir// "append path to head of directory, use absolute path
+set directory^=~/.vim_temp/swap "append path to head of directory, use absolute path
 if !isdirectory(s:swap_dir)
    silent! call mkdir(s:swap_dir, 'p')
 endif
-set writebackup
 
 set undofile " Maintain undo history between sessions
-" set undodir=~/.vim_temp/undodir
+set undodir=~/.vim_temp/undodir
 let s:undo_dir = expand('~/.vim_temp/undodir')
-set undodir=s:undo_dir 
 " create undo_dir if not existent. 
 if !isdirectory(s:undo_dir)
    silent! call mkdir(s:undo_dir, 'p')
 endif
 
 " }}}
-
 
 " Work with TMux {{{
 " allows cursor change in tmux mode. Show cursor as a vertical bar in Tmux
@@ -442,7 +438,7 @@ let g:neomake_c_clang_maker = {
   \ 'exe': 'clang',
   \ 'args': ['-Wall', '-Wextra',
   \ '-fwrapv', '-fno-delete-null-pointer-checks', '-pthread',
-  \ '-I', 'src', '-I', 'include', 
+  \ '-I', '.', '-I', 'src', '-I', 'include', '-I', '..',
   \ ],
   \ }
 let g:neoformat_enabled_c = ['clangformat']
@@ -456,7 +452,7 @@ let g:neomake_cpp_clang_maker = {
    \ '-Wno-sign-conversion',
    \ '-Wno-zero-as-null-pointer-constant', 
    \ '-Wno-padded', '-Wno-unused-parameter',
-   \ '-I', 'src', '-I', 'include', 
+   \ '-I', '.', '-I', 'src', '-I', 'include', '-I', '..', 
    \ ],
    \ }
 let g:neoformat_enabled_cpp = ['clangformat']
@@ -480,12 +476,27 @@ autocmd  FileType cpp nnoremap <silent> <F4> :AsyncRun g++ -Wall -Wextra
                         \ -Wno-sign-conversion
                         \ -Wno-zero-as-null-pointer-constant 
                         \ -Wno-padded -Wno-unused-parameter
-                        \ -I src -I include 
+                        \ -I. -I src -I include -I.. 
                         \ "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+
+autocmd  FileType cpp nnoremap <silent> <leader>c :AsyncRun g++ -Wall -Wextra
+                        \ -fno-exceptions -fwrapv -fno-delete-null-pointer-checks
+                        \ -pthread -O2
+                        \ -Wno-sign-conversion
+                        \ -Wno-zero-as-null-pointer-constant 
+                        \ -Wno-padded -Wno-unused-parameter
+                        \ -I. -I src -I include -I.. 
+                        \ "$(VIM_FILEPATH)" -c <cr>
+
 autocmd  FileType c nnoremap <silent> <F4> :AsyncRun gcc -Wall -Wextra
                         \ -fwrapv -fno-delete-null-pointer-checks -pthread -O2
-                        \ -I src -I include
+                        \ -I. -I src -I include -I..
                         \ "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+
+autocmd FileType c nnoremap <silent> <leader>c :AsyncRun gcc -Wall -Wextra
+                        \ -fwrapv -fno-delete-null-pointer-checks -pthread -O2
+                        \ -I. -I src -I include -I..
+                        \ "$(VIM_FILEPATH)" -c <cr>
 
 " Press F5 run the executable from current file 
 autocmd  FileType cpp nnoremap <silent> <F5> :AsyncRun -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
