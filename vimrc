@@ -186,7 +186,8 @@ let g:fzf_action = {
       \ 'ctrl-s': 'split',
       \ 'ctrl-v': 'vsplit'
       \ }
-nnoremap <c-p> :FZF -m<cr> "enable multiple selection with tab and <shift-tab>
+" override the pagedown hotkey
+nnoremap <c-f> :FZF -m<cr> "enable multiple selection with tab and <shift-tab>
 augroup fzf
   autocmd!
   autocmd! FileType fzf
@@ -226,7 +227,7 @@ let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
 let g:gutentags_ctags_tagfile = '.tags'
 " put tag files in ~/.cache/tags
 let s:vim_tags = expand('~/.vim_temp/tags')
-let g:gutentags_cache_dir = s:vim_tags
+let g:gutentags_cache_dir = '~/.vim_temp/tags' 
 "set ctags parameters
 let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
 let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
@@ -561,8 +562,35 @@ nnoremap rw <Esc>: /\(\<\w\+\>\)\_s*\<\1\><CR>
 nnoremap <F3> <Esc>:syntax sync fromstart<CR>
 inoremap <F3> <C-o>:syntax sync fromstart<CR>
 " press F3 will sync syntax from start
-nnoremap gf <C-W>gf
-vnoremap gf <C-W>gf "gf open file under cursor in new tab.
+
+" let <c-w>gf check whether the file has already opened in a tab,
+" if yes, just use that tab.
+function! FavorExistingTabPage()
+    let l:bufNr = bufnr('')
+    for l:i in range(1, tabpagenr('$'))
+        if l:i == tabpagenr()
+            continue    " Skip current.
+        endif
+        let l:winIndex = index(tabpagebuflist(l:i), l:bufNr)
+        if l:winIndex != -1
+            " We found the buffer elsewhere.
+            if l:i >= tabpagenr()
+                let l:i -= 1 " Adapt to removal of tab page before the current.
+            endif
+
+            close!
+
+            execute l:i . 'tabnext'
+            execute (l:winIndex + 1) . 'wincmd w'
+            break
+        endif
+    endfor
+endfunction
+" edit the file whose name is under or after the sursor: goto file
+" if the file already opened in a tab, go to that tab.
+nnoremap gf <C-W>gf:call FavorExistingTabPage()<CR>
+
+vnoremap gf <C-W>gf:call FavorExistingTabPage()<CR>
 "  }}}
 
 "Folding method for this file {{{
