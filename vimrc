@@ -244,7 +244,9 @@ let g:ycm_server_python_interpreter='/usr/bin/python3'
 
 " show detail information of a completion candidate in a top window
 let g:ycm_add_preview_to_completeopt = 1
-let g:ycm_autoclose_preview_window_after_completion = 1
+" let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_complete_in_comments = 1
 
 " Use installed clangd, not YCM-bundled clangd which doesn't get updates.
 let g:ycm_clangd_binary_path = exepath("clangd")
@@ -257,7 +259,8 @@ let g:ycm_use_ultisnips_completer = 1
 
 " config ycm-generator, generate .ycm_extra.config.py for c/c++ project
 nnoremap <leader>yc <Esc>:YcmGenerateConfig<CR>
-
+" jump to a header, or definition, or declaration.
+nnoremap <leader>jd :YcmCompleter GoTo<CR>
 let g:UltiSnipsExpandTrigger="<c-l>"
 
 " }}}
