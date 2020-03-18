@@ -45,6 +45,7 @@ Plug 'vim-latex/vim-latex'
 Plug 'elzr/vim-json'
 Plug 'plasticboy/vim-markdown'
 Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
+Plug 'chrisbra/csv.vim'
 
 
 "color
@@ -69,7 +70,7 @@ Plug 'ericcurtin/CurtineIncSw.vim' "to replace a.vim
 Plug 'embear/vim-localvimrc'
 
 " for c and go programming language
-Plug 'WolfgangMehner/c-support'
+Plug 'vim-scripts/DoxygenToolkit.vim'
 Plug 'mdempsky/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
@@ -83,16 +84,20 @@ filetype plugin on
 
 " Highlight{{{
 syntax enable
-colorscheme solarized
+colorscheme gruvbox
 set background=light
-let g:airline_theme='solarized'
-let g:airline_solarized_bg='light'
-let g:solarized_contrast = "high"
-let g:solarized_visibility= "high"
+" let g:airline_theme='solarized'
+let g:airline_theme='gruvbox'
+" let g:airline_solarized_bg='light'
+let g:airline_gruvbox_bf='light'
+" let g:solarized_contrast = "high"
+" let g:solarized_visibility= "high"
+" let g:gruvbox_contrast='high'
+" let g:gruvbox_visibility='high'
 
 " }}}
 
-" UI config {{{
+" UI, indent, and folding config {{{
 " This enables automatic indentation as you type.
 filetype indent on " load filetype-specific indent files
 set number " show line numbers
@@ -108,9 +113,52 @@ set linebreak  "only wrap at a character in the breakat option
 set nolist  " list disables linebreak
 set textwidth=0 "disable automatic word wrapping
 set wrapmargin=0 " prevent Vim from automatically inserting line breaks in newly entered text. 
+" set folding 
+set foldenable          " enable folding
+set foldlevelstart=10   " open most folds by default
+set foldnestmax=10      " 10 nested fold max
+" Leave the editor with Ctrl-q : Write all changed buffers and exit Vim
+nmap  <C-q>    :wqa<CR>
+"
 " }}}
 
 " Editing enhancement {{{
+"Tabs and spaces
+set tabstop=4       " number of visual spaces per TAB
+" tabstop is the number of spaces a tab counts for. So, when Vim opens a file and reads a <TAB> character,
+" it uses that many spaces to visually show the <TAB>.
+set softtabstop=4   " number of spaces in tab when editing
+" softabstop is the number of spaces a tab counts for when editing.
+"  So this value is the number of spaces that is inserted when you hit <TAB> 
+"  and also the number of spaces that are removed when you backspace.
+set expandtab       " tabs are spaces
+" expandtab turns <TAB>s into spaces. That's it. 
+" So <TAB> just becomes a shortcut for "insert four spaces".
+
+" Fast switching between buffers
+ map  <silent> <s-tab>  <Esc>:if &modifiable && !&readonly && 
+     \                  &modified <CR> :write<CR> :endif<CR>:bprevious<CR>
+imap  <silent> <s-tab>  <Esc>:if &modifiable && !&readonly && 
+     \                  &modified <CR> :write<CR> :endif<CR>:bprevious<CR>
+"
+" comma always followed by a space
+inoremap  ,  ,<Space>
+"
+" autocomplete parenthesis, brackets and braces
+"-------------------------------------------------------------------------------
+inoremap <leader>( ()<Left>
+inoremap <leader>[ []<Left>
+inoremap <leader>{ {}<Left>
+"
+vnoremap ( s()<Esc>P<Right>%
+vnoremap [ s[]<Esc>P<Right>%
+vnoremap { s{}<Esc>P<Right>%
+"
+" autocomplete quotes (visual and select mode)
+xnoremap  '  s''<Esc>P<Right>
+xnoremap  "  s""<Esc>P<Right>
+xnoremap  `  s``<Esc>P<Right>
+"
 " gm to add marker, because m is remapped
 nnoremap gm m 
 
@@ -121,19 +169,28 @@ xnoremap m d
 nnoremap mm dd
 nnoremap M D
 
-" set vim-yoink, press p<c+f> to current yank record
+" set vim-yoink, 
+" immediately after performing a paste, 
+" one can cycle through the history by hitting <c-n> and <c-p>
 let g:yoinkIncludeDeleteOperations = 1
 nmap <c-p> <plug>(YoinkPostPasteSwapBack)
 nmap <c-n> <plug>(YoinkPostPasteSwapForward)
 nmap p <plug>(YoinkPaste_p)
-nmap P <plug>(YoinkPaste_P) " captital P
+" notice that the below P is the capital P
+nmap P <plug>(YoinkPaste_P)
+" hitting <c-=> after a paste will toggle between formatted and unformatted
+" unformatted is default
+nmap <c-=> <plug>(YoinkPostPasteToggleFormat)
 
 " configure vim-subsersive
-" s for substitute
+" s for substitute an text object with content in the register.
 nmap s <plug>(SubversiveSubstitute)
 nmap ss <plug>(SubversiveSubstituteLine)
 nmap S <plug>(SubversiveSubstituteToEndOfLine)
 
+" example: <leader>siwip to replace all instances of the current word under the cursor
+" that exist within the paragraph under the cursor. 
+" <leader>sl_ to replace all instances of the character under the cursor on the current line.
 nmap <leader>s <plug>(SubversiveSubstituteRange)
 xmap <leader>s <plug>(SubversiveSubstituteRange)
 " replace current word, only match complete words
@@ -141,9 +198,11 @@ xmap <leader>s <plug>(SubversiveSubstituteRange)
 " nmap <leader>ss <plug>(SubversiveSubstituteWordRange)
 
 " set up EasyAlign
-" Start interactive EasyAlign in visual mode (e.g. vipga)
+" Start interactive EasyAlign in visual mode (e.g. vipga=)
+" align around "=" in a paragraph.
 xmap ga <Plug>(EasyAlign)
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip=),
+" align around "=" in a paragraph.
 nmap ga <Plug>(EasyAlign)
 
 "}}}
@@ -197,20 +256,6 @@ augroup END
 " }}}
 
 " Folding {{{
-set foldenable          " enable folding
-set foldlevelstart=10   " open most folds by default
-set foldnestmax=10      " 10 nested fold max
-"Tabs and spaces
-set tabstop=4       " number of visual spaces per TAB
-" tabstop is the number of spaces a tab counts for. So, when Vim opens a file and reads a <TAB> character,
-" it uses that many spaces to visually show the <TAB>.
-set softtabstop=4   " number of spaces in tab when editing
-" softabstop is the number of spaces a tab counts for when editing.
-"  So this value is the number of spaces that is inserted when you hit <TAB> 
-"  and also the number of spaces that are removed when you backspace.
-set expandtab       " tabs are spaces
-" expandtab turns <TAB>s into spaces. That's it. 
-" So <TAB> just becomes a shortcut for "insert four spaces".
 " }}}
 
  " Set winmanager and gutentags {{{ 
@@ -532,6 +577,9 @@ autocmd FileType cpp inoremap <leader>h :call CurtineIncSw()<CR>
 autocmd FileType c nnoremap <leader>h :call CurtineIncSw()<CR>
 autocmd FileType c inoremap <leader>h :call CurtineIncSw()<CR>
 
+" use gopls for code completion.
+let g:go_def_mode='gopls'
+let g:go_info_mode='gopls'
 " }}}
 
 " Some useful shortcuts. {{{
@@ -560,6 +608,11 @@ nnoremap  la `[v`]
 " you added last time you were in INSERT mode.
 " jk is escape
 inoremap jk <esc>
+
+" toggle insert mode <--> 'normal mode with the <RightMouse>-key
+nnoremap	<RightMouse> <Insert>
+inoremap	<RightMouse> <ESC>
+
 nnoremap rw <Esc>: /\(\<\w\+\>\)\_s*\<\1\><CR>
 " type r-w will find repeated words in text.
 nnoremap <F3> <Esc>:syntax sync fromstart<CR>
