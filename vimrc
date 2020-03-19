@@ -70,8 +70,9 @@ Plug 'ericcurtin/CurtineIncSw.vim' "to replace a.vim
 Plug 'embear/vim-localvimrc'
 
 " for c and go programming language
+" Doxygen for C,  C++ and Python
 Plug 'vim-scripts/DoxygenToolkit.vim'
-Plug 'mdempsky/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
+" work with go-lang.
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 call plug#end()
@@ -92,12 +93,12 @@ let g:airline_theme='gruvbox'
 let g:airline_gruvbox_bf='light'
 " let g:solarized_contrast = "high"
 " let g:solarized_visibility= "high"
-" let g:gruvbox_contrast='high'
-" let g:gruvbox_visibility='high'
+let g:gruvbox_contrast='high'
+let g:gruvbox_visibility='high'
 
 " }}}
 
-" UI, indent, and folding config {{{
+" UI, indent, and folding {{{
 " This enables automatic indentation as you type.
 filetype indent on " load filetype-specific indent files
 set number " show line numbers
@@ -117,29 +118,49 @@ set wrapmargin=0 " prevent Vim from automatically inserting line breaks in newly
 set foldenable          " enable folding
 set foldlevelstart=10   " open most folds by default
 set foldnestmax=10      " 10 nested fold max
-" Leave the editor with Ctrl-q : Write all changed buffers and exit Vim
-nmap  <C-q>    :wqa<CR>
-"
-" }}}
 
-" Editing enhancement {{{
 "Tabs and spaces
-set tabstop=4       " number of visual spaces per TAB
 " tabstop is the number of spaces a tab counts for. So, when Vim opens a file and reads a <TAB> character,
 " it uses that many spaces to visually show the <TAB>.
-set softtabstop=4   " number of spaces in tab when editing
+set tabstop=4       " number of visual spaces per TAB
 " softabstop is the number of spaces a tab counts for when editing.
 "  So this value is the number of spaces that is inserted when you hit <TAB> 
 "  and also the number of spaces that are removed when you backspace.
-set expandtab       " tabs are spaces
+set softtabstop=4   " number of spaces in tab when editing
 " expandtab turns <TAB>s into spaces. That's it. 
 " So <TAB> just becomes a shortcut for "insert four spaces".
+set expandtab       " tabs are spaces
+" }}}
 
-" Fast switching between buffers
- map  <silent> <s-tab>  <Esc>:if &modifiable && !&readonly && 
-     \                  &modified <CR> :write<CR> :endif<CR>:bprevious<CR>
-imap  <silent> <s-tab>  <Esc>:if &modifiable && !&readonly && 
-     \                  &modified <CR> :write<CR> :endif<CR>:bprevious<CR>
+" Tab, buffer,  location list,  and quick-fix list {{{
+" gt to go to next tab,  wrap at the end.
+" press [w to previous tab,  and ]w to next tab
+nnoremap <silent> [w <Esc>:argdo update<CR>:tabprevious<CR>
+nnoremap <silent> ]w <Esc>:argdo update<CR>:tabnext<CR>
+" press [t to previous matched tag,  and ]t to next matched tag.
+nnoremap <silent> [t <Esc>:update<CR>:tprevious<CR>            
+nnoremap <silent> [t <Esc>:update<CR>:tnext<CR>            
+
+" press [a to previous file in arglist. ]a to next file in arglist.
+nnoremap <silent> [a <Esc>:update<CR>:previous<CR>            
+nnoremap <silent> ]a <Esc>:update<CR>:next<CR>     
+
+" press [b to previous buffer in buffer list,  ]b to next buffer in buffer
+" list.
+nnoremap <silent> [b <Esc>:update<CR>:bprevious<CR>
+nnoremap <silent> ]b <Esc>:update<CR>:bnext<CR>
+
+"press [q to previous location of quick-fix list, and ]q to next location in
+"quick-fix list.  
+nnoremap <silent> [q <Esc>:update<CR>:cprevious<CR>            
+nnoremap <silent> ]q <Esc>:update<CR>:cnext<CR>            
+
+" press [l to previous location of location list,  and ]l to next location.
+nnoremap <silent> [l <Esc>:update<CR>:lprevious<CR>
+nnoremap <silent> ]l <Esc>:update<CR>:endif<CR> :lnext<CR>            
+" }}}
+
+" Editing enhancement {{{
 "
 " comma always followed by a space
 inoremap  ,  ,<Space>
@@ -150,14 +171,22 @@ inoremap <leader>( ()<Left>
 inoremap <leader>[ []<Left>
 inoremap <leader>{ {}<Left>
 "
-vnoremap ( s()<Esc>P<Right>%
-vnoremap [ s[]<Esc>P<Right>%
-vnoremap { s{}<Esc>P<Right>%
+vnoremap <leader>( s()<Esc>P<Right>
+vnoremap <leader>[ s[]<Esc>P<Right>
+vnoremap <leader>{ s{}<Esc>P<Right>
 "
 " autocomplete quotes (visual and select mode)
-xnoremap  '  s''<Esc>P<Right>
-xnoremap  "  s""<Esc>P<Right>
-xnoremap  `  s``<Esc>P<Right>
+xnoremap  <leader>'  s''<Esc>P<Right>
+xnoremap  <leader>"  s""<Esc>P<Right>
+xnoremap  <leader>`  s``<Esc>P<Right>
+
+"select between pairs.
+"select everything between bracket the cursor is currently in, inclusive.
+nnoremap <leader>) <Esc>f)v[(
+"select between square bracket
+nnoremap <leader>] <Esc>f]v%
+"select between braces
+nnoremap <leader>} <Esc>f}v[{
 "
 " gm to add marker, because m is remapped
 nnoremap gm m 
@@ -253,9 +282,6 @@ augroup fzf
   autocmd  FileType fzf set laststatus=0 noshowmode noruler
     \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 augroup END
-" }}}
-
-" Folding {{{
 " }}}
 
  " Set winmanager and gutentags {{{ 
@@ -391,7 +417,7 @@ augroup filegroup
 augroup END
 " }}}
 
-" Set backup {{{
+" Set backup, swap and undofile {{{
 "set writebackup " set backup actually override set writebackup
 set backup
 let s:backup_dir = expand('$HOME/.vim_temp/backup')
@@ -609,8 +635,8 @@ nnoremap  la `[v`]
 " jk is escape
 inoremap jk <esc>
 
-" toggle insert mode <--> 'normal mode with the <RightMouse>-key
-nnoremap	<RightMouse> <Insert>
+" leave insert mode  with the <RightMouse>-key,  convenient when work iwth
+" laptop. 
 inoremap	<RightMouse> <ESC>
 
 nnoremap rw <Esc>: /\(\<\w\+\>\)\_s*\<\1\><CR>
