@@ -93,7 +93,7 @@ let g:airline_theme='gruvbox'
 let g:airline_gruvbox_bf='light'
 " let g:solarized_contrast = "high"
 " let g:solarized_visibility= "high"
-let g:gruvbox_contrast='high'
+let g:gruvbox_contrast_light='high'
 let g:gruvbox_visibility='high'
 
 " }}}
@@ -187,11 +187,11 @@ xnoremap  <leader>`  s``<Esc>P<Right>
 
 "select between pairs.
 "select everything between bracket the cursor is currently in, inclusive.
-nnoremap <leader>) <Esc>:/)<CR>v[(
+nnoremap <leader>) <Esc>:/)<CR>:nohlsearch<CR>v[(
 "select between square bracket
-nnoremap <leader>] <Esc>:/]<CR>v%
+nnoremap <leader>] <Esc>:/]<CR>:nohlsearch<CR>v%
 "select between braces
-nnoremap <leader>} <Esc>:/}<CR>v[{
+nnoremap <leader>} <Esc>:/}<CR>:nohlsearch<CR>v[{
 "
 " gm to add marker, because m is remapped
 nnoremap gm m 
