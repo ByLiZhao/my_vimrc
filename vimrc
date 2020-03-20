@@ -167,13 +167,18 @@ inoremap  ,  ,<Space>
 "
 " autocomplete parenthesis, brackets and braces
 "-------------------------------------------------------------------------------
+" press F2 in visual mode to go select mode
+xnoremap <F2> <c-g>
+
 inoremap <leader>( ()<Left>
 inoremap <leader>[ []<Left>
 inoremap <leader>{ {}<Left>
+inoremap <leader>< <><Left>
 "
-vnoremap <leader>( s()<Esc>P<Right>
-vnoremap <leader>[ s[]<Esc>P<Right>
-vnoremap <leader>{ s{}<Esc>P<Right>
+xnoremap <leader>( s()<Esc>P<Right>%
+xnoremap <leader>[ s[]<Esc>P<Right>%
+xnoremap <leader>{ s{}<Esc>P<Right>%
+xnoremap <leader>> s<><Esc>P<Right>:/<<Esc>N:nohlsearch<CR>
 "
 " autocomplete quotes (visual and select mode)
 xnoremap  <leader>'  s''<Esc>P<Right>
@@ -182,11 +187,11 @@ xnoremap  <leader>`  s``<Esc>P<Right>
 
 "select between pairs.
 "select everything between bracket the cursor is currently in, inclusive.
-nnoremap <leader>) <Esc>f)v[(
+nnoremap <leader>) <Esc>:/)<CR>v[(
 "select between square bracket
-nnoremap <leader>] <Esc>f]v%
+nnoremap <leader>] <Esc>:/]<CR>v%
 "select between braces
-nnoremap <leader>} <Esc>f}v[{
+nnoremap <leader>} <Esc>:/}<CR>v[{
 "
 " gm to add marker, because m is remapped
 nnoremap gm m 
