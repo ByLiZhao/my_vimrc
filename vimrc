@@ -41,7 +41,7 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
 "special file formats
-Plug 'vim-latex/vim-latex'
+Plug 'vim-latex/vim-latex', {'for': 'tex'}
 Plug 'elzr/vim-json'
 Plug 'plasticboy/vim-markdown'
 Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
@@ -99,6 +99,12 @@ let g:gruvbox_visibility='high'
 " }}}
 
 " UI, indent, and folding {{{
+if has("gui_running")
+  " GUI is running or is about to start,  maximize gvim window.
+  " this doesn't work on windows.
+  set lines=999 columns=999
+endif
+
 " This enables automatic indentation as you type.
 filetype indent on " load filetype-specific indent files
 set number " show line numbers
@@ -167,8 +173,9 @@ inoremap  ,  ,<Space>
 "
 " autocomplete parenthesis, brackets and braces
 "-------------------------------------------------------------------------------
-" press F2 in visual mode to go select mode
-xnoremap <F2> <c-g>
+" press F2 in visual mode to execute the selected as shell command in a vim
+" terminal,  go back to where you come from, 
+xnoremap <F2> "xy:term<CR><c-w>"x<CR><c-w><c-p>
 
 inoremap <leader>( ()<Left>
 inoremap <leader>[ []<Left>
@@ -178,20 +185,25 @@ inoremap <leader>< <><Left>
 xnoremap <leader>( s()<Esc>P<Right>%
 xnoremap <leader>[ s[]<Esc>P<Right>%
 xnoremap <leader>{ s{}<Esc>P<Right>%
-xnoremap <leader>> s<><Esc>P<Right>:/<<Esc>N:nohlsearch<CR>
+xnoremap <leader>< s<><Esc><Left>p?<<CR>:nohlsearch<CR>
 "
-" autocomplete quotes (visual and select mode)
+" autocomplete quotes (visual mode)
 xnoremap  <leader>'  s''<Esc>P<Right>
 xnoremap  <leader>"  s""<Esc>P<Right>
 xnoremap  <leader>`  s``<Esc>P<Right>
 
 "select between pairs.
-"select everything between bracket the cursor is currently in, inclusive.
-nnoremap <leader>) <Esc>:/)<CR>:nohlsearch<CR>v[(
+"select everything between bracket,  ([{ search back to nearest ([{, 
+"not including ([{ itself.
+")]} search forward to nearest )]}.
+nnoremap <leader>( <Esc>?(<CR>:nohlsearch<CR>v])
+nnoremap <leader>) <Esc>/)<CR>:nohlsearch<CR>v[(
 "select between square bracket
-nnoremap <leader>] <Esc>:/]<CR>:nohlsearch<CR>v%
+nnoremap <leader>[ <Esc>?[<CR>:nohlsearch<CR>v%
+nnoremap <leader>] <Esc>/]<CR>:nohlsearch<CR>v%
 "select between braces
-nnoremap <leader>} <Esc>:/}<CR>:nohlsearch<CR>v[{
+nnoremap <leader>{ <Esc>?{<CR>:nohlsearch<CR>v]}
+nnoremap <leader>} <Esc>/}<CR>:nohlsearch<CR>v[{
 "
 " gm to add marker, because m is remapped
 nnoremap gm m 
@@ -241,6 +253,99 @@ nmap ga <Plug>(EasyAlign)
 
 "}}}
 
+" Useful shortcuts to input special character {{{
+" don't access menu by using alt key combinations
+" for example,  don't use alt-f to access file menu
+set winaltkeys=no
+
+" because the terminal emulator might treat Alt key as a way to input escape sequence. 
+" Alt-1           ±
+" Alt-2           ²,  superscript 2
+" Alt-3           ³,  superscript 3
+" Alt-5           µ,  10^-6
+" Alt-Shift_5     ¥,  Yen,  or yuan
+" Alt-7           ·,  mid-dot
+" Alt-9           ¹,  subscript 1
+" Alt-0           °,  degree
+" Alt-Shift-0     ©,  copyright
+" Alt-.(dot)      ®,  trademark
+" Alt-;           »,  ditto mark,  and right merge mark
+" Alt-+           «,  left merge mark.
+if has("gui_running")
+    " dot operator
+    inoremap <a-.> <c-v>u22c5
+    " partial diff 
+    inoremap <a-,> <c-v>u2202
+    " larger or eual
+    inoremap <a->> <c-v>u2265
+    " smaller or equal
+    inoremap <a-<> <c-v>u2264
+    "integration
+    inoremap <a-/> <c-v>u222b
+    " there exists symbol
+    inoremap <a-?> <c-v>u2203
+    " element symbol
+    inoremap <a-:> <c-v>u2208
+    " universal qualification
+    inoremap <a-'> <c-v>u2200
+    " union 
+    inoremap <a-;> <c-v>u22c3
+    " intersection
+    inoremap <a-"> <c-v>u22c2
+    " subset 
+    inoremap <a-{> <c-v>u2282
+    " super set 
+    inoremap <a-}> <c-v>u2283
+    " logical conjuction
+    inoremap <a-\> <c-v>u22c0
+    " logical disjunction 
+    " <Bar> has to be escaped.
+    inoremap <a-\|> <c-v>u22c1
+    " Gradient 
+    inoremap <a-[> <c-v>u2207
+    " Laplace operator
+    inoremap <a-]> <c-v>u2206
+
+    " plus or minus symbol
+    inoremap <a-+> <c-v>u00b1
+    " approximately equal to symbol
+    inoremap <a-=> <c-v>u2245
+    " right arrow
+    inoremap <a--> <c-v>u2192
+    " double line right arrow
+    inoremap <a-_> <c-v>u21d2
+
+    " super scripts 9-0
+    inoremap <a-1> <c-v>u00b9
+    inoremap <a-2> <c-v>u00b2
+    inoremap <a-3> <c-v>u00b3
+    " alt-1 to input superscript 1
+    inoremap <a-4> <c-v>u2074
+    " alt-4 to input superscript 4
+    inoremap <a-5> <c-v>u2075
+    inoremap <a-6> <c-v>u2076
+    inoremap <a-7> <c-v>u2077
+    inoremap <a-8> <c-v>u2078
+    inoremap <a-9> <c-v>u2079
+    inoremap <a-0> <c-v>u2070
+
+    " subscripts 9-0 
+    inoremap <a-(> <c-v>u2089
+    inoremap <a-*> <c-v>u2088
+    inoremap <a-&> <c-v>u2087
+    inoremap <a-^> <c-v>u2086
+    inoremap <a-%> <c-v>u2085
+    inoremap <a-$> <c-v>u2084
+    inoremap <a-#> <c-v>u2083
+    inoremap <a-@> <c-v>u2082
+    inoremap <a-!> <c-v>u2081
+    inoremap <a-)> <c-v>u2080
+
+    " greek letters   
+    " inoremap <a-u> <a-5> 
+endif
+"  }}}
+
 " Set encoding {{{
 set fileencodings=utf-8,ucs-bom,shift-jis,latin1,big5,gb18030,gbk,gb2312,cp936 
 "set everything encoded by utf-8
@@ -289,7 +394,16 @@ augroup fzf
 augroup END
 " }}}
 
- " Set winmanager and gutentags {{{ 
+ " Window, winmanager and gutentags {{{ 
+ " ctrl-j to the window below the current window
+ " ctrl-k to the window above the current window
+ " ctrl-h to the window in the left of the current window.
+ " ctrl-l to the window in the right of the current window.
+ nnoremap <c-j> <c-w><c-j>
+ nnoremap <c-k> <c-w><c-k>
+ nnoremap <c-h> <c-w><c-h>
+ nnoremap <c-l> <c-w><c-l>
+
 let g:winManagerWindowLayout = "BufExplorer"
 let g:winManagerWidth = 40
 nnoremap wm :WMToggle<cr>
@@ -314,7 +428,7 @@ if !isdirectory(s:vim_tags)
 endif
 " }}}
 
-" Set YouCompleteMe YCM-generator and UltiSnops{{{
+" Set YouCompleteMe YCM-generator and UltiSnips{{{
 " set python interpreter for ycm server
 let g:ycm_server_python_interpreter='/usr/bin/python3'
 
@@ -337,7 +451,7 @@ let g:ycm_use_ultisnips_completer = 1
 nnoremap <leader>yc <Esc>:YcmGenerateConfig<CR>
 " jump to a header, or definition, or declaration.
 nnoremap <leader>jd :YcmCompleter GoTo<CR>
-let g:UltiSnipsExpandTrigger="<c-l>"
+let g:UltiSnipsExpandTrigger="<c-j>"
 
 " }}}
 
