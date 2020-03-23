@@ -259,18 +259,6 @@ nmap ga <Plug>(EasyAlign)
 set winaltkeys=no
 
 " because the terminal emulator might treat Alt key as a way to input escape sequence. 
-" Alt-1           ±
-" Alt-2           ²,  superscript 2
-" Alt-3           ³,  superscript 3
-" Alt-5           µ,  10^-6
-" Alt-Shift_5     ¥,  Yen,  or yuan
-" Alt-7           ·,  mid-dot
-" Alt-9           ¹,  subscript 1
-" Alt-0           °,  degree
-" Alt-Shift-0     ©,  copyright
-" Alt-.(dot)      ®,  trademark
-" Alt-;           »,  ditto mark,  and right merge mark
-" Alt-+           «,  left merge mark.
 if has("gui_running")
     " dot operator
     inoremap <a-.> <c-v>u22c5
@@ -287,9 +275,9 @@ if has("gui_running")
     " element symbol
     inoremap <a-:> <c-v>u2208
     " universal qualification
-    inoremap <a-'> <c-v>u2200
+    inoremap <a-;> <c-v>u2200
     " union 
-    inoremap <a-;> <c-v>u22c3
+    inoremap <a-'> <c-v>u22c3
     " intersection
     inoremap <a-"> <c-v>u22c2
     " subset 
@@ -451,7 +439,10 @@ let g:ycm_use_ultisnips_completer = 1
 nnoremap <leader>yc <Esc>:YcmGenerateConfig<CR>
 " jump to a header, or definition, or declaration.
 nnoremap <leader>jd :YcmCompleter GoTo<CR>
-let g:UltiSnipsExpandTrigger="<c-j>"
+" 
+let g:UltiSnipsExpandTrigger="<c-l>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-h>"
 
 " }}}
 
@@ -756,7 +747,7 @@ inoremap jk <esc>
 
 " leave insert mode  with the <RightMouse>-key,  convenient when work iwth
 " laptop. 
-inoremap	<RightMouse> <ESC>
+inoremap <RightMouse> <Esc>
 
 nnoremap rw <Esc>: /\(\<\w\+\>\)\_s*\<\1\><CR>
 " type r-w will find repeated words in text.
