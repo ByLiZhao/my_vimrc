@@ -514,6 +514,7 @@ augroup filegroup
     autocmd FileType python setlocal tabstop=2
     autocmd FileType python setlocal shiftwidth=2
     autocmd FileType python setlocal softtabstop=2
+    autocmd FileType python setlocal noexpandtab
     autocmd BufEnter *.cls setlocal filetype=java
     autocmd BufEnter *.zsh-theme setlocal filetype=zsh
     autocmd BufEnter Makefile setlocal noexpandtab
