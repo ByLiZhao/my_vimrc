@@ -330,7 +330,350 @@ if has("gui_running")
     inoremap <a-)> <c-v>u2080
 
     " greek letters   
-    " inoremap <a-u> <a-5> 
+    "  <a-J> <a-v> and <a-V> are not mapped. 
+    "  <a-j> is for inserting special math symbols.
+    " alpha and capital alpha.
+    inoremap <a-a> <c-v>u03b1
+    inoremap <a-A> <c-v>u0391
+    " beta and capital beta
+    inoremap <a-b> <c-v>u03b2
+    inoremap <a-B> <c-v>u0392
+    " chi and capital chi
+    inoremap <a-c> <c-v>u03c7
+    inoremap <a-C> <c-v>u03a7
+    "delta and capital delta
+    inoremap <a-d> <c-v>u03b4
+    inoremap <a-D> <c-v>u0394
+    " epsilon and capital epsilon
+    inoremap <a-e> <c-v>u03b5
+    inoremap <a-E> <c-v>u0395
+    " phi and capital phi
+    inoremap <a-f> <c-v>u03c6
+    inoremap <a-F> <c-v>u03a6
+    " gamma and capital gamma
+    inoremap <a-g> <c-v>u03b3
+    inoremap <a-G> <c-v>u0393
+    " eta and capital eta
+    inoremap <a-h> <c-v>u03b7
+    inoremap <a-H> <c-v>u0397
+    " iota and capital iota
+    inoremap <a-i> <c-v>u03b9
+    inoremap <a-I> <c-v>u0399
+    " kappa and capital kappa
+    inoremap <a-k> <c-v>u03ba
+    inoremap <a-K> <c-v>u039a
+    " lambda and capital lambda
+    inoremap <a-l> <c-v>u03bb
+    inoremap <a-L> <c-v>u039b
+    " mu and capital mu
+    inoremap <a-m> <c-v>u03bc
+    inoremap <a-M> <c-v>u039c
+    " nu and capital nu
+    inoremap <a-n> <c-v>u03bd
+    inoremap <a-N> <c-v>u039d
+    " omicron and capital omicron
+    inoremap <a-o> <c-v>u03bf
+    inoremap <a-O> <c-v>u039f
+    " pi and capital pi
+    inoremap <a-p> <c-v>u03c0
+    inoremap <a-P> <c-v>u03a0
+    " theta and capital theta
+    inoremap <a-q> <c-v>u03b8
+    inoremap <a-Q> <c-v>u0398
+    " rho and capital rho
+    inoremap <a-r> <c-v>u03c1
+    inoremap <a-R> <c-v>u03a1
+    " sigma and capital sigma
+    inoremap <a-s> <c-v>u03c3
+    inoremap <a-S> <c-v>u03a3
+    " tau and capital tau
+    inoremap <a-t> <c-v>u03c4
+    inoremap <a-T> <c-v>u03a4
+    " upsilon and capital upsilon
+    inoremap <a-u> <c-v>u03c5
+    inoremap <a-U> <c-v>u03ab
+    " omega and capital omega
+    inoremap <a-w> <c-v>u03c9
+    inoremap <a-W> <c-v>u03a9
+    " xi and capital xi
+    inoremap <a-x> <c-v>u03be
+    inoremap <a-X> <c-v>u039e
+    " psi and capital xi
+    inoremap <a-y> <c-v>u03c8
+    inoremap <a-Y> <c-v>u03a8
+    " zeta and capital zeta
+    inoremap <a-z> <c-v>u03b6
+    inoremap <a-Z> <c-v>u0396
+
+    " special math symbols,  also define corresponding digraph
+    " circle-add symbol 
+    inoremap <a-j>o+ <c-v>u2295 ⊕
+    dig o+ 8853 
+    " circle-minus symbol, ⊖
+    inoremap <a-j>o- <c-v>u2296
+    dig o- 8854
+    " circle-star symbol, ⊛ 
+    inoremap <a-j>o* <c-v>u229b
+    dig o* 8859
+    " circle-dot symbol, ⊙
+    inoremap <a-j>o. <c-v>u2299
+    dig o. 8857
+    " circle times, ⊗
+    inoremap <a-j>ox <c-v>u2297
+    dig ox 8855
+    " circle-equal symbol, ⊜
+    inoremap <a-j>o= <c-v>u229c
+    dig o= 8860
+    " circle-slash symbol, ⊖
+    inoremap <a-j>o/ <c-v>u2298
+    dig o- 8854
+
+    " bullet symbol,  b for bullet-like, ∙ 
+    inoremap <a-j>b. <c-v>u2219
+    dig b. 8729
+    " asterisk, ∗
+    inoremap <a-j>b* <c-v>u2217
+    dig b* 8727
+
+    " math operators 
+    " division, ÷
+    inoremap <a-j>// <c-v>u00f7
+    dig // 247
+    " function composition, ∘
+    inoremap <a-j>/o <c-v>u2218
+    dig /o 8728
+    " diamond operator, ⋄ 
+    inoremap <a-j>\o <c-v>u22c4
+    dig \o 8900
+    " multiplication. the same code point for dot operator, ⋅
+    inoremap <a-j>/. <c-v>u22c5
+    dig /. 8901
+    " star operator,⋆ 
+    inoremap <a-j>/* <c-v>u22c6
+    dig /* 8902
+    " times, ⨉
+    inoremap <a-j>\* <c-v>u2a09
+    dig \* 10761
+    " cross-product,  ⨯
+    inoremap <a-j>** <c-v>u2a2f
+    dig ** 10799
+
+    " set related 
+    " empty set, ∅
+    inoremap <a-j>/0 <c-v>u2205
+    dig /0 8709
+    " full set, Ω, don't consufse with greek letter Omega Ω(937)
+    inoremap <a-j>/O <c-v>u2126
+    dig /O 8486
+    " in set symbol, ∈
+    inoremap <a-j>(- <c-v>u2208
+    dig (- 8712
+    " include in set ∋ 
+    inoremap <a-j>-) <c-v>u220b
+    dig -) 8715
+    " not in set,  ∉
+    inoremap <a-j>(+ <c-v>u2209
+    dig (+ 8713
+    " not include in set, ∌
+    inoremap <a-j>+) <c-v>u220c
+    dig +) 8716
+    " exist,  ∃
+    inoremap <a-j>-] <c-v>u2203
+    dig -] 8707
+    " not exist, ∄
+    inoremap <a-j>+] <c-v>u2204
+    dig +] 8708
+    " any in set, ∀
+    inoremap <a-j>v- <c-v>u2200
+    dig v- 8704
+    " subset, ⊂
+    inoremap <a-j>(( <c-v>u2282
+    dig (( 8834
+    " has subset, ⊃
+    inoremap <a-j>)) <c-v>u2283
+    dig )) 8835
+    " subset or equal, ⊆
+    inoremap <a-j>(= <c-v>u2286
+    dig (= 8838
+    " has subset or equal, ⊇
+    inoremap <a-j>)= <c-v>u2287
+    dig )= 8839
+    " not subset, ⊄
+    inoremap <a-j>(/ <c-v>u2284
+    dig (/ 8836
+    " not has subset, ⊅ 
+    inoremap <a-j>)/ <c-v>u2285
+    dig )/ 8837
+    " not subset or equal, ⊈
+    inoremap <a-j>(\ <c-v>u2288
+    dig (\ 8840
+    " not has subset or equal, ⊉
+    inoremap <a-j>)\ <c-v>u2289
+    dig )\ 8841
+
+    " smaller or equal, ≤
+    inoremap <a-j><= <c-v>u2264
+    dig <= 8804
+    " bigger or equal ≥
+    inoremap <a-j>>= <c-v>2265
+    dig >= 8805
+    " not smaller, ≮ 
+    inoremap <a-j></ <c-v>u226e
+    dig </ 8814
+    " not larger, ≯
+    inoremap <a-j>>/ <c-v>u226f
+    dig >/ 8815
+    " not smaller or equal, ≰
+    inoremap <a-j><\ <c-v>u2270
+    dig <\ 8816
+    " not larger or equal, ≱ 
+    inoremap <a-j>>\ <c-v>u2271
+    dig >\ 8817
+    " way bigger, ≪
+    inoremap <a-j><< <c-v>u226a
+    dig << 8810
+    " way smaller, ≫
+    inoremap <a-j>>> <c-v>u226b
+    dig >> 8811
+    " proportion, ∝
+    inoremap <a-j>oc <c-v>u221d
+    dig oc 8733
+
+    " proceed order, ≺
+    inoremap <a-j>/< <c-v>u227a
+    dig /< 8826
+    " succeed order, ≻ 
+    inoremap <a-j>/> <c-v>u227b
+    dig />8827
+    " proceed or equal order, ≼
+    inoremap <a-j>\< <c-v>u227c
+    dig \< 8828
+    " succeed or euqal order, ≽
+    inoremap <a-j>\> <c-v>u227d
+    dig \> 8829
+    " not proceed, ⊀ 
+    inoremap <a-j>%< <c-v>u2280
+    dig %< 8832
+    " not succeed, ⊁ 
+    inoremap <a-j>%> <c-v>u2281
+    dig %> 8833
+
+
+    " integral
+    " 1-dime integral, ∫ 
+    inoremap <a-j>1/ <c-v>u222b
+    dig 1/ 8747
+    " 2-dim integral, ∬
+    inoremap <a-j>2/ <c-v>u222c
+    dig 2/ 8748
+    " 3-diem integral, ∭
+    inoremap <a-j>3/ <c-v>u222d
+    dig 3/ 8749
+    " curve integral, ∮
+    inoremap <a-j>1f <c-v>u222e
+    dig 1f 8750
+    " surface integral, ∯
+    inoremap <a-j>2f <c-v>u222f
+    dig 2f 8751
+    " volume integral,∰ 
+    inoremap <a-j>3f <c-v>u2230
+    dig 3f 8752
+    " clockwiase integral, ∱
+    inoremap <a-j>>f <c-v>u2231
+    dig >f 8753
+    "" counter clockwise integral, ⨑
+    inoremap <a-j><f <c-v>u2a11
+    dig <f 10769
+    " clockwise contour integral, ∲
+    inoremap <a-j>)f <c-v>u2232
+    dig )f 8754
+    " counter clockwise contour integral, ∳
+    inoremap <a-j>(f <c-v>u2233
+    dig (f 8755
+
+    " numbers and Furier transformation
+    " infinity, ∞ 
+    inoremap <a-j>oo <c-v>u221e
+    dig oo 8734
+    " real set,  ℝ, ℝ
+    inoremap <a-j>/R <c-v>u211d
+    dig /R 8477
+    " complex set, ℂ
+    inoremap <a-j>/C <c-v>u2102
+    dig /C 8450
+    " set of quaternions, ℍ
+    inoremap <a-j>/H <c-v>u210d
+    dig /H 8461
+    " set of natural numbers, ℕ
+    inoremap <a-j>/N <c-v>u2115
+    dig /N 8469
+    " set of integers, ℤ
+    inoremap <a-j>/Z <c-v>u2124
+    dig /Z 8484
+    " set of prime numbers, ℙ
+    inoremap <a-j>/P <c-v>u2119
+    dig /P 8473
+    " set of rational numbers, ℚ
+    inoremap <a-j>/Q <c-v>u211a
+    dig /Q 8474
+    " Furier transformation, ℱ
+    inoremap <a-j>/f <c-v>u2131
+    dig /f 8497
+    
+    " units and constant 
+    " Aleph, ℵ
+    inoremap <a-j>/a <c-v>u2135
+    dig /a 8501
+    " Euler constant, ℯ
+    inoremap <a-j>/e <c-v>u212f
+    dig /e 8495
+    " Planck constant,  ℎ
+    inoremap <a-j>/h <c-v>u210e
+    dig /h 8462
+    " normalized Planck constant, ℏ
+    inoremap <a-j>\h <c-v>u210f
+    dig \h 8463
+    " math pi,ℼ  don't confuse with greek leter π(960)
+    inoremap <a-j>/p <c-v>u213c
+    dig /p 8508
+    " imaginary unit i,ⅈ  don't confuse with english letter i
+    inoremap <a-j>/i <c-v>u2148
+    dig /i 8520
+    " imaginary unit j,ⅉ  don't confuse with english letter j
+    inoremap <a-j>/j <c-v>u2149
+    dig /j 8521
+    " Clesius, ℃ 
+    inoremap <a-j>/c <c-v>u2103
+    dig /c 8451
+
+    " Miscellaneous 
+    " mid dot, ·, don't confuse with dot operator ⋅  
+    inoremap <a-j>-. <c-v>u00b7
+    dig -. 183
+    " ellipses horizontal, …
+    inoremap <a-j>.. <c-v>u2026
+    dig .. 8230
+    " (mathematical) left angle bracket ⟨
+    inoremap <a-j>[[ <c-v>u27e8
+    dig [[ 10216
+    " (methemetical) right angle bracket, ⟩
+    dig ]] 10217 
+    " left guillemet, in latin 1 encoding, «, as quotatoin and ditto mark.
+    inoremap <a-j>\[ <c-v>u00ab
+    dig \[ 171
+    " right guillemet, in latin 1 encoding, »
+    dig \] 187
+    " copyright mark, captital O and c.
+    " Oc 
+    " trademark character, ® 
+    inoremap <a-j>Or <c-v>u00ae
+    dig Or 174
+
+    " only digraph
+    " my surname in Chinese, 李, in unified CJK encoding
+    dig li 26446
+    " my given name in Chinese, 昭, in unified CJK encoding
+    dig za 26157
 endif
 "  }}}
 
