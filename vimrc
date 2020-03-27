@@ -83,6 +83,17 @@ set nocompatible
 filetype plugin on
 " }}}
 
+" Set encoding {{{
+set fileencodings=utf-8,ucs-bom,shift-jis,latin1,big5,gb18030,gbk,gb2312,cp936 
+"set everything encoded by utf-8
+set fileencoding=utf-8  
+set encoding=utf-8
+set termencoding=utf-8  
+set guifontset=
+set guifont=Consolas\ 14
+set guifontwide=Microsoft\ Yahei\ 14
+" }}}
+
 " Highlight{{{
 syntax enable
 colorscheme gruvbox
@@ -676,17 +687,6 @@ if has("gui_running")
     dig za 26157
 endif
 "  }}}
-
-" Set encoding {{{
-set fileencodings=utf-8,ucs-bom,shift-jis,latin1,big5,gb18030,gbk,gb2312,cp936 
-"set everything encoded by utf-8
-set fileencoding=utf-8  
-set encoding=utf-8
-set termencoding=utf-8  
-set guifontset=
-set guifont=Consolas\ 14
-set guifontwide=Microsoft\ Yahei\ 14
-" }}}
 
 " Spell {{{
 set spell spelllang=en_us
