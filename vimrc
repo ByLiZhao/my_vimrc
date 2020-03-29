@@ -180,7 +180,7 @@ nnoremap <silent> ]l <Esc>:update<CR>:endif<CR> :lnext<CR>
 " Editing enhancement {{{
 "
 " comma always followed by a space
-inoremap  ,  ,<Space>
+" inoremap  ,  ,<Space>
 "
 " autocomplete parenthesis, brackets and braces
 "-------------------------------------------------------------------------------
