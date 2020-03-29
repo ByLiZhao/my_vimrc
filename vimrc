@@ -152,8 +152,8 @@ set expandtab       " tabs are spaces
 " Tab, buffer,  location list,  and quick-fix list {{{
 " gt to go to next tab,  wrap at the end.
 " press [w to previous tab,  and ]w to next tab
-nnoremap <silent> [w <Esc>:argdo update<CR>:tabprevious<CR>
-nnoremap <silent> ]w <Esc>:argdo update<CR>:tabnext<CR>
+nnoremap <silent> [w <Esc>:update<CR>:tabprevious<CR>
+nnoremap <silent> ]w <Esc>:update<CR>:tabnext<CR>
 " press [t to previous matched tag,  and ]t to next matched tag.
 nnoremap <silent> [t <Esc>:update<CR>:tprevious<CR>            
 nnoremap <silent> [t <Esc>:update<CR>:tnext<CR>            
