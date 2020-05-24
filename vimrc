@@ -668,22 +668,27 @@ if has("gui_running")
     inoremap <a-j>[[ <c-v>u27e8
     dig [[ 10216
     " (methemetical) right angle bracket, ⟩
+    inoremap <a-j>]] <c-v>u27e9
     dig ]] 10217 
     " left guillemet, in latin 1 encoding, «, as quotatoin and ditto mark.
     inoremap <a-j>\[ <c-v>u00ab
     dig \[ 171
     " right guillemet, in latin 1 encoding, »
     dig \] 187
-    " copyright mark, captital O and c.
+    " copyright mark, captital O and c,©.
     " Oc 
+    inoremap <a-j>Oc <c-v>u00a9
+    " digraph already defined.
     " trademark character, ® 
     inoremap <a-j>Or <c-v>u00ae
     dig Or 174
 
     " only digraph
     " my surname in Chinese, 李, in unified CJK encoding
+    inoremap <a-j>li <c-v>u674e
     dig li 26446
     " my given name in Chinese, 昭, in unified CJK encoding
+    inoremap <a-j>za <c-v>u662d
     dig za 26157
 endif
 "  }}}
