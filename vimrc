@@ -70,8 +70,8 @@ Plug 'ericcurtin/CurtineIncSw.vim' "to replace a.vim
 Plug 'embear/vim-localvimrc'
 
 " for c and go programming language
-" Doxygen for C,  C++ and Python
-Plug 'vim-scripts/DoxygenToolkit.vim'
+" Doxygen for C,  C++ 
+Plug 'WolfgangMehner/c-support' 
 " work with go-lang.
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
@@ -271,47 +271,47 @@ set winaltkeys=no
 
 " because the terminal emulator might treat Alt key as a way to input escape sequence. 
 if has("gui_running")
-    " dot operator
+    " dot operator, ⋅
     inoremap <a-.> <c-v>u22c5
-    " partial diff 
+    " partial diff, ∂
     inoremap <a-,> <c-v>u2202
-    " larger or eual
+    " larger or eual,≥
     inoremap <a->> <c-v>u2265
-    " smaller or equal
+    " smaller or equal,≤
     inoremap <a-<> <c-v>u2264
-    "integration
+    "integration, ∫
     inoremap <a-/> <c-v>u222b
-    " there exists symbol
+    " there exists symbol, ∃
     inoremap <a-?> <c-v>u2203
-    " element symbol
+    " element symbol, ∈
     inoremap <a-:> <c-v>u2208
-    " universal qualification
+    " universal qualification, ∀
     inoremap <a-;> <c-v>u2200
-    " union 
+    " union, ⋃
     inoremap <a-'> <c-v>u22c3
-    " intersection
+    " intersection, ⋂ 
     inoremap <a-"> <c-v>u22c2
-    " subset 
+    " subset, ⊂ 
     inoremap <a-{> <c-v>u2282
-    " super set 
+    " super set, ⊃ 
     inoremap <a-}> <c-v>u2283
-    " logical conjuction
+    " logical conjuction, ⋀ 
     inoremap <a-\> <c-v>u22c0
-    " logical disjunction 
+    " logical disjunction, ⋁
     " <Bar> has to be escaped.
     inoremap <a-\|> <c-v>u22c1
-    " Gradient 
+    " Gradient, ∇ 
     inoremap <a-[> <c-v>u2207
-    " Laplace operator
+    " Laplace operator, ∆
     inoremap <a-]> <c-v>u2206
 
-    " plus or minus symbol
+    " plus or minus symbol, ±
     inoremap <a-+> <c-v>u00b1
-    " approximately equal to symbol
+    " approximately equal to symbol, ≅
     inoremap <a-=> <c-v>u2245
-    " right arrow
+    " right arrow, →
     inoremap <a--> <c-v>u2192
-    " double line right arrow
+    " double line right arrow, ⇒
     inoremap <a-_> <c-v>u21d2
 
     " super scripts 9-0
@@ -417,8 +417,8 @@ if has("gui_running")
     inoremap <a-Z> <c-v>u0396
 
     " special math symbols,  also define corresponding digraph
-    " circle-add symbol 
-    inoremap <a-j>o+ <c-v>u2295 ⊕
+    " circle-add symbol,⊕,  
+    inoremap <a-j>o+ <c-v>u2295 
     dig o+ 8853 
     " circle-minus symbol, ⊖
     inoremap <a-j>o- <c-v>u2296
@@ -678,7 +678,7 @@ if has("gui_running")
     " copyright mark, captital O and c,©.
     " Oc 
     inoremap <a-j>Oc <c-v>u00a9
-    " digraph already defined.
+    dig Oc 169
     " trademark character, ® 
     inoremap <a-j>Or <c-v>u00ae
     dig Or 174
@@ -939,7 +939,7 @@ function! <SID>StripTrailingWhitespaces()
 endfunction
 " }}}
 
-" Programming enhancement, neomake, neoformat and autorun {{{
+" Programming enhancement, neomake, neoformat autorun and c-support {{{
 "open the error and warning list automatically:
 let g:neomake_open_list = 2
 let g:neoformat_only_msg_on_error = 1 "only msg when there is an error
@@ -970,7 +970,7 @@ let g:c_syntax_for_h=1
 let g:neomake_c_enabled_makers = ['clang']
 let g:neomake_c_clang_maker = {
   \ 'exe': 'clang',
-  \ 'args': ['-Wall', '-Wextra',
+  \ 'args': ['-Wall', '-Wextra', '-fsyntax-only',
   \ '-fwrapv', '-fno-delete-null-pointer-checks', '-pthread',
   \ '-I', '.', '-I', 'src', '-I', 'include', '-I', '..',
   \ ],
@@ -978,9 +978,10 @@ let g:neomake_c_clang_maker = {
 let g:neoformat_enabled_c = ['clangformat']
 "C++
 let g:neomake_cpp_enabled_makers = ['clang', 'cppcheck']
+" add -fsyntax-only to supress clang amke *.gch files.
 let g:neomake_cpp_clang_maker = {
    \ 'exe': 'clang',
-   \ 'args': ['-Wall', '-Wextra', 
+   \ 'args': ['-Wall', '-Wextra', '-fsyntax-only', 
    \ '-fno-exceptions', '-fwrapv', '-fno-delete-null-pointer-checks',
    \ '-pthreads',
    \ '-Wno-sign-conversion',
@@ -1002,7 +1003,7 @@ let g:asyncrun_rootmarks = ['.svn', '.git', '.root', '_darcs', 'build.xml', '.pr
 let g:asyncrun_open = 6
 " ring when async_run returns
 let g:asyncrun_bell = 1
-" define the following for cpp projects
+" define the following for cpp, c and java  projects
 " Press F4 to compile current buffer
 autocmd  FileType cpp nnoremap <silent> <F4> :AsyncRun g++ -Wall -Wextra
                         \ -fno-exceptions -fwrapv -fno-delete-null-pointer-checks
@@ -1032,9 +1033,13 @@ autocmd FileType c nnoremap <silent> <leader>c :AsyncRun gcc -Wall -Wextra
                         \ -I. -I src -I include -I..
                         \ "$(VIM_FILEPATH)" -c <cr>
 
+autocmd FileType java nnoremap <silent> <F4> :AsyncRun javac "$(VIM_FILEPATH)" <cr>
+
 " Press F5 run the executable from current file 
 autocmd  FileType cpp nnoremap <silent> <F5> :AsyncRun -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
 autocmd  FileType c nnoremap <silent> <F5> :AsyncRun -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+" couldn't make the java command to work with AsyncRun
+autocmd  FileType java nnoremap <silent> <F5> :!java -cp '%:p:h' '%:t:r' <cr>
 
 " Press F6 to make the whole project
 autocmd  FileType cpp nnoremap <silent> <F6> :AsyncRun -cwd=<root> make <cr>
@@ -1055,12 +1060,20 @@ autocmd  FileType c nnoremap <silent> <F9> :AsyncRun -cwd=<root> cmake . <cr>
 " use F10 toggle quick fix window
 autocmd  FileType cpp nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
 autocmd  FileType c nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
+autocmd  FileType java nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
 
 " toggle c/cpp and header file
 autocmd FileType cpp nnoremap <leader>h :call CurtineIncSw()<CR>
 autocmd FileType cpp inoremap <leader>h :call CurtineIncSw()<CR>
 autocmd FileType c nnoremap <leader>h :call CurtineIncSw()<CR>
 autocmd FileType c inoremap <leader>h :call CurtineIncSw()<CR>
+
+" configure c-support 
+let g:C_UseTool_cmake    = 'no'
+let g:C_UseTool_doxygen  = 'yes'
+let g:C_UseTool_make     = 'no'
+call mmtemplates#config#Add ( 'C', '/home/lizhao/.vim/templates/doxygen.template', 'Doxygen', 'ntd' )
+
 
 " use gopls for code completion.
 let g:go_def_mode='gopls'
