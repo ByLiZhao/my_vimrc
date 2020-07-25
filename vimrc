@@ -1040,6 +1040,8 @@ autocmd  FileType cpp nnoremap <silent> <F5> :AsyncRun -raw -cwd=$(VIM_FILEDIR) 
 autocmd  FileType c nnoremap <silent> <F5> :AsyncRun -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
 " couldn't make the java command to work with AsyncRun
 autocmd  FileType java nnoremap <silent> <F5> :!java -cp '%:p:h' '%:t:r' <cr>
+autocmd  FileType python nnoremap <silent> <F5> :AsyncRun -raw -cwd=$(VIM_FILEDIR) python "$(VIM_FILEPATH)" <cr>
+
 
 " Press F6 to make the whole project
 autocmd  FileType cpp nnoremap <silent> <F6> :AsyncRun -cwd=<root> make <cr>
@@ -1061,6 +1063,7 @@ autocmd  FileType c nnoremap <silent> <F9> :AsyncRun -cwd=<root> cmake . <cr>
 autocmd  FileType cpp nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
 autocmd  FileType c nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
 autocmd  FileType java nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
+autocmd  FileType python nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
 
 " toggle c/cpp and header file
 autocmd FileType cpp nnoremap <leader>h :call CurtineIncSw()<CR>
