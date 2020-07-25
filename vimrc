@@ -1109,6 +1109,7 @@ nnoremap  la `[v`]
 " you added last time you were in INSERT mode.
 " jk is escape
 inoremap jk <esc>
+tnoremap jk <C-\><C-n>
 
 " leave insert mode  with the <RightMouse>-key,  convenient when work iwth
 " laptop. 
