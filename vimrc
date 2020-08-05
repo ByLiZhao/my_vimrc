@@ -69,9 +69,6 @@ Plug 'ericcurtin/CurtineIncSw.vim' "to replace a.vim
 " noemake, or anything that needs to be configured project-wise
 Plug 'embear/vim-localvimrc'
 
-" for c and go programming language
-" Doxygen for C,  C++ 
-Plug 'WolfgangMehner/c-support' 
 " work with go-lang.
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
@@ -812,10 +809,16 @@ endfunction
 autocmd FileType tex nnoremap <Leader>ls :call SyncTexForward()<CR>
 
 " vim-instant-markdown settings
-let g:instant_markdown_autostart = 0 " don't auto-start preview
+let g:instant_markdown_slow = 1 "don't update too fast
+let g:instant_markdown_autostart = 1 " auto-start preview
 "server startup and curl activity is logged in the specified log.
-let g:instant_markdown_logfile = '~/.vim_tmp/instant_markdown.log'
+let g:instant_markdown_allow_unsafe_content = 1 "allow scripts.
+let g:instant_markdown_allow_external_content = 1 " allow external resource
+let g:instant_markdown_logfile = '~/.vim_temp/instant_markdown.log'
 let g:instant_markdown_mathjax = 1 " embed latex math in markdown
+let g:instant_markdown_browser = "chromium --new-window"
+let g:instant_markdown_port = 8999 " default port
+let g:instant_markdown_autoscroll = 1 " auto scroll to corresponding cursor location
 autocmd FileType markdown nnoremap <leader>lv :InstantMarkdownPreview<CR>
 autocmd FileType markdown nnoremap <leader>ls :InstantMarkdownStop<CR>
 " }}}
@@ -869,10 +872,14 @@ augroup filegroup
     autocmd BufEnter *.sh setlocal tabstop=2
     autocmd BufEnter *.sh setlocal shiftwidth=2
     autocmd BufEnter *.sh setlocal softtabstop=2
-    autocmd BufEnter *.md setlocal noexpandtab
-    autocmd BufEnter *.md setlocal tabstop=4
-    autocmd BufEnter *.md setlocal shiftwidth=4
-    autocmd BufEnter *.md setlocal softtabstop=4
+    " autocmd BufEnter *.md setlocal noexpandtab
+    " autocmd BufEnter *.md setlocal tabstop=4
+    " autocmd BufEnter *.md setlocal shiftwidth=4
+    " autocmd BufEnter *.md setlocal softtabstop=4
+    autocmd FileType markdown setlocal noexpandtab
+    autocmd FileType markdown setlocal tabstop=4
+    autocmd FileType markdown setlocal shiftwidth=4
+    autocmd FileType markdown setlocal softtabstop=4
 augroup END
 " }}}
 
@@ -1070,13 +1077,6 @@ autocmd FileType cpp nnoremap <leader>h :call CurtineIncSw()<CR>
 autocmd FileType cpp inoremap <leader>h :call CurtineIncSw()<CR>
 autocmd FileType c nnoremap <leader>h :call CurtineIncSw()<CR>
 autocmd FileType c inoremap <leader>h :call CurtineIncSw()<CR>
-
-" configure c-support 
-let g:C_UseTool_cmake    = 'no'
-let g:C_UseTool_doxygen  = 'yes'
-let g:C_UseTool_make     = 'no'
-call mmtemplates#config#Add ( 'C', '/home/lizhao/.vim/templates/doxygen.template', 'Doxygen', 'ntd' )
-
 
 " use gopls for code completion.
 let g:go_def_mode='gopls'
