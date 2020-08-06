@@ -72,6 +72,10 @@ Plug 'embear/vim-localvimrc'
 " work with go-lang.
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
+" Building and version control 
+" dispatch to different makers, works with tmux and terminal.
+Plug 'mh21/errormarker.vim'
+Plug 'tpope/vim-fugitive'
 call plug#end()
 "}}}
 
@@ -946,7 +950,7 @@ function! <SID>StripTrailingWhitespaces()
 endfunction
 " }}}
 
-" Programming enhancement, neomake, neoformat autorun and c-support {{{
+" Programming enhancement, neomake, neoformat autorun, Hotkeys: F4-12 {{{
 "open the error and warning list automatically:
 let g:neomake_open_list = 2
 let g:neoformat_only_msg_on_error = 1 "only msg when there is an error
@@ -1043,44 +1047,98 @@ autocmd FileType c nnoremap <silent> <leader>c :AsyncRun gcc -Wall -Wextra
 autocmd FileType java nnoremap <silent> <F4> :AsyncRun javac "$(VIM_FILEPATH)" <cr>
 
 " Press F5 run the executable from current file 
-autocmd  FileType cpp nnoremap <silent> <F5> :AsyncRun -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
-autocmd  FileType c nnoremap <silent> <F5> :AsyncRun -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+autocmd  FileType cpp nnoremap <silent> <F5> :AsyncRun -mode=term -pos=right -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+autocmd  FileType c nnoremap <silent> <F5> :AsyncRun -mode=term -pos=right -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
 " couldn't make the java command to work with AsyncRun
-autocmd  FileType java nnoremap <silent> <F5> :!java -cp '%:p:h' '%:t:r' <cr>
-autocmd  FileType python nnoremap <silent> <F5> :AsyncRun -raw -cwd=$(VIM_FILEDIR) python "$(VIM_FILEPATH)" <cr>
+" autocmd  FileType java nnoremap <silent> <F5> :!java -cp '%:p:h' '%:t:r' <cr>
+autocmd  FileType java nnoremap <silent> <F5> :AsyncRun -mode=term -pos=right -raw -cwd=$(VIM_FILEDIR) cd "$(VIM_FILEDIR)/"&&java "$(VIM_FILENOEXT)" <cr>
+autocmd  FileType python nnoremap <silent> <F5> :AsyncRun -mode=term -pos=right -raw -cwd=$(VIM_FILEDIR) python "$(VIM_FILEPATH)" <cr>
 
+" Press F6 to Looks up the current line for a header and jumps to it.
+" work with c, cpp, objc, objcpp, cuda
+autocmd  FileType cpp nnoremap <silent> <F6> :YcmCompleter GoToInclude <cr>
+autocmd  FileType c nnoremap <silent> <F6> :YcmCompleter GoToInclude <cr>
+autocmd  FileType cuda nnoremap <silent> <F6> :YcmCompleter GoToInclude <cr>
 
-" Press F6 to make the whole project
-autocmd  FileType cpp nnoremap <silent> <F6> :AsyncRun -cwd=<root> make <cr>
-autocmd  FileType c nnoremap <silent> <F6> :AsyncRun -cwd=<root> make <cr>
+" Press F7 to Looks up the symbol under the cursor and jumps to its declaration.
+" Supported in filetypes: c, cpp, objc, objcpp, cuda, cs, go, java, javascript, python, rust, typescript
+autocmd  FileType cpp nnoremap <silent> <F7> :YcmCompleter GoToDeclaration <cr>
+autocmd  FileType c nnoremap <silent> <F7> :YcmCompleter GoToDeclaration <cr>
+autocmd  FileType cuda nnoremap <silent> <F7> :YcmCompleter GoToDeclaration <cr>
+autocmd  FileType go nnoremap <silent> <F7> :YcmCompleter GoToDeclaration <cr>
+autocmd  FileType java nnoremap <silent> <F7> :YcmCompleter GoToDeclaration <cr>
+autocmd  FileType python nnoremap <silent> <F7> :YcmCompleter GoToDeclaration <cr>
+autocmd  FileType rust nnoremap <silent> <F7> :YcmCompleter GoToDeclaration <cr>
 
-" Press F7 to run all tests
-autocmd  FileType cpp nnoremap <silent> <F7> :AsyncRun -cwd=<root> -raw make test <cr>
-autocmd  FileType c nnoremap <silent> <F7> :AsyncRun -cwd=<root> -raw make test <cr>
+" Press F8 to kooks up the symbol under the cursor and jumps to its definition
+" Supported in filetypes: c, cpp, objc, objcpp, cuda, cs, go, java, javascript, python, rust, typescript
+" For C-family languages, only works when the definition is in current TU.
+autocmd  FileType cpp nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
+autocmd  FileType c nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
+autocmd  FileType cuda nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
+autocmd  FileType go nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
+autocmd  FileType java nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
+autocmd  FileType python nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
+autocmd  FileType rust nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
 
-" Press F8 to run the current project
-autocmd  FileType cpp nnoremap <silent> <F8> :AsyncRun -cwd=<root> -raw make run <cr>
-autocmd  FileType c nnoremap <silent> <F8> :AsyncRun -cwd=<root> -raw make run <cr>
-
-" Press F9 to generate make file using cmake
-autocmd  FileType cpp nnoremap <silent> <F9> :AsyncRun -cwd=<root> cmake . <cr>
-autocmd  FileType c nnoremap <silent> <F9> :AsyncRun -cwd=<root> cmake . <cr>
+" Press F9 to toggle c/cpp and header file
+autocmd FileType cpp nnoremap <silent> <F9> :call CurtineIncSw()<CR>
+autocmd FileType cpp inoremap <silent> <F9> :call CurtineIncSw()<CR>
+autocmd FileType c nnoremap <silent> <F9> :call CurtineIncSw()<CR>
+autocmd FileType c inoremap <silent> <F9> :call CurtineIncSw()<CR>
 
 " use F10 toggle quick fix window
-autocmd  FileType cpp nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
-autocmd  FileType c nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
-autocmd  FileType java nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
-autocmd  FileType python nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
+function! ToggleQuickFix()
+    if empty(filter(getwininfo(), 'v:val.quickfix'))
+        copen
+    else
+        cclose
+    endif
+endfunction
+nnoremap <silent> <F10> :call ToggleQuickFix()<cr>
 
-" toggle c/cpp and header file
-autocmd FileType cpp nnoremap <leader>h :call CurtineIncSw()<CR>
-autocmd FileType cpp inoremap <leader>h :call CurtineIncSw()<CR>
-autocmd FileType c nnoremap <leader>h :call CurtineIncSw()<CR>
-autocmd FileType c inoremap <leader>h :call CurtineIncSw()<CR>
-
+" for Go-lang semantic engine.
 " use gopls for code completion.
 let g:go_def_mode='gopls'
 let g:go_info_mode='gopls'
+" }}}
+
+" Building, and version control {{{
+" define AsyncRun project root markers.
+let g:asyncrun_rootmarks = ['.svn', '.git', '.root', '_darcs', 'build.xml', '.project'] 
+
+" let errormarker work with Asyncrun
+let g:asyncrun_auto = "make"
+
+" let AsyncRun work with airline 
+let g:asyncrun_status = ''
+let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status}'])
+
+" let AsyncRun work with vim-fugitive
+command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
+
+" make related custom commands.
+" Run "make" asynchronously 
+command AsyncMake AsyncRun -cwd=<root> make -j$(nproc) 
+" Run "make run" asynchronously.
+command AsyncMakeRun AsyncRun -cwd=<root> -mode=term -pos=right -raw make run 
+" Run "make test" asynchronously.
+command AsyncMakeTest AsyncRun -cwd=<root> -mode=term -pos=right make test
+" Run "make clean" asynchronously.
+command AsyncMakeClean AsyncRun -cwd=<root> -mode=term -pos=right -raw make clean
+
+" Cmake related custom commands.
+" :CMake creates a build directory and generates cmake project
+command CMake AsyncRun -cwd=<root> -mode=term -pos=right -raw mkdir -p build&& cd build&& cmake ..
+" :CMakeBuild builds current cmake project in subdirectory build.
+command CMakeBuild AsyncRun -cwd=<root> cmake --build build -j $(nproc)
+" :CMakeInstall install the built project, CMake 3.15+ only
+command CMakeInstall AsyncRun -cwd=<root> -mode=term -pos=right -raw cmake --install build 
+" :CMakeClean removes the whole build directory
+command CMakeClean AsyncRun -cwd=<root> -mode=term -pos=right -raw rm -rf build
+" :CMakeTest to run all the test
+command CMakeTest AsyncRun -cwd=<root> -mode=term -pos=right -raw cd build& ctest 
+
 " }}}
 
 " Some useful shortcuts. {{{
@@ -1109,7 +1167,10 @@ nnoremap  la `[v`]
 " you added last time you were in INSERT mode.
 " jk is escape
 inoremap jk <esc>
+" Press j and k to enter terminal normal mode.
 tnoremap jk <C-\><C-n>
+" Press Esc to quit terminal window from insert mode
+tnoremap <F1> <C-\><C-n>:q! <cr>
 
 " leave insert mode  with the <RightMouse>-key,  convenient when work iwth
 " laptop. 
@@ -1117,9 +1178,10 @@ inoremap <RightMouse> <Esc>
 
 nnoremap rw <Esc>: /\(\<\w\+\>\)\_s*\<\1\><CR>
 " type r-w will find repeated words in text.
+
+" press F3 will sync syntax from start
 nnoremap <F3> <Esc>:syntax sync fromstart<CR>
 inoremap <F3> <C-o>:syntax sync fromstart<CR>
-" press F3 will sync syntax from start
 
 " let <c-w>gf check whether the file has already opened in a tab,
 " if yes, just use that tab.
