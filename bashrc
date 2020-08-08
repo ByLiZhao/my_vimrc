@@ -112,49 +112,15 @@ if ! shopt -oq posix; then
   fi
 fi
 
+
+# edit go path
+export GOPATH=$HOME/src/go
+export PATH=$PATH:/home/lizhao/home_local/go/bin 
+
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-alias tclsh='tclsh9.0'
-alias python='/usr/local/bin/python3'
-alias pip='/usr/local/bin/pip3'
-alias truestudio='cd  $HOME/truestudio/ide && ./TrueSTUDIO'
+export PATH="$HOME/home_local/bin:$PATH"
+export PATH="$PATH:/opt/Qt5.15/bin"
+export PATH="$PATH:/home/lizhao/.gem/ruby/2.5.0/bin"
 
-if [[ $GOPATH != *"$HOME/src/go"* ]];then
-    export GOPATH=$HOME/src/go
-fi
-
-if [[ $PATH != *"$GOPATH/bin"* ]];then
-    export PATH=$PATH:$GOPATH/bin
-fi
-
-if [[ $PATH != *"$HOME/home_local/texlive/2018/bin/x86_64-linux"* ]];then
-    export PATH=$PATH:$HOME/home_local/texlive/2018/bin/x86_64-linux
-fi
-
-if [[ $MANPATH == "" ]];then
-    MANPATH=":$HOME/home_local/texlive/2018/texmf-dist/doc/man"; export MANPATH
-fi
-
-if [[ $MANPATH != *"$HOME/home_local/texlive/2018/texmf-dist/doc/man"* ]];then
-    export MANPATH=":$HOME/home_local/texlive/2018/texmf-dist/doc/man$MANPATH"
-fi
-
-if [[ $INFOPATH == "" ]];then
-    INFOPATH="$HOME/home_local/texlive/2018/texmf-dist/doc/info"; export INFOPATH
-fi
-
-if [[ $INFOPATH != *"$HOME/home_local/texlive/2018/texmf-dist/doc/info"* ]];then
-    export INFOPATH=$INFOPATH:$HOME/home_local/texlive/2018/texmf-dist/doc/info
-fi
-
-
-#config perl
-PATH="/home/lizhao/perl5/bin${PATH:+:${PATH}}"; export PATH;
-PERL5LIB="/home/lizhao/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-PERL_LOCAL_LIB_ROOT="/home/lizhao/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-PERL_MB_OPT="--install_base \"/home/lizhao/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/home/lizhao/perl5"; export PERL_MM_OPT;
-
-alias ana='bash $HOME/home_local/scripts/ana.sh'
-alias anarun='ana && $HOME/anaconda3/bin/anaconda-navigator'
-
+alias ros="source ~/ros2_foxy/install/local_setup.bash"

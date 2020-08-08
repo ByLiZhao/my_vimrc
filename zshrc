@@ -78,6 +78,7 @@ plugins=(
         copydir
         copyfile
         tmux
+        web-search
         )
 
 source $ZSH/oh-my-zsh.sh
@@ -108,24 +109,10 @@ source $ZSH/oh-my-zsh.sh
   alias zshconfig="gvim ~/.zshrc"
 # alias ohmyzsh="gvim ~/.oh-my-zsh"
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/lizhao/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/lizhao/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/lizhao/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/lizhao/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
 
 # edit go path
 export GOPATH=$HOME/src/go
-export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:/home/lizhao/home_local/go/bin
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -137,3 +124,8 @@ alias vim.py="vim - -c 'set syntax=python'"
 # home_local is where user compiled software goes
 export PATH="/home/lizhao/home_local/bin:$PATH"
 export PATH="$PATH:/home/lizhao/.local/bin/"
+export PATH="/opt/Qt5.15/bin:$PATH"
+export PATH="$PATH:/home/lizhao/.gem/ruby/2.5.0/bin"
+
+# to use ros2, type ros first
+alias ros="source ~/ros2_foxy/install/local_setup.zsh"
