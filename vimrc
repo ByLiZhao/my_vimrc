@@ -216,23 +216,23 @@ inoremap <leader>_ ****<Left><Left>
 " xnoremap  <leader>`  s``<Esc>P<Right>
 
 "select between pairs.
-"select everything between bracket,  ([{ search back to nearest ([{, 
-"including ([{ itself.
-")]} search forward to nearest )]}.
+"select everything between surroundings,  
+" Notice that with nested surroundings, following commands are different from
+" "va(" or "va)".
 " select between brackets.
-" cursor at (
+" cursor at (, matching nearest )
 nnoremap <leader>( <Esc>/)<CR>:nohlsearch<CR>v[(
-" cursor at )
+" cursor at ), matching nearest (
 nnoremap <leader>) <Esc>?(<CR>:nohlsearch<CR>v])
 "select between square bracket
-" cursor at [
+" cursor at [, matching nearest ]
 nnoremap <leader>[ <Esc>/]<CR>:nohlsearch<CR>v%
-" cursor at ]
+" cursor at ], matching nearest [
 nnoremap <leader>] <Esc>?[<CR>:nohlsearch<CR>v%
 "select between braces
-" cursor at {
+" cursor at {, matching nearest }
 nnoremap <leader>{ <Esc>/}<CR>:nohlsearch<CR>v[{
-" cursor at }
+" cursor at }, matching nearest {
 nnoremap <leader>} <Esc>?{<CR>:nohlsearch<CR>v]}
 "
 " gm to add marker, because m is remapped
