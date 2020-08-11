@@ -188,36 +188,55 @@ nnoremap <silent> ]l <Esc>:update<CR>:endif<CR> :lnext<CR>
 " press F2 in visual mode to execute the selected as shell command in a vim
 " terminal,  go back to where you come from, 
 xnoremap <F2> "xy:term<CR><c-w>"x<CR><c-w><c-p>
-
+" insert () [] {} <> pairings.
 inoremap <leader>( ()<Left>
 inoremap <leader>[ []<Left>
 inoremap <leader>{ {}<Left>
 inoremap <leader>< <><Left>
-"
-xnoremap <leader>( s()<Esc>P<Right>%
-xnoremap <leader>[ s[]<Esc>P<Right>%
-xnoremap <leader>{ s{}<Esc>P<Right>%
-xnoremap <leader>< s<><Esc><Left>p?<<CR>:nohlsearch<CR>
+inoremap <leader>" ""<Left>
+inoremap <leader>' ''<Left>
+inoremap <leader>` ``<Left>
+" italic in markdown 
+inoremap <leader>- **<Left>
+" Bold in markdown
+inoremap <leader>_ ****<Left><Left>
+
+" The following commands are replaced with corresponding commands in
+" vim-surrounding. In visual mode press S, followed with surroudning.
+" add surrounding pair in visual mode, NOTE: doesn't work with visual line
+" mode.
+" xnoremap <leader>( s()<Esc>P<Right>%
+" xnoremap <leader>[ s[]<Esc>P<Right>%<Esc>:nohlsearch<CR>
+" xnoremap <leader>{ s{}<Esc>P<Right>%
+" xnoremap <leader>< s<><Esc><Left>p?<<CR>:nohlsearch<CR>
 "
 " autocomplete quotes (visual mode)
-xnoremap  <leader>'  s''<Esc>P<Right>
-xnoremap  <leader>"  s""<Esc>P<Right>
-xnoremap  <leader>`  s``<Esc>P<Right>
+" xnoremap  <leader>'  s''<Esc>P<Right>
+" xnoremap  <leader>"  s""<Esc>P<Right>
+" xnoremap  <leader>`  s``<Esc>P<Right>
 
 "select between pairs.
 "select everything between bracket,  ([{ search back to nearest ([{, 
-"not including ([{ itself.
+"including ([{ itself.
 ")]} search forward to nearest )]}.
-nnoremap <leader>( <Esc>?(<CR>:nohlsearch<CR>v])
-nnoremap <leader>) <Esc>/)<CR>:nohlsearch<CR>v[(
+" select between brackets.
+" cursor at (
+nnoremap <leader>( <Esc>/)<CR>:nohlsearch<CR>v[(
+" cursor at )
+nnoremap <leader>) <Esc>?(<CR>:nohlsearch<CR>v])
 "select between square bracket
-nnoremap <leader>[ <Esc>?[<CR>:nohlsearch<CR>v%
-nnoremap <leader>] <Esc>/]<CR>:nohlsearch<CR>v%
+" cursor at [
+nnoremap <leader>[ <Esc>/]<CR>:nohlsearch<CR>v%
+" cursor at ]
+nnoremap <leader>] <Esc>?[<CR>:nohlsearch<CR>v%
 "select between braces
-nnoremap <leader>{ <Esc>?{<CR>:nohlsearch<CR>v]}
-nnoremap <leader>} <Esc>/}<CR>:nohlsearch<CR>v[{
+" cursor at {
+nnoremap <leader>{ <Esc>/}<CR>:nohlsearch<CR>v[{
+" cursor at }
+nnoremap <leader>} <Esc>?{<CR>:nohlsearch<CR>v]}
 "
 " gm to add marker, because m is remapped
+" vim's built-in gm command is shadowed.
 nnoremap gm m 
 
 " set vim-cutlass
