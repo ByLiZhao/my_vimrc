@@ -839,7 +839,7 @@ let g:instant_markdown_allow_unsafe_content = 1 "allow scripts.
 let g:instant_markdown_allow_external_content = 1 " allow external resource
 let g:instant_markdown_logfile = '~/.vim_temp/instant_markdown.log'
 let g:instant_markdown_mathjax = 1 " embed latex math in markdown
-let g:instant_markdown_browser = "chromium --new-window"
+let g:instant_markdown_browser = "firefox --new-window"
 let g:instant_markdown_port = 8999 " default port
 let g:instant_markdown_autoscroll = 1 " auto scroll to corresponding cursor location
 autocmd FileType markdown nnoremap <leader>lv :InstantMarkdownPreview<CR>
