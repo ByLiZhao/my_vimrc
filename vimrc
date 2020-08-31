@@ -31,6 +31,7 @@ Plug 'universal-ctags/ctags', { 'dir': '~/home_local/src/ctags',
   \ && make && make install'}
 Plug 'majutsushi/tagbar'
 Plug 'ludovicchabant/vim-gutentags'
+Plug 'skywind3000/gutentags_plus'
 
 "auto completion
 Plug 'Valloric/YouCompleteMe', {'do': 'python3 ./install.py --clangd-completer
@@ -750,7 +751,7 @@ augroup fzf
 augroup END
 " }}}
 
- " Window, winmanager and gutentags {{{ 
+ " Window, winmanager, gutentags, and gutentags_plus {{{ 
  " ctrl-j to the window below the current window
  " ctrl-k to the window above the current window
  " ctrl-h to the window in the left of the current window.
@@ -767,6 +768,9 @@ nnoremap wm :WMToggle<cr>
 nnoremap wt :TagbarToggle<cr>
 
 "set vim-gutentags
+" enable gtags module
+let g:gutentags_modules = ['ctags', 'gtags_cscope']
+
 "set root of project folder
 let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
 "name of tags file
@@ -778,10 +782,35 @@ let g:gutentags_cache_dir = '~/.vim_temp/tags'
 let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
 let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
 let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+
+" for universal ctags only, not exuberant ctags
+let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
 " create ~/.cache/tags if not existent. 
 if !isdirectory(s:vim_tags)
    silent! call mkdir(s:vim_tags, 'p')
 endif
+" disable key mappings by gutentags_plus 
+let g:gutentags_plus_nomap = 1
+" Find symbol (reference) under cursor
+noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
+" Find symbol definition under cursor 
+noremap <silent> <leader>gg :GscopeFind g <C-R><C-W><cr>
+" Functions calling this function 
+noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
+" Function called by this function 
+noremap <silent> <leader>gd :GscopeFind d <C-R><C-W><cr>
+" Find this text string 
+noremap <silent> <leader>gt :GscopeFind t <C-R><C-W><cr>
+" Find this egrep pattern
+noremap <silent> <leader>ge :GscopeFind e <C-R><C-W><cr>
+" Find file name under cursor
+noremap <silent> <leader>gf :GscopeFind f <C-R>=expand("<cfile>")<cr><cr>
+" Find files #including this file
+noremap <silent> <leader>gi :GscopeFind i <C-R>=expand("<cfile>")<cr><cr>
+" Find places where this symbol is assigned a value
+noremap <silent> <leader>ga :GscopeFind a <C-R><C-W><cr>
+" Find current word in ctags database
+noremap <silent> <leader>gz :GscopeFind z <C-R><C-W><cr>
 " }}}
 
 " Set YouCompleteMe YCM-generator and UltiSnips{{{
