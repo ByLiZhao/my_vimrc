@@ -861,7 +861,7 @@ endfunction
 autocmd FileType tex nnoremap <Leader>ls :call SyncTexForward()<CR>
 
 " vim-instant-markdown settings
-let g:instant_markdown_slow = 1 "don't update too fast
+" let g:instant_markdown_slow = 1 "don't update too fast
 let g:instant_markdown_autostart = 1 " auto-start preview
 "server startup and curl activity is logged in the specified log.
 let g:instant_markdown_allow_unsafe_content = 1 "allow scripts.
