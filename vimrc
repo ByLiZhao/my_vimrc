@@ -37,7 +37,7 @@ Plug 'skywind3000/gutentags_plus'
 Plug 'Valloric/YouCompleteMe', {'do': 'python3 ./install.py --clangd-completer
   \ --cs-completer --go-completer 
   \ --ts-completer --rust-completer --java-completer'}
-Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
+" Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
@@ -65,9 +65,6 @@ Plug 'neomake/neomake'
 Plug 'sbdchd/neoformat'
 Plug 'skywind3000/asyncrun.vim' 
 Plug 'ericcurtin/CurtineIncSw.vim' "to replace a.vim
-" in project vimrc, define makeprg, set path like let &path.="src/include,/usr/include/AL,"
-" so that <leader-h> shortcut works, compiler options can be passed to
-" noemake, or anything that needs to be configured project-wise
 Plug 'embear/vim-localvimrc'
 
 " work with go-lang.
@@ -813,7 +810,7 @@ noremap <silent> <leader>ga :GscopeFind a <C-R><C-W><cr>
 noremap <silent> <leader>gz :GscopeFind z <C-R><C-W><cr>
 " }}}
 
-" Set YouCompleteMe YCM-generator and UltiSnips{{{
+" Set YouCompleteMe and UltiSnips{{{
 " set python interpreter for ycm server
 let g:ycm_server_python_interpreter='/usr/bin/python3'
 
@@ -833,10 +830,9 @@ let g:ycm_show_diagnostics_ui = 0
 let g:ycm_use_ultisnips_completer = 1
 
 " config ycm-generator, generate .ycm_extra.config.py for c/c++ project
-nnoremap <leader>yc <Esc>:YcmGenerateConfig<CR>
-" jump to a header, or definition, or declaration.
-nnoremap <leader>jd :YcmCompleter GoTo<CR>
+" nnoremap <leader>yc <Esc>:YcmGenerateConfig<CR>
 " 
+
 let g:UltiSnipsExpandTrigger="<c-l>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-h>"
@@ -1049,6 +1045,7 @@ let g:neomake_cpp_clang_maker = {
    \ '-I', '.', '-I', 'src', '-I', 'include', '-I', '..', 
    \ ],
    \ }
+
 let g:neoformat_enabled_cpp = ['clangformat']
 "python
 let g:neomake_python_enabled_makers = ['python', 'pylint']
@@ -1135,6 +1132,10 @@ autocmd FileType cpp inoremap <silent> <F9> :call CurtineIncSw()<CR>
 autocmd FileType c nnoremap <silent> <F9> :call CurtineIncSw()<CR>
 autocmd FileType c inoremap <silent> <F9> :call CurtineIncSw()<CR>
 
+" jump to a header, or definition, or declaration.
+nnoremap <leader>jd :YcmCompleter GoTo<CR>
+
+
 " use F10 toggle quick fix window
 function! ToggleQuickFix()
     if empty(filter(getwininfo(), 'v:val.quickfix'))
@@ -1217,7 +1218,7 @@ nnoremap  la `[v`]
 inoremap jk <esc>
 " Press j and k to enter terminal normal mode.
 tnoremap jk <C-\><C-n>
-" Press Esc to quit terminal window from insert mode
+" Press F1 quit terminal window from insert mode
 tnoremap <F1> <C-\><C-n>:q! <cr>
 
 " leave insert mode  with the <RightMouse>-key,  convenient when work iwth
