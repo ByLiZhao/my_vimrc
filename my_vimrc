@@ -817,13 +817,19 @@ noremap <silent> <leader>gz :GscopeFind z <C-R><C-W><cr>
 " set python interpreter for ycm server
 let g:ycm_server_python_interpreter='/usr/bin/python3'
 
-" show detail information of a completion candidate in a top window
+" do not show detail information of a completion candidate in a top window
 let g:ycm_add_preview_to_completeopt = 0
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_complete_in_comments = 1
-" Let clangd fully control code completion
 
+" press <F1> or the right button of the mouse in normal mode to show documentation
+" of the identifier under cursor.
+nmap <F1> <plug>(YCMHover)
+nmap <RightMouse> <plug>(YCMHover)
+
+
+" Let clangd fully control code completion
 " Use installed clangd, not YCM-bundled clangd which doesn't get updates.
 let g:ycm_clangd_binary_path = exepath("clangd")
 " use clangd's caching and filtering algorithm
