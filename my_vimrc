@@ -21,10 +21,11 @@ Plug 'tomtom/tcomment_vim'
 Plug 'godlygeek/tabular'
 Plug 'junegunn/vim-easy-align'
 
-"directories and buffers
+"UI, files directories and buffers and UI
 Plug 'jlanzarotta/bufexplorer'
-Plug 'tpope/vim-vinegar'
 Plug 'vim-scripts/winmanager'
+Plug 'skywind3000/vim-quickui'
+Plug 'preservim/nerdtree'
 
 "tags
 Plug 'universal-ctags/ctags', { 'dir': '~/home_local/src/ctags', 
@@ -35,9 +36,7 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'skywind3000/gutentags_plus'
 
 "auto completion
-Plug 'Valloric/YouCompleteMe', {'do': 'python3 ./install.py --clangd-completer
-  \ --cs-completer --go-completer 
-  \ --ts-completer --rust-completer --java-completer'}
+Plug 'Valloric/YouCompleteMe', {'do': 'python3 install.py --clangd-completer --all'}
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
@@ -65,7 +64,8 @@ Plug 'neomake/neomake'
 Plug 'sbdchd/neoformat'
 Plug 'skywind3000/asyncrun.vim' 
 Plug 'embear/vim-localvimrc'
-
+" work with c++
+Plug 'octol/vim-cpp-enhanced-highlight'
 " work with go-lang.
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
@@ -73,12 +73,14 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " dispatch to different makers, works with tmux and terminal.
 Plug 'mh21/errormarker.vim'
 Plug 'tpope/vim-fugitive'
+Plug 'mhinz/vim-signify'
 call plug#end()
 "}}}
 
 " General Settings. {{{
 set nocompatible
 filetype plugin on
+
 " }}}
 
 " Set encoding {{{
@@ -107,11 +109,15 @@ let g:gruvbox_visibility='high'
 
 " }}}
 
-" UI, indent, and folding {{{
+" GUI, indent, and folding {{{
 if has("gui_running")
   " GUI is running or is about to start,  maximize gvim window.
   " this doesn't work on windows.
   set lines=999 columns=999
+
+" TODO: config vim-quickui
+
+"
 endif
 
 " This enables automatic indentation as you type.
@@ -147,7 +153,7 @@ set softtabstop=4   " number of spaces in tab when editing
 set expandtab       " tabs are spaces
 " }}}
 
-" Tab, buffer,  location list,  and quick-fix list {{{
+" Shortcuts to switch between tabs, buffers,and in location and quick-fix list {{{
 " gt to go to next tab,  wrap at the end.
 " press [w to previous tab,  and ]w to next tab
 nnoremap <silent> [w <Esc>:update<CR>:tabprevious<CR>
@@ -710,12 +716,13 @@ inoremap <F2> <C-x><C-k>
 " }}}
 
 " Searching {{{
+
 set incsearch           " search as characters are entered
 set hlsearch            " highlight matches
 " turn off search highlight
 nnoremap <leader><space> :nohlsearch<CR>
 
-" Config ack
+"  Config ack
 if executable('ag')
   let g:ackprg = 'ag --vimgrep --smart-case'
 endif
@@ -729,16 +736,17 @@ let g:fzf_action = {
       \ 'ctrl-v': 'vsplit'
       \ }
 " override the pagedown hotkey
-nnoremap <c-f> :FZF -m<cr> "enable multiple selection with tab and <shift-tab>
+nnoremap <leader>f :FZF -m<cr> "enable multiple selection with tab and <shift-tab>
 augroup fzf
   autocmd!
   autocmd! FileType fzf
   autocmd  FileType fzf set laststatus=0 noshowmode noruler
     \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 augroup END
+
 " }}}
 
- " Window, winmanager, gutentags, and gutentags_plus {{{ 
+ " Window, buffer, directory  and tags {{{ 
  " ctrl-j to the window below the current window
  " ctrl-k to the window above the current window
  " ctrl-h to the window in the left of the current window.
@@ -753,6 +761,8 @@ let g:winManagerWidth = 40
 nnoremap wm :WMToggle<cr>
 
 nnoremap wt :TagbarToggle<cr>
+
+nnoremap - :NERDTreeToggle<CR>
 
 "set vim-gutentags
 " enable gtags module
@@ -776,6 +786,7 @@ let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
 if !isdirectory(s:vim_tags)
    silent! call mkdir(s:vim_tags, 'p')
 endif
+
 " disable key mappings by gutentags_plus 
 let g:gutentags_plus_nomap = 1
 " Find symbol (reference) under cursor
@@ -805,10 +816,11 @@ noremap <silent> <leader>gz :GscopeFind z <C-R><C-W><cr>
 let g:ycm_server_python_interpreter='/usr/bin/python3'
 
 " show detail information of a completion candidate in a top window
-let g:ycm_add_preview_to_completeopt = 1
+" let g:ycm_add_preview_to_completeopt = 1
 " let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_complete_in_comments = 1
+" Let clangd fully control code completion
 
 " Use installed clangd, not YCM-bundled clangd which doesn't get updates.
 let g:ycm_clangd_binary_path = exepath("clangd")
@@ -819,10 +831,7 @@ let g:ycm_clangd_uses_ycmd_caching = 0
 let g:ycm_show_diagnostics_ui = 0
 let g:ycm_use_ultisnips_completer = 1
 
-" config ycm-generator, generate .ycm_extra.config.py for c/c++ project
-" nnoremap <leader>yc <Esc>:YcmGenerateConfig<CR>
-" 
-
+" config ulti-snips 
 let g:UltiSnipsExpandTrigger="<c-l>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-h>"
@@ -862,6 +871,18 @@ autocmd FileType markdown nnoremap <leader>ls :InstantMarkdownStop<CR>
 " }}}
 
 " File specific settings {{{
+" strips trailing whitespaces at the end of files. this
+" is called on buffer write in the autogroup above.
+function! <SID>StripTrailingWhitespaces()
+    " save last search & cursor position
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    let @/=_s
+    call cursor(l, c)
+endfunction
+
 augroup filegroup
     autocmd! 
     "clear autocmds for current group
@@ -948,7 +969,7 @@ endif
 
 " }}}
 
-" Work with TMux {{{
+" Work with TMux ans zsh {{{
 " allows cursor change in tmux mode. Show cursor as a vertical bar in Tmux
 " instead of a block
 if exists('$TMUX')
@@ -958,30 +979,9 @@ else
     let &t_SI = "\<Esc>]50;CursorShape=1\x7"
     let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
-" }}}
 
-"Custom functions {{{
-" toggle between number and relativenumber
-function! ToggleNumber()
-    if(&relativenumber == 1)
-        set norelativenumber
-        set number
-    else
-        set relativenumber
-    endif
-endfunc
-
-" strips trailing whitespaces at the end of files. this
-" is called on buffer write in the autogroup above.
-function! <SID>StripTrailingWhitespaces()
-    " save last search & cursor position
-    let _s=@/
-    let l = line(".")
-    let c = col(".")
-    %s/\s\+$//e
-    let @/=_s
-    call cursor(l, c)
-endfunction
+" let vim use aliases defined in .zshrc
+set shellcmdflag=-ic
 " }}}
 
 " Programming enhancement, neomake, neoformat autorun, Hotkeys: F4-12 {{{
@@ -1045,10 +1045,22 @@ let g:neomake_shell_enabled_makers = ['shellcheck']
 
 "compile shortcuts
 let g:asyncrun_rootmarks = ['.svn', '.git', '.root', '_darcs', 'build.xml', '.project'] 
+
 " open quick fix after async_run
 let g:asyncrun_open = 6
+
 " ring when async_run returns
 let g:asyncrun_bell = 1
+
+" let errormarker work with Asyncrun
+let g:asyncrun_auto = "make"
+
+" let AsyncRun work with airline 
+let g:asyncrun_status = ''
+let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status}'])
+
+" let AsyncRun work with vim-fugitive
+command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
 " define the following for cpp, c and java  projects
 " Press F4 to compile current buffer
 autocmd  FileType cpp nnoremap <silent> <F4> :AsyncRun g++ -Wall -Wextra
@@ -1136,21 +1148,18 @@ nnoremap <silent> <F10> :call ToggleQuickFix()<cr>
 " use gopls for code completion.
 let g:go_def_mode='gopls'
 let g:go_info_mode='gopls'
+
+" cpp highlight 
+let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+let g:cpp_class_decl_highlight = 1
+let g:cpp_posix_standard = 1
+let g:cpp_experimental_simple_template_highlight = 1
+let g:cpp_concepts_highlight = 1
+" let g:cpp_no_function_highlight = 1
 " }}}
 
 " Building, and version control {{{
-" define AsyncRun project root markers.
-let g:asyncrun_rootmarks = ['.svn', '.git', '.root', '_darcs', 'build.xml', '.project'] 
-
-" let errormarker work with Asyncrun
-let g:asyncrun_auto = "make"
-
-" let AsyncRun work with airline 
-let g:asyncrun_status = ''
-let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status}'])
-
-" let AsyncRun work with vim-fugitive
-command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
 
 " make related custom commands.
 " Run "make" asynchronously 
@@ -1182,24 +1191,25 @@ nnoremap j gj
 nnoremap k gk
 nnoremap gj j
 nnoremap gk k
-" These two allow us to move around lines visually. 
-" So if there's a very long line that gets visually wrapped to two lines,
-" j won't skip over the "fake" part of the visual line in favor of the next "real" line.
+
 " toggle gundo
 let g:gundo_prefer_python3 = 1
 nnoremap <leader>u :GundoToggle<CR>
-" highlight last inserted text
-"
-" edit vimrc/zshrc and load vimrc bindings
-nnoremap <leader>ev :vsp $MYVIMRC<CR>
-nnoremap <leader>ez :vsp ~/.zshrc<CR>
-nnoremap <leader>sv :source $MYVIMRC<CR>
 
+" toggle between number and relativenumber
+function! ToggleNumber()
+    if(&relativenumber == 1)
+        set norelativenumber
+        set number
+    else
+        set relativenumber
+    endif
+endfunc
 nnoremap <leader>n :call ToggleNumber()<CR>
 
+" highlight last inserted text
 nnoremap  la `[v`]
-" This one is pretty cool. It visually selects the block of characters 
-" you added last time you were in INSERT mode.
+
 " jk is escape
 inoremap jk <esc>
 " Press j and k to enter terminal normal mode.
@@ -1214,13 +1224,18 @@ inoremap <RightMouse> <Esc>
 
 nnoremap rw <Esc>: /\(\<\w\+\>\)\_s*\<\1\><CR>
 " type r-w will find repeated words in text.
-" press F2 in visual mode to execute the selected as shell command in a vim
+" press <F2> in visual mode to execute the selected as shell command in a vim
 " terminal  
 xnoremap <F2> "xy:term<CR><c-w>"x<CR>
 
-" press F3 will sync syntax from start
+" press <F3> in normal mode will sync syntax from start
 nnoremap <F3> <Esc>:syntax sync fromstart<CR>
 inoremap <F3> <C-o>:syntax sync fromstart<CR>
+
+" edit vimrc/zshrc and load vimrc bindings
+nnoremap <leader>ev :vsp $MYVIMRC<CR>
+nnoremap <leader>ez :vsp ~/.zshrc<CR>
+nnoremap <leader>sv :source $MYVIMRC<CR>
 
 " let <c-w>gf check whether the file has already opened in a tab,
 " if yes, just use that tab.
@@ -1245,11 +1260,15 @@ function! FavorExistingTabPage()
         endif
     endfor
 endfunction
+
 " edit the file whose name is under or after the sursor: goto file
 " if the file already opened in a tab, go to that tab.
 nnoremap gf <C-W>gf:call FavorExistingTabPage()<CR>
 
 vnoremap gf <C-W>gf:call FavorExistingTabPage()<CR>
+
+" change pwd to the directory of the current file, and echo 
+nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
 "  }}}
 
 "Folding method for this file {{{
