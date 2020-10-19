@@ -711,8 +711,10 @@ endif
 set spell spelllang=en_us
 set dictionary-=/usr/share/dict/words dictionary+=/usr/share/dict/words
 set spellfile=~/.vim/spell/lizhao-spell.add
-inoremap <F2> <C-x><C-k>
 " for word completeion
+inoremap <F2> <C-x><C-k>
+" launch word correction menu
+nnoremap <F2> z=
 " }}}
 
 " Searching {{{
@@ -931,14 +933,11 @@ augroup filegroup
     autocmd BufEnter *.sh setlocal tabstop=2
     autocmd BufEnter *.sh setlocal shiftwidth=2
     autocmd BufEnter *.sh setlocal softtabstop=2
-    " autocmd BufEnter *.md setlocal noexpandtab
-    " autocmd BufEnter *.md setlocal tabstop=4
-    " autocmd BufEnter *.md setlocal shiftwidth=4
-    " autocmd BufEnter *.md setlocal softtabstop=4
     autocmd FileType markdown setlocal noexpandtab
     autocmd FileType markdown setlocal tabstop=4
     autocmd FileType markdown setlocal shiftwidth=4
     autocmd FileType markdown setlocal softtabstop=4
+    autocmd FileType markdown setlocal spell
 augroup END
 " }}}
 
@@ -1224,13 +1223,20 @@ inoremap <RightMouse> <Esc>
 
 nnoremap rw <Esc>: /\(\<\w\+\>\)\_s*\<\1\><CR>
 " type r-w will find repeated words in text.
-" press <F2> in visual mode to execute the selected as shell command in a vim
+
+" press <F3> in visual mode to execute the selected as shell command in a vim
 " terminal  
-xnoremap <F2> "xy:term<CR><c-w>"x<CR>
+xnoremap <F3> "xy:term<CR><c-w>"x<CR>
 
 " press <F3> in normal mode will sync syntax from start
 nnoremap <F3> <Esc>:syntax sync fromstart<CR>
-inoremap <F3> <C-o>:syntax sync fromstart<CR>
+" press <F3> in insert mode will toggle syntax highlight.
+inoremap <F3> <C-o>:if exists("g:syntax_on") <Bar>              
+                        \   syntax off <Bar>                             
+                        \ else <Bar>                                     
+                        \   syntax enable <Bar>                                  
+                        \ endif <CR> 
+                        \ <C-o>:syntax sync fromstart <CR>
 
 " edit vimrc/zshrc and load vimrc bindings
 nnoremap <leader>ev :vsp $MYVIMRC<CR>
@@ -1240,25 +1246,25 @@ nnoremap <leader>sv :source $MYVIMRC<CR>
 " let <c-w>gf check whether the file has already opened in a tab,
 " if yes, just use that tab.
 function! FavorExistingTabPage()
-    let l:bufNr = bufnr('')
-    for l:i in range(1, tabpagenr('$'))
-        if l:i == tabpagenr()
-            continue    " Skip current.
-        endif
-        let l:winIndex = index(tabpagebuflist(l:i), l:bufNr)
-        if l:winIndex != -1
-            " We found the buffer elsewhere.
-            if l:i >= tabpagenr()
-                let l:i -= 1 " Adapt to removal of tab page before the current.
-            endif
+        let l:bufNr = bufnr('')
+        for l:i in range(1, tabpagenr('$'))
+                if l:i == tabpagenr()
+                        continue    " Skip current.
+                endif
+                let l:winIndex = index(tabpagebuflist(l:i), l:bufNr)
+                if l:winIndex != -1
+                        " We found the buffer elsewhere.
+                        if l:i >= tabpagenr()
+                                let l:i -= 1 " Adapt to removal of tab page before the current.
+                        endif
 
-            close!
+                        close!
 
-            execute l:i . 'tabnext'
-            execute (l:winIndex + 1) . 'wincmd w'
-            break
-        endif
-    endfor
+                        execute l:i . 'tabnext'
+                        execute (l:winIndex + 1) . 'wincmd w'
+                        break
+                endif
+        endfor
 endfunction
 
 " edit the file whose name is under or after the sursor: goto file
