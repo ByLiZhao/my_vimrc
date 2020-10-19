@@ -816,8 +816,8 @@ noremap <silent> <leader>gz :GscopeFind z <C-R><C-W><cr>
 let g:ycm_server_python_interpreter='/usr/bin/python3'
 
 " show detail information of a completion candidate in a top window
-" let g:ycm_add_preview_to_completeopt = 1
-" let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_add_preview_to_completeopt = 0
+let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_complete_in_comments = 1
 " Let clangd fully control code completion
