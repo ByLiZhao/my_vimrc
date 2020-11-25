@@ -929,10 +929,10 @@ augroup filegroup
     autocmd FileType ruby setlocal softtabstop=2
     autocmd FileType ruby setlocal commentstring=#\ %s
     autocmd FileType python setlocal commentstring=#\ %s
-    autocmd FileType python setlocal tabstop=2
-    autocmd FileType python setlocal shiftwidth=2
-    autocmd FileType python setlocal softtabstop=2
-    autocmd FileType python setlocal noexpandtab
+    autocmd FileType python setlocal tabstop=4
+    autocmd FileType python setlocal shiftwidth=4
+    autocmd FileType python setlocal softtabstop=4
+    autocmd FileType python setlocal expandtab
     autocmd BufEnter *.cls setlocal filetype=java
     autocmd BufEnter *.zsh-theme setlocal filetype=zsh
     autocmd BufEnter Makefile setlocal noexpandtab
@@ -1042,9 +1042,16 @@ let g:neomake_cpp_clang_maker = {
    \ }
 
 let g:neoformat_enabled_cpp = ['clangformat']
+
 "python
-let g:neomake_python_enabled_makers = ['python', 'pylint']
+let g:neomake_python_enabled_makers = ['python']
+let g:neomake_python_python_exe = 'python3'
+" let g:neomake_python_pylint_exe = 'python3'
+" let g:neomake_python_mypy_exe = 'python3'
+
 let g:neoformat_enabled_python = ['yapf']
+
+
 "Shell
 let g:neomake_shell_enabled_makers = ['shellcheck']
 
@@ -1104,7 +1111,7 @@ autocmd  FileType c nnoremap <silent> <F5> :AsyncRun -mode=term -pos=right -raw 
 " couldn't make the java command to work with AsyncRun
 " autocmd  FileType java nnoremap <silent> <F5> :!java -cp '%:p:h' '%:t:r' <cr>
 autocmd  FileType java nnoremap <silent> <F5> :AsyncRun -mode=term -pos=right -raw -cwd=$(VIM_FILEDIR) cd "$(VIM_FILEDIR)/"&&java "$(VIM_FILENOEXT)" <cr>
-autocmd  FileType python nnoremap <silent> <F5> :AsyncRun -mode=term -pos=right -raw -cwd=$(VIM_FILEDIR) python "$(VIM_FILEPATH)" <cr>
+autocmd  FileType python nnoremap <silent> <F5> :AsyncRun -mode=term -pos=right -raw -cwd=$(VIM_FILEDIR) python3 "$(VIM_FILEPATH)" <cr>
 
 " Press F6 to Looks up the current line for a header and jumps to it.
 " work with c, cpp, objc, objcpp, cuda
@@ -1135,9 +1142,8 @@ autocmd  FileType rust nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
 
 " Press F9 jump to a header, or definition, or declaration.
 autocmd FileType cpp nnoremap <silent> <F9> :YcmCompleter GoTo<CR>
-autocmd FileType cpp inoremap <silent> <F9> :YcmCompleter GoTo<CR>
 autocmd FileType c nnoremap <silent> <F9> :YcmCompleter GoTo<CR>
-autocmd FileType c inoremap <silent> <F9> :YcmCompleter GoTo<CR>
+autocmd FileType python nnoremap <silent> <F9> :YcmCompleter GoTo<CR>
 
 " use F10 toggle quick fix window
 function! ToggleQuickFix()
