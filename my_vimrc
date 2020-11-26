@@ -1,25 +1,28 @@
 "Vim-plug settings. {{{
 call plug#begin('~/.vim/plugged')
 
-" general plugins
-Plug 'tpope/vim-repeat'
+" minor things that make certain things convenient.
 Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-speeddating'
+" different representation of numbers.
 Plug 'glts/vim-radical'
 " enhance sessions
 Plug 'tpope/vim-obsession'
 
-"editing 
+"editing
 " Plug 'svermeulen/vim-easyclip'
 " replace vim-easyclip with the following three
 Plug 'svermeulen/vim-cutlass' "make cut better
 Plug 'svermeulen/vim-yoink' " yank history
 Plug 'svermeulen/vim-subversive' " replace
-Plug 'sjl/gundo.vim'
-Plug 'tomtom/tcomment_vim'
-Plug 'godlygeek/tabular'
-Plug 'junegunn/vim-easy-align'
+Plug 'sjl/gundo.vim'    "undo and redo 
+Plug 'tomtom/tcomment_vim'  " comments 
+Plug 'godlygeek/tabular'    "align texts
+Plug 'junegunn/vim-easy-align'  "align texts.
+"text object
+Plug 'michaeljsmith/vim-indent-object'
 
 "UI, files directories and buffers and UI
 Plug 'jlanzarotta/bufexplorer'
@@ -31,7 +34,7 @@ Plug 'preservim/nerdtree'
 Plug 'universal-ctags/ctags', { 'dir': '~/home_local/src/ctags', 
   \ 'do': './autogen.sh && ./configure --prefix=$HOME/home_local
   \ && make && make install'}
-Plug 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar' "tag displaying.
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'skywind3000/gutentags_plus'
 
@@ -47,12 +50,13 @@ Plug 'plasticboy/vim-markdown'
 Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 Plug 'chrisbra/csv.vim'
 
-
-"color
+"color scheme and highlighting.
 Plug 'morhetz/gruvbox'
 Plug 'altercation/vim-colors-solarized'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'McSinyx/vim-octave'
+Plug 'octol/vim-cpp-enhanced-highlight'
 
 "search
 Plug 'junegunn/fzf', { 'dir': '~/home_local/src/fzf', 'do': './install --all' }
@@ -64,16 +68,23 @@ Plug 'neomake/neomake'
 Plug 'sbdchd/neoformat'
 Plug 'skywind3000/asyncrun.vim' 
 Plug 'embear/vim-localvimrc'
-" work with c++
-Plug 'octol/vim-cpp-enhanced-highlight'
 " work with go-lang.
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" work with python
+Plug 'jmcantrell/vim-virtualenv'
+" work with Jupyter notebook
+Plug 'jupyter-vim/jupyter-vim'
+" auto set pwd to project rooter
+Plug 'airblade/vim-rooter'
 
 " Building and version control 
-" dispatch to different makers, works with tmux and terminal.
 Plug 'mh21/errormarker.vim'
 Plug 'tpope/vim-fugitive'
-Plug 'mhinz/vim-signify'
+Plug 'airblade/vim-gitgutter'
+
+" working with tmux
+Plug 'benmills/vimux'
+Plug 'edkolev/tmuxline.vim'
 call plug#end()
 "}}}
 
@@ -880,7 +891,7 @@ autocmd FileType markdown nnoremap <leader>ls :InstantMarkdownStop<CR>
 
 " File specific settings {{{
 " strips trailing whitespaces at the end of files. this
-" is called on buffer write in the autogroup above.
+" is called on buffer write in the autogroup below.
 function! <SID>StripTrailingWhitespaces()
     " save last search & cursor position
     let _s=@/
@@ -906,9 +917,11 @@ augroup filegroup
     autocmd BufEnter,BufNewFile *.md setlocal spell
     autocmd BufWritePre *.php, *.py, *.js, *.txt, *.text, *.hs, *.java,
                 \ readme, README, ReadMe, Readme, 
-                \ *.md 
+                \ *.cpp, *.hpp, *.c, *.h,
+                \ .vimrc,
+                \ *.md
                 \ :call <SID>StripTrailingWhitespaces()
-    autocmd BufRead,BufNewFile *.c set filetype=c 
+    autocmd BufRead,BufNewFile *.c set filetype=c
     autocmd FileType tex setlocal tabstop=2
     autocmd FileType tex setlocal shiftwidth=2
     autocmd FileType tex setlocal softtabstop=2
@@ -939,6 +952,7 @@ augroup filegroup
     autocmd BufEnter *.sh setlocal tabstop=2
     autocmd BufEnter *.sh setlocal shiftwidth=2
     autocmd BufEnter *.sh setlocal softtabstop=2
+    autocmd BufEnter *.csv setlocal noexpandtab
     autocmd FileType markdown setlocal noexpandtab
     autocmd FileType markdown setlocal tabstop=4
     autocmd FileType markdown setlocal shiftwidth=4
@@ -967,7 +981,7 @@ endif
 set undofile " Maintain undo history between sessions
 set undodir=~/.vim_temp/undodir
 let s:undo_dir = expand('~/.vim_temp/undodir')
-" create undo_dir if not existent. 
+" create undo_dir if not existent.
 if !isdirectory(s:undo_dir)
    silent! call mkdir(s:undo_dir, 'p')
 endif
@@ -996,7 +1010,7 @@ let g:neoformat_only_msg_on_error = 1 "only msg when there is an error
 "toggle Neomake with F11
 nnoremap <F11> <Esc>:NeomakeToggle<CR>
 inoremap <F11> <Esc>:NeomakeToggle<CR>
-"invoke the formatter for current buffer 
+"invoke the formatter for current buffer
 nnoremap <F12> <Esc>:Neoformat<CR>
 inoremap <F12> <Esc>:Neoformat<CR>
 
@@ -1009,10 +1023,10 @@ function! MyOnBattery()
 endfunction
 
 if MyOnBattery()
-" When writing a buffer (no delay).        
+" When writing a buffer (no delay)
   call neomake#configure#automake('w')
 else
-" When writing a buffer (no delay), and on normal mode changes (after 1000ms).        
+" When writing a buffer (no delay), and on normal mode changes (after 1000ms).
   call neomake#configure#automake('nw', 1000)
 endif
 "C
@@ -1031,13 +1045,13 @@ let g:neomake_cpp_enabled_makers = ['clang', 'cppcheck']
 " add -fsyntax-only to supress clang amke *.gch files.
 let g:neomake_cpp_clang_maker = {
    \ 'exe': 'clang',
-   \ 'args': ['-Wall', '-Wextra', '-fsyntax-only', 
+   \ 'args': ['-Wall', '-Wextra', '-fsyntax-only',
    \ '-fno-exceptions', '-fwrapv', '-fno-delete-null-pointer-checks',
    \ '-pthreads',
    \ '-Wno-sign-conversion',
-   \ '-Wno-zero-as-null-pointer-constant', 
+   \ '-Wno-zero-as-null-pointer-constant',
    \ '-Wno-padded', '-Wno-unused-parameter',
-   \ '-I', '.', '-I', 'src', '-I', 'include', '-I', '..', 
+   \ '-I', '.', '-I', 'src', '-I', 'include', '-I', '..',
    \ ],
    \ }
 
@@ -1056,7 +1070,7 @@ let g:neoformat_enabled_python = ['yapf']
 let g:neomake_shell_enabled_makers = ['shellcheck']
 
 "compile shortcuts
-let g:asyncrun_rootmarks = ['.svn', '.git', '.root', '_darcs', 'build.xml', '.project'] 
+let g:asyncrun_rootmarks = ['.svn', '.git', '.root', '_darcs', 'build.xml', '.project']
 
 " open quick fix after async_run
 let g:asyncrun_open = 6
@@ -1111,7 +1125,6 @@ autocmd  FileType c nnoremap <silent> <F5> :AsyncRun -mode=term -pos=right -raw 
 " couldn't make the java command to work with AsyncRun
 " autocmd  FileType java nnoremap <silent> <F5> :!java -cp '%:p:h' '%:t:r' <cr>
 autocmd  FileType java nnoremap <silent> <F5> :AsyncRun -mode=term -pos=right -raw -cwd=$(VIM_FILEDIR) cd "$(VIM_FILEDIR)/"&&java "$(VIM_FILENOEXT)" <cr>
-autocmd  FileType python nnoremap <silent> <F5> :AsyncRun -mode=term -pos=right -raw -cwd=$(VIM_FILEDIR) python3 "$(VIM_FILEPATH)" <cr>
 
 " Press F6 to Looks up the current line for a header and jumps to it.
 " work with c, cpp, objc, objcpp, cuda
@@ -1124,10 +1137,6 @@ autocmd  FileType cuda nnoremap <silent> <F6> :YcmCompleter GoToInclude <cr>
 autocmd  FileType cpp nnoremap <silent> <F7> :YcmCompleter GoToDeclaration <cr>
 autocmd  FileType c nnoremap <silent> <F7> :YcmCompleter GoToDeclaration <cr>
 autocmd  FileType cuda nnoremap <silent> <F7> :YcmCompleter GoToDeclaration <cr>
-autocmd  FileType go nnoremap <silent> <F7> :YcmCompleter GoToDeclaration <cr>
-autocmd  FileType java nnoremap <silent> <F7> :YcmCompleter GoToDeclaration <cr>
-autocmd  FileType python nnoremap <silent> <F7> :YcmCompleter GoToDeclaration <cr>
-autocmd  FileType rust nnoremap <silent> <F7> :YcmCompleter GoToDeclaration <cr>
 
 " Press F8 to kooks up the symbol under the cursor and jumps to its definition
 " Supported in filetypes: c, cpp, objc, objcpp, cuda, cs, go, java, javascript, python, rust, typescript
@@ -1135,15 +1144,10 @@ autocmd  FileType rust nnoremap <silent> <F7> :YcmCompleter GoToDeclaration <cr>
 autocmd  FileType cpp nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
 autocmd  FileType c nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
 autocmd  FileType cuda nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
-autocmd  FileType go nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
-autocmd  FileType java nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
-autocmd  FileType python nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
-autocmd  FileType rust nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
 
 " Press F9 jump to a header, or definition, or declaration.
 autocmd FileType cpp nnoremap <silent> <F9> :YcmCompleter GoTo<CR>
 autocmd FileType c nnoremap <silent> <F9> :YcmCompleter GoTo<CR>
-autocmd FileType python nnoremap <silent> <F9> :YcmCompleter GoTo<CR>
 
 " use F10 toggle quick fix window
 function! ToggleQuickFix()
@@ -1168,6 +1172,25 @@ let g:cpp_posix_standard = 1
 let g:cpp_experimental_simple_template_highlight = 1
 let g:cpp_concepts_highlight = 1
 " let g:cpp_no_function_highlight = 1
+
+" Python 
+let g:jupyter_mapkeys = 0 " disable default key mappings.
+" press F4 to connect current python file to a Jupyter console in a terminal on the left window.
+autocmd FileType python nnoremap <silent> <F4> :vert term ++shell jupyter console<CR> <C-w><C-r> <Esc> <C-w><C-p>:sleep 1<CR> :JupyterConnect<CR>
+" press F5 to execute current file
+autocmd  FileType python nnoremap <silent> <F5> :JupyterRunFile<CR>
+" press F6 to send current cell
+autocmd FileType python nnoremap <silent> <F6> :JupyterSendCell<CR>:set nowrapscan<CR>:/##/<CR>j:nohlsearch<CR>:set wrapscan<CR>
+" press F7 to run code that is visual selected
+autocmd FileType python vmap <silent> <F7> <Plug>JupyterRunVisual
+" press F8 to run code object
+autocmd FileType python nmap <silent> <F8> vai<Plug>JupyterRunVisual<Esc>
+" press F9 go to definition of the token under cursor.
+autocmd  FileType python nnoremap <silent> <F9> :YcmCompleter GoToDefinition <cr>
+
+" Rooter
+let g:rooter_manual_only = 1 "manual only
+nnoremap <leader>rt :Rootet<CR>:pwd<CR>
 " }}}
 
 " Building, and version control {{{
@@ -1228,6 +1251,8 @@ tnoremap jk <C-\><C-n>
 
 " Press F1 quit terminal window from insert mode
 tnoremap <F1> <C-\><C-n>:q! <cr>
+" <leader>t to open a terminal on the right
+nnoremap <leader>t <Esc>: vert term <CR> <C-w><C-r>
 
 " leave insert mode  with the <RightMouse>-key,  convenient when work iwth
 " laptop. 
@@ -1255,37 +1280,7 @@ nnoremap <leader>ev :vsp $MYVIMRC<CR>
 nnoremap <leader>ez :vsp ~/.zshrc<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
-" let <c-w>gf check whether the file has already opened in a tab,
-" if yes, just use that tab.
-function! FavorExistingTabPage()
-        let l:bufNr = bufnr('')
-        for l:i in range(1, tabpagenr('$'))
-                if l:i == tabpagenr()
-                        continue    " Skip current.
-                endif
-                let l:winIndex = index(tabpagebuflist(l:i), l:bufNr)
-                if l:winIndex != -1
-                        " We found the buffer elsewhere.
-                        if l:i >= tabpagenr()
-                                let l:i -= 1 " Adapt to removal of tab page before the current.
-                        endif
-
-                        close!
-
-                        execute l:i . 'tabnext'
-                        execute (l:winIndex + 1) . 'wincmd w'
-                        break
-                endif
-        endfor
-endfunction
-
-" edit the file whose name is under or after the sursor: goto file
-" if the file already opened in a tab, go to that tab.
-nnoremap gf <C-W>gf:call FavorExistingTabPage()<CR>
-
-vnoremap gf <C-W>gf:call FavorExistingTabPage()<CR>
-
-" change pwd to the directory of the current file, and echo 
+" change pwd to the folder of the current file, and echo 
 nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
 "  }}}
 
