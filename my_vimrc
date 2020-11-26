@@ -857,7 +857,7 @@ let g:UltiSnipsJumpBackwardTrigger="<c-h>"
 
 " }}}
 
-" Tex  and Markdown Settings {{{
+" Tex and Markdown Settings {{{
 " IMPORTANT: grep will sometimes skip displaying the file name if you
 " search in a singe file. This will confuse Latex-Suite. Set your grep
 " program to always generate a file-name.
@@ -866,13 +866,13 @@ let g:tex_flavor='latex'
 let g:Tex_DefaultTargetFormat = 'pdf'
 let g:Tex_ViewRule_pdf ='okular --unique'
 let g:Tex_CompileRule_pdf = 'pdflatex -synctex=-1 -src-specials -interaction=nonstopmode $*'
-"Use <C-u> to clear a range that the vim might insert
 autocmd FileType tex nnoremap <Leader>lb :<C-U>exec '!bibtex '.Tex_GetMainFileName(':p:t:r')<CR>
 function! SyncTexForward()
         let execstr = "silent !okular --unique %:p:r.pdf\#src:".line(".")."%:p &"
         exec exec execstr
 endfunction
 autocmd FileType tex nnoremap <Leader>ls :call SyncTexForward()<CR>
+let g:neomake_tex_enabled_makers = []
 
 " vim-instant-markdown settings
 " let g:instant_markdown_slow = 1 "don't update too fast
