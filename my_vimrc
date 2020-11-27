@@ -1073,6 +1073,8 @@ let g:neomake_c_enabled_makers = ['clang']
 let g:neomake_c_clang_maker = {
   \ 'exe': 'clang',
   \ 'args': ['-Wall', '-Wextra', '-fsyntax-only',
+  \ '-Wno-error=unused-command-line-argument',
+  \ '-Qunused-arguments',
   \ '-fwrapv', '-fno-delete-null-pointer-checks', '-pthread',
   \ '-I', '.', '-I', 'src', '-I', 'include', '-I', '..',
   \ ],
@@ -1084,6 +1086,8 @@ let g:neomake_cpp_enabled_makers = ['clang', 'cppcheck']
 let g:neomake_cpp_clang_maker = {
    \ 'exe': 'clang',
    \ 'args': ['-Wall', '-Wextra', '-fsyntax-only',
+   \ '-Wno-error=unused-command-line-argument',
+   \ '-Qunused-arguments',
    \ '-fno-exceptions', '-fwrapv', '-fno-delete-null-pointer-checks',
    \ '-pthreads',
    \ '-Wno-sign-conversion',
