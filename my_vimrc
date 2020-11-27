@@ -816,7 +816,7 @@ noremap <silent> <leader>gt :GscopeFind t <C-R><C-W><cr>
 noremap <silent> <leader>ge :GscopeFind e <C-R><C-W><cr>
 " Find file name under cursor
 noremap <silent> <leader>gf :GscopeFind f <C-R>=expand("<cfile>")<cr><cr>
-" Find files #including this file
+" Find files #including the file under the cursor
 noremap <silent> <leader>gi :GscopeFind i <C-R>=expand("<cfile>")<cr><cr>
 " Find places where this symbol is assigned a value
 noremap <silent> <leader>ga :GscopeFind a <C-R><C-W><cr>
