@@ -39,7 +39,9 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'skywind3000/gutentags_plus'
 
 "auto completion
-Plug 'Valloric/YouCompleteMe', {'do': 'python3 install.py --clangd-completer --all'}
+Plug 'Valloric/YouCompleteMe', {'do': 'export CXX=clang++ CXXFLAGS=-stdlib=libc++
+                        \ && python3 install.py --clangd-completer 
+                        \ && unset CXX CXXFLAGS'}
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
@@ -76,6 +78,8 @@ Plug 'jmcantrell/vim-virtualenv'
 Plug 'jupyter-vim/jupyter-vim'
 " auto set pwd to project rooter
 Plug 'airblade/vim-rooter'
+Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } }
+Plug 'alpertuna/vim-header'
 
 " Building and version control 
 Plug 'mh21/errormarker.vim'
@@ -1061,9 +1065,27 @@ let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status
 command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
 
 " Rooter
+let g:rooter_patterns = ['.svn', '.git', '.root', '*.sln', 'build/env.sh']
 let g:rooter_manual_only = 1 "manual only
 nnoremap <leader>rt :Rootet<CR>:pwd<CR>
 
+" vim-doge
+" do not enable built-in key mappings
+let g:doge_enable_mappings = 0
+" use ',,' as the default mapping.
+nmap ,, <Esc>:DogeGenerate<CR>
+let g:doge_mapping = ',,'
+" only jusmping among items in normal mode
+let g:doge_comment_jump_modes =['n']
+
+" vim-header
+" do not auto add header
+let g:header_field_author = 'John Z. Li'
+let g:header_field_author_email = 'lizhao.johnlee@gmail.com'
+let g:header_auto_add_header = 0
+let g:header_field_timestamp = 0
+let g:header_field_modified_timestamp = 0
+let g:header_field_modified_by = 0
 " }}}
 
 " C and C++ programming {{{
