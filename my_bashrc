@@ -121,12 +121,11 @@ if ! shopt -oq posix; then
   fi
 fi
 
+
 # clang
-alias clang_start="export CXX=clang++ CXXFLAGS=-stdlib=libc++"
-alias clang_end="unset CXX CXXFLAGS"
 export PATH=$PATH:/usr/lib/llvm-11/bin
-export CPLUS_INCLUDE_PATH=/usr/lib/llvm-11/include/c++/v1
-export LIBRARY_PATH=/usr/lib/llvm-11/lib
+alias clang++="clang++ -stdlib=libc++ -I/usr/lib/llvm-11/include/c++/v1"
+
 # go lang
 export PATH=$PATH:/usr/local/go/bin
 
