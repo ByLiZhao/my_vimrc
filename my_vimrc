@@ -1106,7 +1106,7 @@ let g:neoformat_enabled_c = ['clangformat']
 let g:neomake_cpp_enabled_makers = ['clang', 'cppcheck']
 " add -fsyntax-only to supress clang amke *.gch files.
 let g:neomake_cpp_clang_maker = {
-   \ 'exe': 'clang',
+   \ 'exe': 'clang++',
    \ 'args': ['-Wall', '-Wextra', '-fsyntax-only',
    \ '-Wno-error=unused-command-line-argument',
    \ '-Qunused-arguments',
