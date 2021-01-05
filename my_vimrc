@@ -742,7 +742,7 @@ nnoremap <leader><space> :nohlsearch<CR>
 
 "  Config ack
 if executable('ag')
-  let g:ackprg = 'ag --vimgrep --smart-case'
+  let g:ackprg = 'rg --vimgrep --smart-case'
 endif
 " open ag.vim
 nnoremap <leader>a :Ack
