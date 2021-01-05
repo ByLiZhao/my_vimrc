@@ -71,13 +71,14 @@ Plug 'sbdchd/neoformat'
 Plug 'skywind3000/asyncrun.vim' 
 Plug 'embear/vim-localvimrc'
 " work with go-lang.
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " work with python
 Plug 'jmcantrell/vim-virtualenv'
 " work with Jupyter notebook
 Plug 'jupyter-vim/jupyter-vim'
 " auto set pwd to project rooter
 Plug 'airblade/vim-rooter'
+" working with documentation
 Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } }
 Plug 'alpertuna/vim-header'
 
