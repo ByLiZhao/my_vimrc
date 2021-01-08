@@ -430,7 +430,7 @@ if has("gui_running")
     " tau and capital tau
     inoremap <a-t> <c-v>u03c4
     inoremap <a-T> <c-v>u03a4
-    " upsilon and capital upsilon
+    " upsilon and capital upsilon, υ, Ϋ
     inoremap <a-u> <c-v>u03c5
     inoremap <a-U> <c-v>u03ab
     " omega and capital omega
@@ -754,7 +754,8 @@ let g:fzf_action = {
       \ 'ctrl-v': 'vsplit'
       \ }
 " override the pagedown hotkey
-nnoremap <leader>f :FZF -m<cr> "enable multiple selection with tab and <shift-tab>
+"enable multiple selection with tab and <shift-tab>
+nnoremap <leader>f :FZF -m<cr> 
 augroup fzf
   autocmd!
   autocmd! FileType fzf
@@ -1005,7 +1006,8 @@ else
 endif
 
 " let vim use aliases defined in .zshrc
-set shellcmdflag=-ic
+" this causes error when vim launched from terminal
+"set shellcmdflag=-ic
 " }}}
 
 " Programming enhancement, neomake, neoformat autorun, Hotkeys: F10-12 {{{
