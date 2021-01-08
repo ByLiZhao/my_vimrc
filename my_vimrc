@@ -17,8 +17,8 @@ Plug 'tpope/vim-obsession'
 Plug 'svermeulen/vim-cutlass' "make cut better
 Plug 'svermeulen/vim-yoink' " yank history
 Plug 'svermeulen/vim-subversive' " replace
-Plug 'sjl/gundo.vim'    "undo and redo 
-Plug 'tomtom/tcomment_vim'  " comments 
+Plug 'sjl/gundo.vim'    "undo and redo
+Plug 'tomtom/tcomment_vim'  " comments
 Plug 'godlygeek/tabular'    "align texts
 Plug 'junegunn/vim-easy-align'  "align texts.
 "text object
@@ -31,7 +31,7 @@ Plug 'skywind3000/vim-quickui'
 Plug 'preservim/nerdtree'
 
 "tags
-Plug 'universal-ctags/ctags', { 'dir': '~/home_local/src/ctags', 
+Plug 'universal-ctags/ctags', { 'dir': '~/home_local/src/ctags',
   \ 'do': './autogen.sh && ./configure --prefix=$HOME/home_local
   \ && make && make install'}
 Plug 'majutsushi/tagbar' "tag displaying.
@@ -40,7 +40,7 @@ Plug 'skywind3000/gutentags_plus'
 
 "auto completion
 Plug 'Valloric/YouCompleteMe', {'do': 'export CXX=clang++ CXXFLAGS=-stdlib=libc++
-                        \ && python3 install.py --clangd-completer 
+                        \ && python3 install.py --clangd-completer
                         \ && unset CXX CXXFLAGS'}
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -68,7 +68,7 @@ Plug 'mileszs/ack.vim'
 "Programming enhancement
 Plug 'neomake/neomake'
 Plug 'sbdchd/neoformat'
-Plug 'skywind3000/asyncrun.vim' 
+Plug 'skywind3000/asyncrun.vim'
 Plug 'embear/vim-localvimrc'
 " work with go-lang.
 " Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
@@ -82,7 +82,7 @@ Plug 'airblade/vim-rooter'
 Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } }
 Plug 'alpertuna/vim-header'
 
-" Building and version control 
+" Building and version control
 Plug 'mh21/errormarker.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
@@ -100,11 +100,11 @@ filetype plugin on
 " }}}
 
 " Set encoding {{{
-set fileencodings=utf-8,ucs-bom,shift-jis,latin1,big5,gb18030,gbk,gb2312,cp936 
+set fileencodings=utf-8,ucs-bom,shift-jis,latin1,big5,gb18030,gbk,gb2312,cp936
 "set everything encoded by utf-8
-set fileencoding=utf-8  
+set fileencoding=utf-8
 set encoding=utf-8
-set termencoding=utf-8  
+set termencoding=utf-8
 set guifontset=
 set guifont=Consolas\ 14
 set guifontwide=Microsoft\ Yahei\ 14
@@ -142,7 +142,7 @@ set number " show line numbers
 set showcmd    " show command in bottom bar
 set cursorline          " highlight current line
 set wildmenu            " visual autocomplete for command menu
-set wildmode=longest:full,full  "matches full match 
+set wildmode=longest:full,full  "matches full match
 set lazyredraw          " redraw only when we need to.
 set showmatch           " highlight matching [{()}]
 let &colorcolumn=join(range(81,999),",") "set background color of line exceeding 81 letters.
@@ -150,8 +150,8 @@ set wrap  " will automatically wrap long lines to multiple virtual lines.
 set linebreak  "only wrap at a character in the breakat option
 set nolist  " list disables linebreak
 set textwidth=0 "disable automatic word wrapping
-set wrapmargin=0 " prevent Vim from automatically inserting line breaks in newly entered text. 
-" set folding 
+set wrapmargin=0 " prevent Vim from automatically inserting line breaks in newly entered text.
+" set folding
 set foldenable          " enable folding
 set foldlevelstart=10   " open most folds by default
 set foldnestmax=10      " 10 nested fold max
@@ -161,10 +161,10 @@ set foldnestmax=10      " 10 nested fold max
 " it uses that many spaces to visually show the <TAB>.
 set tabstop=4       " number of visual spaces per TAB
 " softabstop is the number of spaces a tab counts for when editing.
-"  So this value is the number of spaces that is inserted when you hit <TAB> 
+"  So this value is the number of spaces that is inserted when you hit <TAB>
 "  and also the number of spaces that are removed when you backspace.
 set softtabstop=4   " number of spaces in tab when editing
-" expandtab turns <TAB>s into spaces. That's it. 
+" expandtab turns <TAB>s into spaces. That's it.
 " So <TAB> just becomes a shortcut for "insert four spaces".
 set expandtab       " tabs are spaces
 " }}}
@@ -175,12 +175,12 @@ set expandtab       " tabs are spaces
 nnoremap <silent> [w <Esc>:update<CR>:tabprevious<CR>
 nnoremap <silent> ]w <Esc>:update<CR>:tabnext<CR>
 " press [t to previous matched tag,  and ]t to next matched tag.
-nnoremap <silent> [t <Esc>:update<CR>:tprevious<CR>            
-nnoremap <silent> [t <Esc>:update<CR>:tnext<CR>            
+nnoremap <silent> [t <Esc>:update<CR>:tprevious<CR>
+nnoremap <silent> [t <Esc>:update<CR>:tnext<CR>
 
 " press [a to previous file in arglist. ]a to next file in arglist.
-nnoremap <silent> [a <Esc>:update<CR>:previous<CR>            
-nnoremap <silent> ]a <Esc>:update<CR>:next<CR>     
+nnoremap <silent> [a <Esc>:update<CR>:previous<CR>
+nnoremap <silent> ]a <Esc>:update<CR>:next<CR>
 
 " press [b to previous buffer in buffer list,  ]b to next buffer in buffer
 " list.
@@ -188,23 +188,23 @@ nnoremap <silent> [b <Esc>:update<CR>:bprevious<CR>
 nnoremap <silent> ]b <Esc>:update<CR>:bnext<CR>
 
 "press [q to previous location of quick-fix list, and ]q to next location in
-"quick-fix list.  
-nnoremap <silent> [q <Esc>:update<CR>:cprevious<CR>            
-nnoremap <silent> ]q <Esc>:update<CR>:cnext<CR>            
+"quick-fix list.
+nnoremap <silent> [q <Esc>:update<CR>:cprevious<CR>
+nnoremap <silent> ]q <Esc>:update<CR>:cnext<CR>
 
 " press [l to previous location of location list,  and ]l to next location.
 nnoremap <silent> [l <Esc>:update<CR>:lprevious<CR>
-nnoremap <silent> ]l <Esc>:update<CR>:endif<CR> :lnext<CR>            
+nnoremap <silent> ]l <Esc>:update<CR>:endif<CR> :lnext<CR>
 " }}}
 
 " Editing enhancement {{{
 "
 " comma always followed by a space
 " inoremap  ,  ,<Space>
-" 
+"
 " autocomplete parenthesis, brackets and braces
 "-------------------------------------------------------------------------------
-" two leader insert one backslash 
+" two leader insert one backslash
 inoremap <leader><leader> \
 " insert () [] {} <> pairings.
 inoremap <leader>( ()<Left>
@@ -214,7 +214,7 @@ inoremap <leader>< <><Left>
 inoremap <leader>" ""<Left>
 inoremap <leader>' ''<Left>
 inoremap <leader>` ``<Left>
-" italic in markdown 
+" italic in markdown
 inoremap <leader>- **<Left>
 " Bold in markdown
 inoremap <leader>_ ****<Left><Left>
@@ -222,7 +222,7 @@ inoremap <leader>_ ****<Left><Left>
 " Use vim-surrounding to manipulate surroudings.
 
 "select between pairs.
-"select everything between surroundings,  
+"select everything between surroundings,
 " Notice that with nested surroundings, following commands are different from
 " "va(" or "va)".
 " select between brackets.
@@ -243,7 +243,7 @@ nnoremap <leader>} <Esc>?{<CR>:nohlsearch<CR>v]}
 "
 " gm to add marker, because m is remapped
 " vim's built-in gm command is shadowed.
-nnoremap gm m 
+nnoremap gm m
 
 " set vim-cutlass
 " let m, mm, and M denote "move"
@@ -252,8 +252,8 @@ xnoremap m d
 nnoremap mm dd
 nnoremap M D
 
-" set vim-yoink, 
-" immediately after performing a paste, 
+" set vim-yoink,
+" immediately after performing a paste,
 " one can cycle through the history by hitting <c-n> and <c-p>
 let g:yoinkIncludeDeleteOperations = 1
 nmap <c-p> <plug>(YoinkPostPasteSwapBack)
@@ -272,7 +272,7 @@ nmap ss <plug>(SubversiveSubstituteLine)
 nmap S <plug>(SubversiveSubstituteToEndOfLine)
 
 " example: <leader>siwip to replace all instances of the current word under the cursor
-" that exist within the paragraph under the cursor. 
+" that exist within the paragraph under the cursor.
 " <leader>sl_ to replace all instances of the character under the cursor on the current line.
 nmap <leader>s <plug>(SubversiveSubstituteRange)
 xmap <leader>s <plug>(SubversiveSubstituteRange)
@@ -290,8 +290,8 @@ nmap ga <Plug>(EasyAlign)
 
 " vim-radical use gA to show four different representations of a number.
 " use <ctrl-a> to increase date and <ctrl-x> to decrease date under the
-" cursor. 
-" 
+" cursor.
+"
 "}}}
 
 " Useful shortcuts to input special character {{{
@@ -299,7 +299,7 @@ nmap ga <Plug>(EasyAlign)
 " for example,  don't use alt-f to access file menu
 set winaltkeys=no
 
-" because the terminal emulator might treat Alt key as a way to input escape sequence. 
+" because the terminal emulator might treat Alt key as a way to input escape sequence.
 if has("gui_running")
     " dot operator, ⋅
     inoremap <a-.> <c-v>u22c5
@@ -319,18 +319,18 @@ if has("gui_running")
     inoremap <a-;> <c-v>u2200
     " union, ⋃
     inoremap <a-'> <c-v>u22c3
-    " intersection, ⋂ 
+    " intersection, ⋂
     inoremap <a-"> <c-v>u22c2
-    " subset, ⊂ 
+    " subset, ⊂
     inoremap <a-{> <c-v>u2282
-    " super set, ⊃ 
+    " super set, ⊃
     inoremap <a-}> <c-v>u2283
-    " logical conjuction, ⋀ 
+    " logical conjuction, ⋀
     inoremap <a-\> <c-v>u22c0
     " logical disjunction, ⋁
     " <Bar> has to be escaped.
     inoremap <a-\|> <c-v>u22c1
-    " Gradient, ∇ 
+    " Gradient, ∇
     inoremap <a-[> <c-v>u2207
     " Laplace operator, ∆
     inoremap <a-]> <c-v>u2206
@@ -358,7 +358,7 @@ if has("gui_running")
     inoremap <a-9> <c-v>u2079
     inoremap <a-0> <c-v>u2070
 
-    " subscripts 9-0 
+    " subscripts 9-0
     inoremap <a-(> <c-v>u2089
     inoremap <a-*> <c-v>u2088
     inoremap <a-&> <c-v>u2087
@@ -370,8 +370,8 @@ if has("gui_running")
     inoremap <a-!> <c-v>u2081
     inoremap <a-)> <c-v>u2080
 
-    " greek letters   
-    "  <a-J> <a-v> and <a-V> are not mapped. 
+    " greek letters
+    "  <a-J> <a-v> and <a-V> are not mapped.
     "  <a-j> is for inserting special math symbols.
     " alpha and capital alpha.
     inoremap <a-a> <c-v>u03b1
@@ -447,13 +447,13 @@ if has("gui_running")
     inoremap <a-Z> <c-v>u0396
 
     " special math symbols,  also define corresponding digraph
-    " circle-add symbol,⊕,  
-    inoremap <a-j>o+ <c-v>u2295 
-    dig o+ 8853 
+    " circle-add symbol,⊕,
+    inoremap <a-j>o+ <c-v>u2295
+    dig o+ 8853
     " circle-minus symbol, ⊖
     inoremap <a-j>o- <c-v>u2296
     dig o- 8854
-    " circle-star symbol, ⊛ 
+    " circle-star symbol, ⊛
     inoremap <a-j>o* <c-v>u229b
     dig o* 8859
     " circle-dot symbol, ⊙
@@ -469,27 +469,27 @@ if has("gui_running")
     inoremap <a-j>o/ <c-v>u2298
     dig o- 8854
 
-    " bullet symbol,  b for bullet-like, ∙ 
+    " bullet symbol,  b for bullet-like, ∙
     inoremap <a-j>b. <c-v>u2219
     dig b. 8729
     " asterisk, ∗
     inoremap <a-j>b* <c-v>u2217
     dig b* 8727
 
-    " math operators 
+    " math operators
     " division, ÷
     inoremap <a-j>// <c-v>u00f7
     dig // 247
     " function composition, ∘
     inoremap <a-j>/o <c-v>u2218
     dig /o 8728
-    " diamond operator, ⋄ 
+    " diamond operator, ⋄
     inoremap <a-j>\o <c-v>u22c4
     dig \o 8900
     " multiplication. the same code point for dot operator, ⋅
     inoremap <a-j>/. <c-v>u22c5
     dig /. 8901
-    " star operator,⋆ 
+    " star operator,⋆
     inoremap <a-j>/* <c-v>u22c6
     dig /* 8902
     " times, ⨉
@@ -499,7 +499,7 @@ if has("gui_running")
     inoremap <a-j>** <c-v>u2a2f
     dig ** 10799
 
-    " set related 
+    " set related
     " empty set, ∅
     inoremap <a-j>/0 <c-v>u2205
     dig /0 8709
@@ -509,7 +509,7 @@ if has("gui_running")
     " in set symbol, ∈
     inoremap <a-j>(- <c-v>u2208
     dig (- 8712
-    " include in set ∋ 
+    " include in set ∋
     inoremap <a-j>-) <c-v>u220b
     dig -) 8715
     " not in set,  ∉
@@ -542,7 +542,7 @@ if has("gui_running")
     " not subset, ⊄
     inoremap <a-j>(/ <c-v>u2284
     dig (/ 8836
-    " not has subset, ⊅ 
+    " not has subset, ⊅
     inoremap <a-j>)/ <c-v>u2285
     dig )/ 8837
     " not subset or equal, ⊈
@@ -558,7 +558,7 @@ if has("gui_running")
     " bigger or equal ≥
     inoremap <a-j>>= <c-v>2265
     dig >= 8805
-    " not smaller, ≮ 
+    " not smaller, ≮
     inoremap <a-j></ <c-v>u226e
     dig </ 8814
     " not larger, ≯
@@ -567,7 +567,7 @@ if has("gui_running")
     " not smaller or equal, ≰
     inoremap <a-j><\ <c-v>u2270
     dig <\ 8816
-    " not larger or equal, ≱ 
+    " not larger or equal, ≱
     inoremap <a-j>>\ <c-v>u2271
     dig >\ 8817
     " way bigger, ≪
@@ -583,7 +583,7 @@ if has("gui_running")
     " proceed order, ≺
     inoremap <a-j>/< <c-v>u227a
     dig /< 8826
-    " succeed order, ≻ 
+    " succeed order, ≻
     inoremap <a-j>/> <c-v>u227b
     dig />8827
     " proceed or equal order, ≼
@@ -592,16 +592,16 @@ if has("gui_running")
     " succeed or euqal order, ≽
     inoremap <a-j>\> <c-v>u227d
     dig \> 8829
-    " not proceed, ⊀ 
+    " not proceed, ⊀
     inoremap <a-j>%< <c-v>u2280
     dig %< 8832
-    " not succeed, ⊁ 
+    " not succeed, ⊁
     inoremap <a-j>%> <c-v>u2281
     dig %> 8833
 
 
     " integral
-    " 1-dime integral, ∫ 
+    " 1-dime integral, ∫
     inoremap <a-j>1/ <c-v>u222b
     dig 1/ 8747
     " 2-dim integral, ∬
@@ -616,7 +616,7 @@ if has("gui_running")
     " surface integral, ∯
     inoremap <a-j>2f <c-v>u222f
     dig 2f 8751
-    " volume integral,∰ 
+    " volume integral,∰
     inoremap <a-j>3f <c-v>u2230
     dig 3f 8752
     " clockwiase integral, ∱
@@ -633,7 +633,7 @@ if has("gui_running")
     dig (f 8755
 
     " numbers and Furier transformation
-    " infinity, ∞ 
+    " infinity, ∞
     inoremap <a-j>oo <c-v>u221e
     dig oo 8734
     " real set,  ℝ, ℝ
@@ -660,8 +660,8 @@ if has("gui_running")
     " Furier transformation, ℱ
     inoremap <a-j>/f <c-v>u2131
     dig /f 8497
-    
-    " units and constant 
+
+    " units and constant
     " Aleph, ℵ
     inoremap <a-j>/a <c-v>u2135
     dig /a 8501
@@ -683,12 +683,12 @@ if has("gui_running")
     " imaginary unit j,ⅉ  don't confuse with english letter j
     inoremap <a-j>/j <c-v>u2149
     dig /j 8521
-    " Clesius, ℃ 
+    " Clesius, ℃
     inoremap <a-j>/c <c-v>u2103
     dig /c 8451
 
-    " Miscellaneous 
-    " mid dot, ·, don't confuse with dot operator ⋅  
+    " Miscellaneous
+    " mid dot, ·, don't confuse with dot operator ⋅
     inoremap <a-j>-. <c-v>u00b7
     dig -. 183
     " ellipses horizontal, …
@@ -699,17 +699,17 @@ if has("gui_running")
     dig [[ 10216
     " (methemetical) right angle bracket, ⟩
     inoremap <a-j>]] <c-v>u27e9
-    dig ]] 10217 
+    dig ]] 10217
     " left guillemet, in latin 1 encoding, «, as quotatoin and ditto mark.
     inoremap <a-j>\[ <c-v>u00ab
     dig \[ 171
     " right guillemet, in latin 1 encoding, »
     dig \] 187
     " copyright mark, captital O and c,©.
-    " Oc 
+    " Oc
     inoremap <a-j>Oc <c-v>u00a9
     dig Oc 169
-    " trademark character, ® 
+    " trademark character, ®
     inoremap <a-j>Or <c-v>u00ae
     dig Or 174
 
@@ -747,7 +747,7 @@ endif
 " open ag.vim
 nnoremap <leader>a :Ack
 
-" Config FZF 
+" Config FZF
 " makes it work like CtrlP
 let g:fzf_action = {
       \ 'ctrl-s': 'split',
@@ -755,7 +755,7 @@ let g:fzf_action = {
       \ }
 " override the pagedown hotkey
 "enable multiple selection with tab and <shift-tab>
-nnoremap <leader>f :FZF -m<cr> 
+nnoremap <leader>f :FZF -m<cr>
 augroup fzf
   autocmd!
   autocmd! FileType fzf
@@ -765,15 +765,16 @@ augroup END
 
 " }}}
 
- " Window, buffer, directory  and tags {{{ 
+ " Window, buffer, directory  and tags {{{
  " ctrl-j to the window below the current window
  " ctrl-k to the window above the current window
  " ctrl-h to the window in the left of the current window.
  " ctrl-l to the window in the right of the current window.
- nnoremap <c-j> <c-w><c-j>
- nnoremap <c-k> <c-w><c-k>
- nnoremap <c-h> <c-w><c-h>
- nnoremap <c-l> <c-w><c-l>
+ " conflict with Ultisnips settings.
+"  nnoremap <c-j> <c-w><c-j>
+"  nnoremap <c-k> <c-w><c-k>
+"  nnoremap <c-h> <c-w><c-h>
+"  nnoremap <c-l> <c-w><c-l>
 
 let g:winManagerWindowLayout = "BufExplorer"
 let g:winManagerWidth = 40
@@ -785,15 +786,24 @@ nnoremap - :NERDTreeToggle<CR>
 
 "set vim-gutentags
 " enable gtags module
+" for languages natively supported by gtags, don't use pygments
+let $GTAGSLABEL = 'native-pygments'
+" for languages not natively supported by gtags, use pygments
+let $GTAGSCONF = '/home/johnzli/home_local/share/gtags/gtags.conf'
+
 let g:gutentags_modules = ['ctags', 'gtags_cscope']
 
 "set root of project folder
 let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
 "name of tags file
 let g:gutentags_ctags_tagfile = '.tags'
-" put tag files in ~/.cache/tags
+" put tag files in the following folder
 let s:vim_tags = expand('~/.vim_temp/tags')
-let g:gutentags_cache_dir = '~/.vim_temp/tags' 
+" create it if not existent.
+if !isdirectory(s:vim_tags)
+   silent! call mkdir(s:vim_tags, 'p')
+endif
+let g:gutentags_cache_dir = '~/.vim_temp/tags'
 "set ctags parameters
 let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
 let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
@@ -801,22 +811,19 @@ let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
 
 " for universal ctags only, not exuberant ctags
 let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
-" create ~/.cache/tags if not existent. 
-if !isdirectory(s:vim_tags)
-   silent! call mkdir(s:vim_tags, 'p')
-endif
 
-" disable key mappings by gutentags_plus 
+
+" disable key mappings by gutentags_plus
 let g:gutentags_plus_nomap = 1
 " Find symbol (reference) under cursor
 noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
-" Find symbol definition under cursor 
+" Find symbol definition under cursor
 noremap <silent> <leader>gg :GscopeFind g <C-R><C-W><cr>
-" Functions calling this function 
+" Functions calling this function
 noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
-" Function called by this function 
+" Function called by this function
 noremap <silent> <leader>gd :GscopeFind d <C-R><C-W><cr>
-" Find this text string 
+" Find this text string
 noremap <silent> <leader>gt :GscopeFind t <C-R><C-W><cr>
 " Find this egrep pattern
 noremap <silent> <leader>ge :GscopeFind e <C-R><C-W><cr>
@@ -856,7 +863,7 @@ let g:ycm_clangd_uses_ycmd_caching = 0
 let g:ycm_show_diagnostics_ui = 0
 let g:ycm_use_ultisnips_completer = 1
 
-" config ulti-snips 
+" config ulti-snips
 let g:UltiSnipsExpandTrigger="<c-l>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-h>"
@@ -899,17 +906,17 @@ autocmd FileType markdown nnoremap <leader>ls :InstantMarkdownStop<CR>
 " strips trailing whitespaces at the end of files. this
 " is called on buffer write in the autogroup below.
 function! <SID>StripTrailingWhitespaces()
-    " save last search & cursor position
-    let _s=@/
-    let l = line(".")
-    let c = col(".")
-    %s/\s\+$//e
-    let @/=_s
-    call cursor(l, c)
+  " save last search & cursor position
+  let _s=@/
+  let l = line(".")
+  let c = col(".")
+  %s/\s\+$//e
+  let @/=_s
+  call cursor(l, c)
 endfunction
 
 augroup filegroup
-    autocmd! 
+    autocmd!
     "clear autocmds for current group
     autocmd VimEnter * highlight clear SignColumn
     autocmd BufEnter,BufNewFile *.tex setlocal spell
@@ -918,15 +925,10 @@ augroup filegroup
     autocmd BufEnter,BufNewFile *.text setlocal spell
     autocmd BufEnter,BufNewFile readme setlocal spell
     autocmd BufEnter,BufNewFile ReadMe setlocal spell
-    autocmd BufEnter,BufNewFile README setlocal spell 
+    autocmd BufEnter,BufNewFile README setlocal spell
     autocmd BufEnter,BufNewFile Readme setlocal spell
     autocmd BufEnter,BufNewFile *.md setlocal spell
-    autocmd BufWritePre *.php, *.py, *.js, *.txt, *.text, *.hs, *.java,
-                \ readme, README, ReadMe, Readme, 
-                \ *.cpp, *.hpp, *.c, *.h,
-                \ .vimrc,
-                \ *.md
-                \ :call <SID>StripTrailingWhitespaces()
+    autocmd BufWritePre *.php,*.py,*.js,*.txt,*.text,*.hs,*.java,readme,README,ReadMe,Readme,*.cpp,*.hpp,*.c,*.h,*vimrc,*.md,*.markdown,*.Markdown,*.MarkDown,*.MD :call <SID>StripTrailingWhitespaces()
     autocmd BufRead,BufNewFile *.c set filetype=c
     autocmd FileType tex setlocal tabstop=2
     autocmd FileType tex setlocal shiftwidth=2
@@ -1130,18 +1132,18 @@ autocmd  FileType cpp nnoremap <silent> <F4> :AsyncRun g++ -Wall -Wextra
                         \ -fno-exceptions -fwrapv -fno-delete-null-pointer-checks
                         \ -pthread -O2
                         \ -Wno-sign-conversion
-                        \ -Wno-zero-as-null-pointer-constant 
+                        \ -Wno-zero-as-null-pointer-constant
                         \ -Wno-padded -Wno-unused-parameter
-                        \ -I. -I src -I include -I.. 
+                        \ -I. -I src -I include -I..
                         \ "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
 
 autocmd  FileType cpp nnoremap <silent> <leader>c :AsyncRun g++ -Wall -Wextra
                         \ -fno-exceptions -fwrapv -fno-delete-null-pointer-checks
                         \ -pthread -O2
                         \ -Wno-sign-conversion
-                        \ -Wno-zero-as-null-pointer-constant 
+                        \ -Wno-zero-as-null-pointer-constant
                         \ -Wno-padded -Wno-unused-parameter
-                        \ -I. -I src -I include -I.. 
+                        \ -I. -I src -I include -I..
                         \ "$(VIM_FILEPATH)" -c <cr>
 
 autocmd  FileType c nnoremap <silent> <F4> :AsyncRun gcc -Wall -Wextra
@@ -1154,7 +1156,7 @@ autocmd FileType c nnoremap <silent> <leader>c :AsyncRun gcc -Wall -Wextra
                         \ -I. -I src -I include -I..
                         \ "$(VIM_FILEPATH)" -c <cr>
 
-" Press F5 run the executable from current file 
+" Press F5 run the executable from current file
 autocmd  FileType cpp nnoremap <silent> <F5> :AsyncRun -mode=term -pos=right -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
 autocmd  FileType c nnoremap <silent> <F5> :AsyncRun -mode=term -pos=right -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
 
@@ -1181,7 +1183,7 @@ autocmd  FileType cuda nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
 autocmd FileType cpp nnoremap <silent> <F9> :YcmCompleter GoTo<CR>
 autocmd FileType c nnoremap <silent> <F9> :YcmCompleter GoTo<CR>
 
-" cpp highlight 
+" cpp highlight
 let g:cpp_class_scope_highlight = 1
 let g:cpp_member_variable_highlight = 1
 let g:cpp_class_decl_highlight = 1
@@ -1193,7 +1195,7 @@ let g:cpp_concepts_highlight = 1
 " }}}
 
 " Python programming {{{
-" Python 
+" Python
 let g:jupyter_mapkeys = 0 " disable default key mappings.
 " press F4 to connect current python file to a Jupyter console in a terminal on the left window.
 autocmd FileType python nnoremap <silent> <F4> :vert term ++shell jupyter console<CR> <C-w><C-r> <Esc> <C-w><C-p>:sleep 1<CR> :JupyterConnect<CR>
@@ -1252,10 +1254,10 @@ let g:neomake_shell_enabled_makers = ['shellcheck']
 " Building, and version control {{{
 
 " make related custom commands.
-" Run "make" asynchronously 
-command AsyncMake AsyncRun -cwd=<root> make -j$(nproc) 
+" Run "make" asynchronously
+command AsyncMake AsyncRun -cwd=<root> make -j$(nproc)
 " Run "make run" asynchronously.
-command AsyncMakeRun AsyncRun -cwd=<root> -mode=term -pos=right -raw make run 
+command AsyncMakeRun AsyncRun -cwd=<root> -mode=term -pos=right -raw make run
 " Run "make test" asynchronously.
 command AsyncMakeTest AsyncRun -cwd=<root> -mode=term -pos=right make test
 " Run "make clean" asynchronously.
@@ -1267,11 +1269,11 @@ command CMake AsyncRun -cwd=<root> -mode=term -pos=right -raw mkdir -p build&& c
 " :CMakeBuild builds current cmake project in subdirectory build.
 command CMakeBuild AsyncRun -cwd=<root> cmake --build build -j $(nproc)
 " :CMakeInstall install the built project, CMake 3.15+ only
-command CMakeInstall AsyncRun -cwd=<root> -mode=term -pos=right -raw cmake --install build 
+command CMakeInstall AsyncRun -cwd=<root> -mode=term -pos=right -raw cmake --install build
 " :CMakeClean removes the whole build directory
 command CMakeClean AsyncRun -cwd=<root> -mode=term -pos=right -raw rm -rf build
 " :CMakeTest to run all the test
-command CMakeTest AsyncRun -cwd=<root> -mode=term -pos=right -raw cd build& ctest 
+command CMakeTest AsyncRun -cwd=<root> -mode=term -pos=right -raw cd build& ctest
 
 " }}}
 
@@ -1311,24 +1313,24 @@ tnoremap <F1> <C-\><C-n>:q! <cr>
 nnoremap <leader>t <Esc>: vert term <CR> <C-w><C-r>
 
 " leave insert mode  with the <RightMouse>-key,  convenient when work iwth
-" laptop. 
+" laptop.
 inoremap <RightMouse> <Esc>
 
 nnoremap rw <Esc>: /\(\<\w\+\>\)\_s*\<\1\><CR>
 " type r-w will find repeated words in text.
 
 " press <F3> in visual mode to execute the selected as shell command in a vim
-" terminal  
+" terminal
 xnoremap <F3> "xy:term<CR><c-w>"x<CR>
 
 " press <F3> in normal mode will sync syntax from start
 nnoremap <F3> <Esc>:syntax sync fromstart<CR>
 " press <F3> in insert mode will toggle syntax highlight.
-inoremap <F3> <C-o>:if exists("g:syntax_on") <Bar>              
-                        \   syntax off <Bar>                             
-                        \ else <Bar>                                     
-                        \   syntax enable <Bar>                                  
-                        \ endif <CR> 
+inoremap <F3> <C-o>:if exists("g:syntax_on") <Bar>
+                        \   syntax off <Bar>
+                        \ else <Bar>
+                        \   syntax enable <Bar>
+                        \ endif <CR>
                         \ <C-o>:syntax sync fromstart <CR>
 
 " edit vimrc/zshrc and load vimrc bindings
@@ -1336,7 +1338,7 @@ nnoremap <leader>ev :vsp $MYVIMRC<CR>
 nnoremap <leader>ez :vsp ~/.zshrc<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
-" change pwd to the folder of the current file, and echo 
+" change pwd to the folder of the current file, and echo
 nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
 "  }}}
 
