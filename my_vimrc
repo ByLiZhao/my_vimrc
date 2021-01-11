@@ -1062,7 +1062,7 @@ let g:asyncrun_bell = 1
 " let errormarker work with Asyncrun
 let g:asyncrun_auto = "make"
 
-" let AsyncRun work with airline 
+" let AsyncRun work with airline
 let g:asyncrun_status = ''
 let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status}'])
 
@@ -1214,9 +1214,6 @@ autocmd  FileType python nnoremap <silent> <F9> :YcmCompleter GoToDefinition <cr
 let g:neomake_python_enabled_makers = ['python','pylint']
 let g:neomake_python_python_exe = 'python3'
 let g:neomake_python_pylint_exe = 'python3'
-" let g:neomake_python_mypy_exe = 'python3'
-
-let g:neoformat_enabled_python = ['yapf']
 let g:neomake_python_pylint_maker = {
   \ 'args': [
   \ '-d', 'C0103, C0111',
@@ -1232,6 +1229,10 @@ let g:neomake_python_pylint_maker = {
   \ '%-G%.%#',
   \ }
 
+let g:neoformat_enabled_python = ['yapf']
+let g:neoformat_python_yapf= {
+            \ 'exe': 'yapf3',
+            \ }
 " }}}
 
 " Other programming languages {{{
