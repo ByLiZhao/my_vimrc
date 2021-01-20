@@ -1326,13 +1326,8 @@ xnoremap <F3> "xy:term<CR><c-w>"x<CR>
 
 " press <F3> in normal mode will sync syntax from start
 nnoremap <F3> <Esc>:syntax sync fromstart<CR>
-" press <F3> in insert mode will toggle syntax highlight.
-inoremap <F3> <C-o>:if exists("g:syntax_on") <Bar>
-                        \   syntax off <Bar>
-                        \ else <Bar>
-                        \   syntax enable <Bar>
-                        \ endif <CR>
-                        \ <C-o>:syntax sync fromstart <CR>
+" Press <F3> to enter "overstrike" mode in insert mode
+inoremap <F3> <insert>
 
 " edit vimrc/zshrc and load vimrc bindings
 nnoremap <leader>ev :vsp $MYVIMRC<CR>
