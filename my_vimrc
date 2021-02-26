@@ -32,7 +32,7 @@ Plug 'skywind3000/vim-quickui'
 Plug 'preservim/nerdtree'
 
 "tags
-Plug 'universal-ctags/ctags', { 'dir': '~/home_local/src/ctags',
+Plug 'universal-ctags/ctags', {'dir': '~/home_local/src/ctags',
   \ 'do': './autogen.sh && ./configure --prefix=$HOME/home_local
   \ && make && make install'}
 Plug 'majutsushi/tagbar' "tag displaying.
@@ -40,9 +40,7 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'skywind3000/gutentags_plus'
 
 "auto completion
-Plug 'Valloric/YouCompleteMe', {'do': 'export CXX=clang++ CXXFLAGS=-stdlib=libc++
-                        \ && python3 install.py --clangd-completer
-                        \ && unset CXX CXXFLAGS'}
+Plug 'Valloric/YouCompleteMe', {'do': 'python3 install.py --clangd-completer'}
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
@@ -1075,11 +1073,13 @@ let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status
 " let AsyncRun work with vim-fugitive
 command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
 
-" Rooter
+" Rooter and CurtineIncSw
 let g:rooter_patterns = ['.svn', '.git', '.root', '*.sln', 'build/env.sh']
 let g:rooter_manual_only = 1 "manual only
 nnoremap <leader>rt :Rooter<CR>:pwd<CR>
+"switch header
 nnoremap <leader>h :Rooter<CR>:call CurtineIncSw()<CR>
+
 " vim-doge
 " do not enable built-in key mappings
 let g:doge_enable_mappings = 0
@@ -1131,6 +1131,15 @@ let g:neomake_cpp_clang_maker = {
    \ }
 
 let g:neoformat_enabled_cpp = ['clangformat']
+
+
+" rename the variable under cursor
+autocmd FileType cpp nnoremap <leader>rn :YcmCompleter RefactorRename<space>
+autocmd FileType c nnoremap <leader>rn :YcmCompleter RefactorRename<space>
+
+" Press F3 to delete object file and executable file.
+autocmd FileType cpp nnoremap <silent> <F3> :AsyncRun -cwd=$(VIM_FILEDIR) rm -f $VIM_PATHNOEXT $VIM_PATHNOEXT.o <cr>
+autocmd FileType c nnoremap <silent> <F3> :AsyncRun -cwd=$(VIM_FILEDIR) rm -f $VIM_PATHNOEXT $VIM_PATHNOEXT.o <cr>
 
 " define the following for cpp, c and java  projects
 " Press F4 to compile current buffer
@@ -1316,7 +1325,7 @@ tnoremap jk <C-\><C-n>
 
 " Press F1 quit terminal window from insert mode
 tnoremap <F1> <C-\><C-n>:q! <cr>
-" <leader>t to open a terminal on the right
+" <leader>t to open a terminal on the right, ready to typThise
 nnoremap <leader>t <Esc>: vert term <CR> <C-w><C-r>
 
 " leave insert mode  with the <RightMouse>-key,  convenient when work iwth
