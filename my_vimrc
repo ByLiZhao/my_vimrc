@@ -16,6 +16,7 @@ Plug 'tpope/vim-obsession'
 " replace vim-easyclip with the following three
 Plug 'svermeulen/vim-cutlass' "make cut better
 Plug 'svermeulen/vim-yoink' " yank history
+Plug 'machakann/vim-highlightedyank' "highlight yank
 Plug 'svermeulen/vim-subversive' " replace
 Plug 'sjl/gundo.vim'    "undo and redo
 Plug 'tomtom/tcomment_vim'  " comments
@@ -78,7 +79,9 @@ Plug 'jmcantrell/vim-virtualenv'
 Plug 'jupyter-vim/jupyter-vim'
 " auto set pwd to project rooter
 Plug 'airblade/vim-rooter'
-" working with documentation
+Plug 'ericcurtin/CurtineIncSw.vim'
+
+" Documentation tools
 Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } }
 Plug 'alpertuna/vim-header'
 
@@ -198,10 +201,6 @@ nnoremap <silent> ]l <Esc>:update<CR>:endif<CR> :lnext<CR>
 " }}}
 
 " Editing enhancement {{{
-"
-" comma always followed by a space
-" inoremap  ,  ,<Space>
-"
 " autocomplete parenthesis, brackets and braces
 "-------------------------------------------------------------------------------
 " two leader insert one backslash
@@ -219,14 +218,21 @@ inoremap <leader>- **<Left>
 " Bold in markdown
 inoremap <leader>_ ****<Left><Left>
 
-" Use vim-surrounding to manipulate surroudings.
+" Use vim-surround manipulate surroudings.
+" use 'cs"'' to change double quote to single quote.
+" use 'cst"' to change xml tag to double quote
+" use 'ds"' to remote double quote
+" use 'ys<text-object><surrounding-marker>' to add surrounding
+" 'ysiwb' equals to 'ysiw)'
+" 'yasb' wraps the current sentence in ().
+" 'S<surrounding-marker>' in visual mode add surrounding to the selected
 
 "select between pairs.
 "select everything between surroundings,
 " Notice that with nested surroundings, following commands are different from
-" "va(" or "va)".
+" "va(" or "va)". 'va(' and 'va)' matches the surrounding contains the cursor.
 " select between brackets.
-" cursor at (, matching nearest )
+" cursor at (, matching innermost nearest )
 nnoremap <leader>( <Esc>/)<CR>:nohlsearch<CR>v[(
 " cursor at ), matching nearest (
 nnoremap <leader>) <Esc>?(<CR>:nohlsearch<CR>v])
@@ -1073,7 +1079,7 @@ command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
 let g:rooter_patterns = ['.svn', '.git', '.root', '*.sln', 'build/env.sh']
 let g:rooter_manual_only = 1 "manual only
 nnoremap <leader>rt :Rooter<CR>:pwd<CR>
-
+nnoremap <leader>h :Rooter<CR>:call CurtineIncSw()<CR>
 " vim-doge
 " do not enable built-in key mappings
 let g:doge_enable_mappings = 0
