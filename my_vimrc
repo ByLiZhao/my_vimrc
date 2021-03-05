@@ -23,7 +23,7 @@ Plug 'tomtom/tcomment_vim'  " comments
 Plug 'godlygeek/tabular'    "align texts
 Plug 'junegunn/vim-easy-align'  "align texts.
 "text object
-Plug 'michaeljsmith/vim-indent-object'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 
 "UI, files directories and buffers and UI
 Plug 'jlanzarotta/bufexplorer'
@@ -822,19 +822,10 @@ endfunction
 autocmd FileType tex nnoremap <Leader>ls :call SyncTexForward()<CR>
 let g:neomake_tex_enabled_makers = []
 
-" vim-instant-markdown settings
-" let g:instant_markdown_slow = 1 "don't update too fast
-let g:instant_markdown_autostart = 1 " auto-start preview
-"server startup and curl activity is logged in the specified log.
-let g:instant_markdown_allow_unsafe_content = 1 "allow scripts.
-let g:instant_markdown_allow_external_content = 1 " allow external resource
-let g:instant_markdown_logfile = '~/.vim_temp/instant_markdown.log'
-let g:instant_markdown_mathjax = 1 " embed latex math in markdown
-let g:instant_markdown_browser = "firefox --new-window"
-let g:instant_markdown_port = 8999 " default port
-let g:instant_markdown_autoscroll = 1 " auto scroll to corresponding cursor location
-autocmd FileType markdown nnoremap <leader>lv :InstantMarkdownPreview<CR>
-autocmd FileType markdown nnoremap <leader>ls :InstantMarkdownStop<CR>
+" markdown-preview.nvim
+let g:mkdp_auto_start = 1 "open preview window automatically
+autocmd FileType markdown nnoremap <leader>lv :MarkdownPreview
+autocmd FileType markdown nnoremap <leader>ls :MarkdownPreviewStop
 " }}}
 
 " File specific settings {{{
