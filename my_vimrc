@@ -820,12 +820,17 @@ function! SyncTexForward()
         exec exec execstr
 endfunction
 autocmd FileType tex nnoremap <Leader>ls :call SyncTexForward()<CR>
+" do not use any marker for tex files.
 let g:neomake_tex_enabled_makers = []
+" press <F3> in normal mode will sync syntax from start
+autocmd FileType tex nnoremap <F3> <Esc>:syntax sync fromstart<CR>
 
 " markdown-preview.nvim
 let g:mkdp_auto_start = 1 "open preview window automatically
 autocmd FileType markdown nnoremap <leader>lv :MarkdownPreview
 autocmd FileType markdown nnoremap <leader>ls :MarkdownPreviewStop
+" press <F3> in normal mode will sync syntax from start
+autocmd FileType markdown nnoremap <F3> <Esc>:syntax sync fromstart<CR>
 " }}}
 
 " File specific settings {{{
@@ -1247,10 +1252,10 @@ tnoremap jk <C-\><C-n>
 
 " Press F1 quit terminal window from insert mode
 tnoremap <F1> <C-\><C-n>:q! <cr>
-" <leader>t to open a terminal on the right, ready to typThise
+" <leader>t to open a terminal on the right, ready to type
 nnoremap <leader>t <Esc>: vert term <CR> <C-w><C-r>
 
-" leave insert mode  with the <RightMouse>-key,  convenient when work iwth
+" leave insert mode  with the <RightMouse>-key,  convenient when work on
 " laptop.
 inoremap <RightMouse> <Esc>
 
@@ -1261,8 +1266,6 @@ nnoremap rw <Esc>: /\(\<\w\+\>\)\_s*\<\1\><CR>
 " terminal
 xnoremap <F3> "xy:term<CR><c-w>"x<CR>
 
-" press <F3> in normal mode will sync syntax from start
-nnoremap <F3> <Esc>:syntax sync fromstart<CR>
 " Press <F3> to enter "overstrike" mode in insert mode
 inoremap <F3> <insert>
 
