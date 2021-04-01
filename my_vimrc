@@ -305,49 +305,80 @@ set winaltkeys=no
 
 " because the terminal emulator might treat Alt key as a way to input escape sequence.
 if has("gui_running")
+    " <a-`> alt-grave key is used in gnome to cycle between windows of the
+    " same application, change it to <super-n>, while disabling
+
     " Alt family
-    " dot operator, ⋅
-    inoremap <a-.> <c-v>u22c5
-    " partial diff, ∂
-    inoremap <a-,> <c-v>u2202
-    " larger or eual,≥
-    inoremap <a->> <c-v>u2265
-    " smaller or equal,≤
-    inoremap <a-<> <c-v>u2264
-    "integration, ∫
-    inoremap <a-/> <c-v>u222b
-    " there exists symbol, ∃
-    inoremap <a-?> <c-v>u2203
-    " element symbol, ∈
-    inoremap <a-:> <c-v>u2208
-    " universal qualification, ∀
-    inoremap <a-;> <c-v>u2200
-    " union, ⋃
-    inoremap <a-'> <c-v>u22c3
-    " intersection, ⋂
-    inoremap <a-"> <c-v>u22c2
-    " subset, ⊂
-    inoremap <a-{> <c-v>u2282
-    " super set, ⊃
-    inoremap <a-}> <c-v>u2283
-    " logical conjuction, ⋀
-    inoremap <a-\> <c-v>u22c0
-    " logical disjunction, ⋁
+    " <a-.> to trigger a pop-up menu or all "composition" operators.
+    " <a->> to trigger a pop-up menu for all larger-than like symbols.
+    " <a-<> to trigger a pop-up menu for all smaller-than like symbols.
+    " <a-/> to trigger a pop-up menu for all integral like symbols.
+    " <a-{> to trigger a pop-up menu for all rightward set related symbols.
+    " <a-}> to trigger a pop-up menu for all leftward set related symbols.
+    " <a-?> to trigger a pop-up menu for all logic related symbols, https://en.wikipedia.org/wiki/List_of_logic_symbols
     " <Bar> has to be escaped.
-    inoremap <a-\|> <c-v>u22c1
-    " Gradient, ∇
-    inoremap <a-[> <c-v>u2207
-    " Laplace operator, ∆
-    inoremap <a-]> <c-v>u2206
+    " <a-\|> to trigger a pop-up menu for all vertical bar-like symbols. https://en.wikipedia.org/wiki/Vertical_bar
+    " <a-,>  to rigger a pop-up menu for all differentiation related
+    " symbols, such as ∂, ∇, ∆, etc.
+    " <a-[>  to trigger a pop-up menu for all left-bracket like symbols. https://en.wikipedia.org/wiki/Bracket
+    " <a-]>  to trigger a pop-up menu for all right-bracket like symbols.
+    " <a--> to trigger a pop-up menu for all right-arrow like symbols.
+    " <a-_> to trigger a pop-up menu for all left-arrow like symbols.
+    " <a-:> to trigger a pop-up menu for all, relational symbols, defined as, equivalent, homotopy, etc.
+
+    " Acute family,l'accent aigu
+    " <a-'>e  acute e, é
+    inoremap <a-'>e <c-v>u00e9
+    " <a-'>E acute E, É
+    inoremap <a-'>E <c-v>u00c9
+
+    " Grave family, l'accent grave, à/è/ì/ò/ù
+    " grave a, à
+    inoremap <a-`>a <c-v>u00e0
+    " grave e, è
+    inoremap <a-`>e <c-v>u00e8
+    " grave i, ì
+    inoremap <a-`>i <c-v>u00ec
+    " grave o, ò
+    inoremap <a-`>o <c-v>u00f2
+    " grave u, ù
+    inoremap <a-`>u <c-v>u00f9
+
+    " The trema family,l'accent tréma, ë/ï/ü
+    " trema e, ë
+    inoremap <a-">e <c-v>u00eb
+    " trema i, ï
+    inoremap <a-">i <c-v>u00ef
+    " trema u, ü
+    inoremap <a-">u <c-v>u00fc
+
+    " The circumflex family,l'accent circonflexe, â/ê/î/ô/û
+    " circumflex a, â
+    inoremap <a-\>a <c-v>u00e2
+    " circumflex e, ê
+    inoremap <a-\>e <c-v>u00ea
+    " circumflex i, î
+    inoremap <a-\>i <c-v>u00ee
+    " circumflex o, ô
+    inoremap <a-\>o <c-v>u00f4
+    " circumflex u, û
+    inoremap <a-\>u <c-v>u00fb
+
+    " the combination-like letters starting with <a-;>
+    " the cedilla (la cédille), ç
+    inoremap <a-;>c <c-v>u00e7
+    " big C with cedilla, Ç
+    inoremap <a-;>C <c-v>u00c7
+    " The ash symbol,æ
+    inoremap <a-;>ae <c-v>00e6
+    " The big ash symbol, Æ
+    inoremap <a-;>AE <c-v>00C6
+
 
     " plus or minus symbol, ±
     inoremap <a-+> <c-v>u00b1
     " approximately equal to symbol, ≅
     inoremap <a-=> <c-v>u2245
-    " right arrow, →
-    inoremap <a--> <c-v>u2192
-    " double line right arrow, ⇒
-    inoremap <a-_> <c-v>u21d2
 
     " super scripts 9-0
     inoremap <a-1> <c-v>u00b9
@@ -452,7 +483,7 @@ if has("gui_running")
     inoremap <a-Z> <c-v>u0396
 
 " alt-j family
-    " special math symbols,  also define corresponding digraph
+    " special math symbols, o family
     " circle-add symbol,⊕,
     inoremap <a-j>o+ <c-v>u2295
     " circle-minus symbol, ⊖
@@ -483,21 +514,21 @@ if has("gui_running")
     " white heavy check mark, ✅
     inoremap <a-j>yy <c-v>u2705
 
-    " math operators
+    " math operators, composition family
     " division, ÷
-    inoremap <a-j>// <c-v>u00f7
+    inoremap <a-j>/  <c-v>u00f7
     " function composition, ∘
     inoremap <a-j>/o <c-v>u2218
     " diamond operator, ⋄
-    inoremap <a-j>\o <c-v>u22c4
-    " multiplication. the same code point for dot operator, ⋅
+    inoremap <a-j>/d <c-v>u22c4
+    " multiplication, or dot operator, ⋅
     inoremap <a-j>/. <c-v>u22c5
     " star operator,⋆
     inoremap <a-j>/* <c-v>u22c6
     " convolution operator, ∗
-    inoremap <a-j>/** <c-v>u2217
+    inoremap <a-j>/c <c-v>u2217
     " times, ⨉
-    inoremap <a-j>\* <c-v>u2a09
+    inoremap <a-j>/t <c-v>u2a09
     " cross-product,  ⨯
     inoremap <a-j>** <c-v>u2a2f
     " squared plus, ⊞
@@ -506,6 +537,10 @@ if has("gui_running")
     " set related
     " empty set, ∅
     inoremap <a-j>/0 <c-v>u2205
+    " union, ⋃
+    inoremap <a-j>/u <c-v>u22c3
+    " intersection, ⋂
+    inoremap <a-j>/n <c-v>u22c2
     " full set, Ω, don't consufse with greek letter Omega Ω(937)
     inoremap <a-j>/O <c-v>u2126
     " in set symbol, ∈
@@ -539,6 +574,7 @@ if has("gui_running")
     " not has subset or equal, ⊉
     inoremap <a-j>)\ <c-v>u2289
 
+    " order family
     " smaller or equal, ≤
     inoremap <a-j><= <c-v>u2264
     " bigger or equal ≥
@@ -555,6 +591,12 @@ if has("gui_running")
     inoremap <a-j><< <c-v>u226a
     " way smaller, ≫
     inoremap <a-j>>> <c-v>u226b
+    " questioned equal to, ≟
+    inoremap <a-j>?= <c-v>u225f
+    " questioned less than, ⩻
+    inoremap <a-j>?< <c-v>u2a7b
+    " questioned larger than, ⩼
+    inoremap <a-j>?> <c-v>u2a7c
     " proportion, ∝
     inoremap <a-j>oc <c-v>u221d
 
@@ -571,7 +613,7 @@ if has("gui_running")
     " not succeed, ⊁
     inoremap <a-j>%> <c-v>u2281
 
-    " integral
+    " integral family
     " 1-dime integral, ∫
     inoremap <a-j>1/ <c-v>u222b
     " 2-dim integral, ∬
@@ -611,7 +653,7 @@ if has("gui_running")
     " set of rational numbers, ℚ
     inoremap <a-j>/Q <c-v>u211a
     " Furier transformation, ℱ
-    inoremap <a-j>/f <c-v>u2131
+    inoremap <a-j>/F <c-v>u2131
 
     " units and constant
     " Aleph, ℵ
@@ -628,8 +670,6 @@ if has("gui_running")
     inoremap <a-j>/i <c-v>u2148
     " imaginary unit j,ⅉ  don't confuse with english letter j
     inoremap <a-j>/j <c-v>u2149
-    " Clesius, ℃
-    inoremap <a-j>/c <c-v>u2103
 
     " Miscellaneous
     " mid dot, ·, don't confuse with dot operator ⋅
@@ -642,12 +682,15 @@ if has("gui_running")
     inoremap <a-j>]] <c-v>u27e9
     " left guillemet, in latin 1 encoding, «, as quotatoin and ditto mark.
     inoremap <a-j>\[ <c-v>u00ab
-    " right guillemet, in latin 1 encoding, »
+    " right guillemet, in latin 1 encoding, », as quotation
+    " as quotation and ditto mark
+    inoremap <a-j>\] <c-v>u00bb
     " copyright mark, captital O and c,©.
-    " Oc
     inoremap <a-j>Oc <c-v>u00a9
     " trademark character, ®
     inoremap <a-j>Or <c-v>u00ae
+    " Clesius, ℃
+    inoremap <a-j>/C <c-v>u2103
 
     " my name,
     " my surname in Chinese, 李, in unified CJK encoding
