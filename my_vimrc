@@ -215,6 +215,8 @@ inoremap <leader>` ``<Left>
 inoremap <leader>- **<Left>
 " Bold in markdown
 inoremap <leader>_ ****<Left><Left>
+" type jj to move out of surroudings.
+inoremap jj <right>
 
 " Use vim-surround manipulate surroudings.
 " use 'cs"'' to change double quote to single quote.
