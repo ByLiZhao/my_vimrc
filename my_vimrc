@@ -694,6 +694,10 @@ if has("gui_running")
     inoremap <a-j>Or <c-v>u00ae
     " Clesius, ℃
     inoremap <a-j>oC <c-v>u2103
+    " Fahrenheit, ℉,
+    inoremap <a-j>oF <c-v>u2109
+    " Degree symbol
+    inoremap <a-j>dd <c-v>u00b0
 
     " my name,
     " my surname in Chinese, 李, in unified CJK encoding
