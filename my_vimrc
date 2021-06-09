@@ -347,6 +347,7 @@ if has("gui_running")
     inoremap <a-`>u <c-v>u00f9
 
     " The trema family,l'accent tréma, ë/ï/ü
+    " trema is also known as diaeresis (dy-ERR-ee-sis), or umlaut.
     " trema e, ë
     inoremap <a-">e <c-v>u00eb
     " trema i, ï
@@ -498,7 +499,7 @@ if has("gui_running")
     inoremap <a-j>ox <c-v>u2297
     " circle-equal symbol, ⊜
     inoremap <a-j>o= <c-v>u229c
-    " circle-slash symbol, ⊖
+    " circle-slash symbol, ⊘
     inoremap <a-j>o/ <c-v>u2298
 
     " bullet symbol,  b for bullet-like, ∙
@@ -692,7 +693,7 @@ if has("gui_running")
     " trademark character, ®
     inoremap <a-j>Or <c-v>u00ae
     " Clesius, ℃
-    inoremap <a-j>/C <c-v>u2103
+    inoremap <a-j>oC <c-v>u2103
 
     " my name,
     " my surname in Chinese, 李, in unified CJK encoding
