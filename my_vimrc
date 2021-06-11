@@ -295,7 +295,7 @@ xmap <leader>s <plug>(SubversiveSubstituteRange)
 xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip=),
 " align around "=" in a paragraph.
-nmap ga <Plug>(EasyAlign)
+" nmap ga <Plug>(EasyAlign)
 
 " vim-radical use gA to show four different representations of a number.
 " use <ctrl-a> to increase date and <ctrl-x> to decrease date under the
