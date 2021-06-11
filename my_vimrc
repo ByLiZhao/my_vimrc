@@ -22,8 +22,6 @@ Plug 'sjl/gundo.vim'    "undo and redo
 Plug 'tomtom/tcomment_vim'  " comments
 Plug 'godlygeek/tabular'    "align texts
 Plug 'junegunn/vim-easy-align'  "align texts.
-"text object
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 
 "UI, files directories and buffers and UI
 Plug 'jlanzarotta/bufexplorer'
@@ -47,8 +45,9 @@ Plug 'honza/vim-snippets'
 "special file formats
 Plug 'vim-latex/vim-latex', {'for': 'tex'}
 Plug 'elzr/vim-json'
+" Syntax highlighting, matching rules and mappings for the original Markdown and extensions
 Plug 'plasticboy/vim-markdown'
-Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 Plug 'chrisbra/csv.vim'
 
 "color scheme and highlighting.
@@ -65,6 +64,10 @@ Plug 'junegunn/fzf.vim'
 Plug 'mileszs/ack.vim'
 
 "Programming enhancement
+" add an argument text object 'aa' and 'ia'
+Plug 'vim-scripts/argtextobj.vim'
+" add indentation based text objext 'ii' and 'ai' and 'aI'
+Plug 'michaeljsmith/vim-indent-object'
 Plug 'neomake/neomake'
 Plug 'sbdchd/neoformat'
 Plug 'skywind3000/asyncrun.vim'
