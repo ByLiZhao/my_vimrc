@@ -284,10 +284,13 @@ nmap S <plug>(SubversiveSubstituteToEndOfLine)
 " that exist within the paragraph under the cursor.
 " <leader>sl_ to replace all instances of the character under the cursor on the current line.
 nmap <leader>s <plug>(SubversiveSubstituteRange)
+" first select the current word with 'viw', replace all instance of it in the
+" current parapgrah by '<leader>sip
 xmap <leader>s <plug>(SubversiveSubstituteRange)
-" replace current word, only match complete words
-" this short cut conflicts with the C/C++ plugin.
-" nmap <leader>ss <plug>(SubversiveSubstituteWordRange)
+" replace current word, only match complete words, for example, '<leader>ssip'
+" replaces all instances of current word in the current paragraph, but only
+" with perfect matching.
+nmap <leader>ss <plug>(SubversiveSubstituteWordRange)
 
 " set up EasyAlign
 " Start interactive EasyAlign in visual mode (e.g. vipga=)
