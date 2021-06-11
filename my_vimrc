@@ -274,7 +274,9 @@ nmap P <plug>(YoinkPaste_P)
 " unformatted is default
 nmap <c-=> <plug>(YoinkPostPasteToggleFormat)
 
-" configure vim-subsersive
+" configure vim-subsersiveword
+" define new text object, ie = inner entire buffer
+onoremap ie :exec "normal! ggVG"<cr>
 " s for substitute an text object with content in the register.
 nmap s <plug>(SubversiveSubstitute)
 nmap ss <plug>(SubversiveSubstituteLine)
