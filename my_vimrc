@@ -1199,16 +1199,18 @@ let g:cpp_concepts_highlight = 1
 " Python programming {{{
 " Python
 let g:jupyter_mapkeys = 0 " disable default key mappings.
-" press F4 to connect current python file to a Jupyter console in a terminal on the left window.
-autocmd FileType python nnoremap <silent> <F4> :vert term ++shell jupyter console<CR> <C-w><C-r> <Esc> <C-w><C-p>:sleep 1<CR> :JupyterConnect<CR>
+" press F4 to connect current python file to a Jupyter console in a terminal on the right and change the working directory of Jupyter to current folder of the file.
+autocmd FileType python nnoremap <silent> <F4> :vert term ++shell jupyter console<CR> <C-w><C-r> <Esc> <C-w><C-p> :sleep 1<CR> :JupyterConnect<CR>
 " press F5 to execute current file
 autocmd  FileType python nnoremap <silent> <F5> :JupyterRunFile<CR>
-" press F6 to send current cell
+" press F6 to send current cell, cursor will jump to next block
 autocmd FileType python nnoremap <silent> <F6> :JupyterSendCell<CR>:set nowrapscan<CR>:/##/<CR>j:nohlsearch<CR>:set wrapscan<CR>
 " press F7 to run code that is visual selected
 autocmd FileType python vmap <silent> <F7> <Plug>JupyterRunVisual
-" press F8 to run code object
-autocmd FileType python nmap <silent> <F8> vai<Plug>JupyterRunVisual<Esc>
+" press F8 to run code object of current "paragraph".
+autocmd FileType python nmap <silent> <F7> vap<Plug>JupyterRunVisual
+" press F8 to add a breaking point at the current line.
+autocmd FileType python nnoremap <silent> <F8> :PythonSetBreak<CR>
 " press F9 go to definition of the token under cursor.
 autocmd  FileType python nnoremap <silent> <F9> :YcmCompleter GoToDefinition <cr>
 
