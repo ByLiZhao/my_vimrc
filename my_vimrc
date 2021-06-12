@@ -761,15 +761,6 @@ augroup END
 " }}}
 
  " Window, buffer, directory  and tags {{{
- " ctrl-j to the window below the current window
- " ctrl-k to the window above the current window
- " ctrl-h to the window in the left of the current window.
- " ctrl-l to the window in the right of the current window.
- " conflict with Ultisnips settings.
-"  nnoremap <c-j> <c-w><c-j>
-"  nnoremap <c-k> <c-w><c-k>
-"  nnoremap <c-h> <c-w><c-h>
-"  nnoremap <c-l> <c-w><c-l>
 
 " disable default key mapping for BufExplorer.
 let g:bufExplorerDisableDefaultKeyMapping=1
@@ -777,9 +768,9 @@ let g:bufExplorerDisableDefaultKeyMapping=1
 let g:bufExplorerSortBy='extension'
 let g:winManagerWindowLayout = "BufExplorer"
 let g:winManagerWidth = 40
-nnoremap wm :WMToggle<cr>
+nnoremap <leader>w :WMToggle<cr>
 
-nnoremap wt :TagbarToggle<cr>
+nnoremap <leader>t :TagbarToggle<cr>
 
 nnoremap - :NERDTreeToggle<CR>
 
@@ -1318,9 +1309,6 @@ function! ToggleNumber()
 endfunc
 nnoremap <leader>n :call ToggleNumber()<CR>
 
-" highlight last inserted text
-nnoremap  la `[v`]
-
 " jk is escape
 inoremap jk <esc>
 " Press j and k to enter terminal normal mode.
@@ -1329,7 +1317,7 @@ tnoremap jk <C-\><C-n>
 " Press F1 quit terminal window from insert mode
 tnoremap <F1> <C-\><C-n>:q! <cr>
 " <leader>t to open a terminal on the right, ready to type
-nnoremap <leader>t <Esc>: vert term <CR> <C-w><C-r>
+nnoremap <leader>x <Esc>: vert term <CR> <C-w><C-r>
 
 " leave insert mode  with the <RightMouse>-key,  convenient when work on
 " laptop.
