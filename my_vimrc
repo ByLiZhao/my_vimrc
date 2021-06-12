@@ -1,19 +1,20 @@
 "Vim-plug settings. {{{
 call plug#begin('~/.vim/plugged')
 
+" Colorscheme and Airline {{{
+Plug 'morhetz/gruvbox'
+Plug 'altercation/vim-colors-solarized'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+" }}}
+
+" Editing Enhancement{{{
 " minor things that make certain things convenient.
-Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-speeddating'
 " different representation of numbers.
 Plug 'glts/vim-radical'
-" enhance sessions
-Plug 'tpope/vim-obsession'
-
-"editing
-" Plug 'svermeulen/vim-easyclip'
-" replace vim-easyclip with the following three
 Plug 'svermeulen/vim-cutlass' "make cut better
 Plug 'svermeulen/vim-yoink' " yank history
 Plug 'machakann/vim-highlightedyank' "highlight yank
@@ -22,17 +23,22 @@ Plug 'sjl/gundo.vim'    "undo and redo
 Plug 'tomtom/tcomment_vim'  " comments
 Plug 'godlygeek/tabular'    "align texts
 Plug 'junegunn/vim-easy-align'  "align texts.
+" }}}
+
+" enhance sessions
+Plug 'tpope/vim-obsession'
+
+"editing
 
 "UI, files directories and buffers and UI
 Plug 'jlanzarotta/bufexplorer'
 Plug 'vim-scripts/winmanager'
-Plug 'skywind3000/vim-quickui'
 Plug 'preservim/nerdtree'
 
 "tags
 Plug 'universal-ctags/ctags', {'dir': '~/home_local/src/ctags',
-  \ 'do': './autogen.sh && ./configure --prefix=$HOME/home_local
-  \ && make && make install'}
+                        \ 'do': './autogen.sh && ./configure --prefix=$HOME/home_local
+                        \ && make && make install'}
 Plug 'majutsushi/tagbar' "tag displaying.
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'skywind3000/gutentags_plus'
@@ -51,10 +57,6 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 
 Plug 'chrisbra/csv.vim'
 
 "color scheme and highlighting.
-Plug 'morhetz/gruvbox'
-Plug 'altercation/vim-colors-solarized'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'McSinyx/vim-octave'
 Plug 'octol/vim-cpp-enhanced-highlight'
 
@@ -101,14 +103,15 @@ call plug#end()
 set nocompatible
 filetype plugin on
 
-" Encoding
+" Encoding {{{
 set fileencodings=utf-8,ucs-bom,shift-jis,latin1,big5,gb18030,gbk,gb2312,cp936
 "set everything encoded by utf-8
 set fileencoding=utf-8
 set encoding=utf-8
 set termencoding=utf-8
+" }}}
 
-" Color scheme
+" Colorscheme{{{
 syntax enable
 colorscheme gruvbox
 set background=light
@@ -120,29 +123,33 @@ let g:gruvbox_visibility='high'
 " let g:airline_solarized_bg='light'
 " let g:solarized_contrast = "high"
 " let g:solarized_visibility= "high"
+" }}}
 
-" Airline
+" Airline{{{
 " If only one tab is opened, show all buffers at the top of the window
 " in a tab-like style. They can be switched to use buffer commands.
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_alt_sep = '|'
+" }}}
 
-"GUI
+"GUI{{{
 if has("gui_running")
-  " GUI is running or is about to start,  maximize gvim window.
-  " this doesn't work on windows.
-  set lines=999 columns=999
+        " GUI is running or is about to start,  maximize gvim window.
+        " this doesn't work on windows.
+        set lines=999 columns=999
 endif
 set guifontset=
 set guifont=Consolas\ 14
 set guifontwide=Microsoft\ Yahei\ 14
+" }}}
 
-" Folding
+" Folding{{{
 set foldenable          " enable folding
 set foldlevelstart=10   " open most folds by default
 set foldnestmax=10      " 10 nested fold max
+" }}}
 
-" Indent
+" Indent{{{
 filetype indent on " load filetype-specific indent files
 " tabstop is the number of spaces a tab counts for. So, when Vim opens a file and reads a <TAB> character,
 " it uses that many spaces to visually show the <TAB>.
@@ -154,8 +161,9 @@ set softtabstop=4   " number of spaces in tab when editing
 " expandtab turns <TAB>s into spaces.
 " So <TAB> just becomes a shortcut for "insert four spaces".
 set expandtab       " tabs are spaces
+" }}}
 
-" Visual
+" Visual{{{
 set number " show line numbers
 set showcmd    " show command in bottom bar
 set cursorline          " highlight current line
@@ -170,11 +178,12 @@ set nolist  " list disables linebreak
 set textwidth=0 "disable automatic word wrapping
 set wrapmargin=0 " prevent Vim from automatically inserting line breaks in newly entered text.
 " }}}
+" }}}
 
-
-
-" Shortcuts to switch between tabs, buffers,and in location and quick-fix list {{{
-" gt to go to next tab,  wrap at the end.
+" Editing Enhancement: Jumping, Pairs, Cut, Copy, Replace, Algin, etc.  {{{
+" Shortcuts to switch between windows, tabs, buffers, location list, and quick-fix list {{{
+" leader-w to loop between windows.
+nnoremap <leader>w  <c-w>w
 " press [w to previous tab, same as gT,  and ]w to next tab, same as gt
 nnoremap <silent> [w <Esc>:update<CR>:tabprevious<CR>
 nnoremap <silent> ]w <Esc>:update<CR>:tabnext<CR>
@@ -199,11 +208,9 @@ nnoremap <silent> ]q <Esc>:update<CR>:cnext<CR>
 " press [l to previous location of location list,  and ]l to next location.
 nnoremap <silent> [l <Esc>:update<CR>:lprevious<CR>
 nnoremap <silent> ]l <Esc>:update<CR>:endif<CR> :lnext<CR>
-" }}}
+"}}}
 
-" Editing enhancement {{{
-" autocomplete parenthesis, brackets and braces
-"-------------------------------------------------------------------------------
+" Insert backslash, pairs{{{
 " two leader insert one backslash
 inoremap <leader><leader> \
 " insert () [] {} <> pairings.
@@ -220,7 +227,9 @@ inoremap <leader>- **<Left>
 inoremap <leader>_ ****<Left><Left>
 " type jj to move out of surroudings.
 inoremap jj <right>
+" }}}
 
+" Change pairs{{{
 " Use vim-surround manipulate surroudings.
 " use 'cs"'' to change double quote to single quote.
 " use 'cst"' to change xml tag to double quote
@@ -229,8 +238,9 @@ inoremap jj <right>
 " 'ysiwb' equals to 'ysiw)'
 " 'yasb' wraps the current sentence in ().
 " 'S<surrounding-marker>' in visual mode add surrounding to the selected
+" }}}
 
-"select between pairs.
+"Select between pairs.{{{
 "select everything between surroundings,
 " Notice that with nested surroundings, following commands are different from
 " "va(" or "va)". 'va(' and 'va)' matches the surrounding contains the cursor.
@@ -249,19 +259,21 @@ nnoremap <leader>] <Esc>?[<CR>:nohlsearch<CR>v%
 nnoremap <leader>{ <Esc>/}<CR>:nohlsearch<CR>v[{
 " cursor at }, matching nearest {
 nnoremap <leader>} <Esc>?{<CR>:nohlsearch<CR>v]}
-"
+" }}}
+
+" Cut: vim-cutlass {{{
 " gm to add marker, because m is remapped
 " vim's built-in gm command is shadowed.
 nnoremap gm m
-
 " set vim-cutlass
 " let m, mm, and M denote "move"
 nnoremap m d
 xnoremap m d
 nnoremap mm dd
 nnoremap M D
+" }}}
 
-" set vim-yoink,
+" Yank: vim-yoink{{{
 " immediately after performing a paste,
 " one can cycle through the history by hitting <c-n> and <c-p>
 let g:yoinkIncludeDeleteOperations = 1
@@ -273,8 +285,9 @@ nmap P <plug>(YoinkPaste_P)
 " hitting <c-=> after a paste will toggle between formatted and unformatted
 " unformatted is default
 nmap <c-=> <plug>(YoinkPostPasteToggleFormat)
+" }}}
 
-" configure vim-subsersiveword
+" Replace: vim-subsersive{{{
 " define new text object, ie = inner entire buffer
 onoremap ie :exec "normal! ggVG"<cr>
 " s for substitute an text object with content in the register.
@@ -293,19 +306,22 @@ xmap <leader>s <plug>(SubversiveSubstituteRange)
 " replaces all instances of current word in the current paragraph, but only
 " with perfect matching.
 nmap <leader>ss <plug>(SubversiveSubstituteWordRange)
+"}}}
 
-" set up EasyAlign
+" Align: EasyAlign{{{
 " Start interactive EasyAlign in visual mode (e.g. vipga=)
 " align around "=" in a paragraph.
 xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip=),
 " align around "=" in a paragraph.
 " nmap ga <Plug>(EasyAlign)
+"}}}
 
+" Other: vim-radical, vim-speedating, vim-repeat{{{
 " vim-radical use gA to show four different representations of a number.
 " use <ctrl-a> to increase date and <ctrl-x> to decrease date under the
 " cursor.
-"
+"}}}
 "}}}
 
 " Useful shortcuts to input special character {{{
@@ -315,403 +331,403 @@ set winaltkeys=no
 
 " because the terminal emulator might treat Alt key as a way to input escape sequence.
 if has("gui_running")
-    " <a-`> alt-grave key is used in gnome to cycle between windows of the
-    " same application, change it to <super-n>, while disabling
+        " <a-`> alt-grave key is used in gnome to cycle between windows of the
+        " same application, change it to <super-n>, while disabling
 
-    " Alt family
-    " <a-.> to trigger a pop-up menu or all "composition" operators.
-    " <a->> to trigger a pop-up menu for all larger-than like symbols.
-    " <a-<> to trigger a pop-up menu for all smaller-than like symbols.
-    " <a-/> to trigger a pop-up menu for all integral like symbols.
-    " <a-{> to trigger a pop-up menu for all rightward set related symbols.
-    " <a-}> to trigger a pop-up menu for all leftward set related symbols.
-    " <a-?> to trigger a pop-up menu for all logic related symbols, https://en.wikipedia.org/wiki/List_of_logic_symbols
-    " <Bar> has to be escaped.
-    " <a-\|> to trigger a pop-up menu for all vertical bar-like symbols. https://en.wikipedia.org/wiki/Vertical_bar
-    " <a-,>  to rigger a pop-up menu for all differentiation related
-    " symbols, such as ∂, ∇, ∆, etc.
-    " <a-[>  to trigger a pop-up menu for all left-bracket like symbols. https://en.wikipedia.org/wiki/Bracket
-    " <a-]>  to trigger a pop-up menu for all right-bracket like symbols.
-    " <a--> to trigger a pop-up menu for all right-arrow like symbols.
-    " <a-_> to trigger a pop-up menu for all left-arrow like symbols.
-    " <a-:> to trigger a pop-up menu for all, relational symbols, defined as, equivalent, homotopy, etc.
+        " Alt family
+        " <a-.> to trigger a pop-up menu or all "composition" operators.
+        " <a->> to trigger a pop-up menu for all larger-than like symbols.
+        " <a-<> to trigger a pop-up menu for all smaller-than like symbols.
+        " <a-/> to trigger a pop-up menu for all integral like symbols.
+        " <a-{> to trigger a pop-up menu for all rightward set related symbols.
+        " <a-}> to trigger a pop-up menu for all leftward set related symbols.
+        " <a-?> to trigger a pop-up menu for all logic related symbols, https://en.wikipedia.org/wiki/List_of_logic_symbols
+        " <Bar> has to be escaped.
+        " <a-\|> to trigger a pop-up menu for all vertical bar-like symbols. https://en.wikipedia.org/wiki/Vertical_bar
+        " <a-,>  to rigger a pop-up menu for all differentiation related
+        " symbols, such as ∂, ∇, ∆, etc.
+        " <a-[>  to trigger a pop-up menu for all left-bracket like symbols. https://en.wikipedia.org/wiki/Bracket
+        " <a-]>  to trigger a pop-up menu for all right-bracket like symbols.
+        " <a--> to trigger a pop-up menu for all right-arrow like symbols.
+        " <a-_> to trigger a pop-up menu for all left-arrow like symbols.
+        " <a-:> to trigger a pop-up menu for all, relational symbols, defined as, equivalent, homotopy, etc.
 
-    " Acute family,l'accent aigu
-    " <a-'>e  acute e, é
-    inoremap <a-'>e <c-v>u00e9
-    " <a-'>E acute E, É
-    inoremap <a-'>E <c-v>u00c9
+        " Acute family,l'accent aigu
+        " <a-'>e  acute e, é
+        inoremap <a-'>e <c-v>u00e9
+        " <a-'>E acute E, É
+        inoremap <a-'>E <c-v>u00c9
 
-    " Grave family, l'accent grave, à/è/ì/ò/ù
-    " grave a, à
-    inoremap <a-`>a <c-v>u00e0
-    " grave e, è
-    inoremap <a-`>e <c-v>u00e8
-    " grave i, ì
-    inoremap <a-`>i <c-v>u00ec
-    " grave o, ò
-    inoremap <a-`>o <c-v>u00f2
-    " grave u, ù
-    inoremap <a-`>u <c-v>u00f9
+        " Grave family, l'accent grave, à/è/ì/ò/ù
+        " grave a, à
+        inoremap <a-`>a <c-v>u00e0
+        " grave e, è
+        inoremap <a-`>e <c-v>u00e8
+        " grave i, ì
+        inoremap <a-`>i <c-v>u00ec
+        " grave o, ò
+        inoremap <a-`>o <c-v>u00f2
+        " grave u, ù
+        inoremap <a-`>u <c-v>u00f9
 
-    " The trema family,l'accent tréma, ë/ï/ü
-    " trema is also known as diaeresis (dy-ERR-ee-sis), or umlaut.
-    " trema e, ë
-    inoremap <a-">e <c-v>u00eb
-    " trema i, ï
-    inoremap <a-">i <c-v>u00ef
-    " trema u, ü
-    inoremap <a-">u <c-v>u00fc
+        " The trema family,l'accent tréma, ë/ï/ü
+        " trema is also known as diaeresis (dy-ERR-ee-sis), or umlaut.
+        " trema e, ë
+        inoremap <a-">e <c-v>u00eb
+        " trema i, ï
+        inoremap <a-">i <c-v>u00ef
+        " trema u, ü
+        inoremap <a-">u <c-v>u00fc
 
-    " The circumflex family,l'accent circonflexe, â/ê/î/ô/û
-    " circumflex a, â
-    inoremap <a-\>a <c-v>u00e2
-    " circumflex e, ê
-    inoremap <a-\>e <c-v>u00ea
-    " circumflex i, î
-    inoremap <a-\>i <c-v>u00ee
-    " circumflex o, ô
-    inoremap <a-\>o <c-v>u00f4
-    " circumflex u, û
-    inoremap <a-\>u <c-v>u00fb
+        " The circumflex family,l'accent circonflexe, â/ê/î/ô/û
+        " circumflex a, â
+        inoremap <a-\>a <c-v>u00e2
+        " circumflex e, ê
+        inoremap <a-\>e <c-v>u00ea
+        " circumflex i, î
+        inoremap <a-\>i <c-v>u00ee
+        " circumflex o, ô
+        inoremap <a-\>o <c-v>u00f4
+        " circumflex u, û
+        inoremap <a-\>u <c-v>u00fb
 
-    " the combination-like letters starting with <a-;>
-    " the cedilla (la cédille), ç
-    inoremap <a-;>c <c-v>u00e7
-    " big C with cedilla, Ç
-    inoremap <a-;>C <c-v>u00c7
-    " The ash symbol,æ
-    inoremap <a-;>ae <c-v>00e6
-    " The big ash symbol, Æ
-    inoremap <a-;>AE <c-v>00C6
+        " the combination-like letters starting with <a-;>
+        " the cedilla (la cédille), ç
+        inoremap <a-;>c <c-v>u00e7
+        " big C with cedilla, Ç
+        inoremap <a-;>C <c-v>u00c7
+        " The ash symbol,æ
+        inoremap <a-;>ae <c-v>00e6
+        " The big ash symbol, Æ
+        inoremap <a-;>AE <c-v>00C6
 
 
-    " plus or minus symbol, ±
-    inoremap <a-+> <c-v>u00b1
-    " approximately equal to symbol, ≅
-    inoremap <a-=> <c-v>u2245
+        " plus or minus symbol, ±
+        inoremap <a-+> <c-v>u00b1
+        " approximately equal to symbol, ≅
+        inoremap <a-=> <c-v>u2245
 
-    " super scripts 9-0
-    inoremap <a-1> <c-v>u00b9
-    inoremap <a-2> <c-v>u00b2
-    inoremap <a-3> <c-v>u00b3
-    " alt-1 to input superscript 1
-    inoremap <a-4> <c-v>u2074
-    " alt-4 to input superscript 4
-    inoremap <a-5> <c-v>u2075
-    inoremap <a-6> <c-v>u2076
-    inoremap <a-7> <c-v>u2077
-    inoremap <a-8> <c-v>u2078
-    inoremap <a-9> <c-v>u2079
-    inoremap <a-0> <c-v>u2070
+        " super scripts 9-0
+        inoremap <a-1> <c-v>u00b9
+        inoremap <a-2> <c-v>u00b2
+        inoremap <a-3> <c-v>u00b3
+        " alt-1 to input superscript 1
+        inoremap <a-4> <c-v>u2074
+        " alt-4 to input superscript 4
+        inoremap <a-5> <c-v>u2075
+        inoremap <a-6> <c-v>u2076
+        inoremap <a-7> <c-v>u2077
+        inoremap <a-8> <c-v>u2078
+        inoremap <a-9> <c-v>u2079
+        inoremap <a-0> <c-v>u2070
 
-    " subscripts 9-0
-    inoremap <a-(> <c-v>u2089
-    inoremap <a-*> <c-v>u2088
-    inoremap <a-&> <c-v>u2087
-    inoremap <a-^> <c-v>u2086
-    inoremap <a-%> <c-v>u2085
-    inoremap <a-$> <c-v>u2084
-    inoremap <a-#> <c-v>u2083
-    inoremap <a-@> <c-v>u2082
-    inoremap <a-!> <c-v>u2081
-    inoremap <a-)> <c-v>u2080
+        " subscripts 9-0
+        inoremap <a-(> <c-v>u2089
+        inoremap <a-*> <c-v>u2088
+        inoremap <a-&> <c-v>u2087
+        inoremap <a-^> <c-v>u2086
+        inoremap <a-%> <c-v>u2085
+        inoremap <a-$> <c-v>u2084
+        inoremap <a-#> <c-v>u2083
+        inoremap <a-@> <c-v>u2082
+        inoremap <a-!> <c-v>u2081
+        inoremap <a-)> <c-v>u2080
 
-    " greek letters
-    "  <a-J> <a-v> and <a-V> are not mapped.
-    "  <a-j> is for inserting special math symbols.
-    " alpha and capital alpha.
-    inoremap <a-a> <c-v>u03b1
-    inoremap <a-A> <c-v>u0391
-    " beta and capital beta
-    inoremap <a-b> <c-v>u03b2
-    inoremap <a-B> <c-v>u0392
-    " chi and capital chi
-    inoremap <a-c> <c-v>u03c7
-    inoremap <a-C> <c-v>u03a7
-    "delta and capital delta
-    inoremap <a-d> <c-v>u03b4
-    inoremap <a-D> <c-v>u0394
-    " epsilon and capital epsilon
-    inoremap <a-e> <c-v>u03b5
-    inoremap <a-E> <c-v>u0395
-    " phi and capital phi
-    inoremap <a-f> <c-v>u03c6
-    inoremap <a-F> <c-v>u03a6
-    " gamma and capital gamma
-    inoremap <a-g> <c-v>u03b3
-    inoremap <a-G> <c-v>u0393
-    " eta and capital eta
-    inoremap <a-h> <c-v>u03b7
-    inoremap <a-H> <c-v>u0397
-    " iota and capital iota
-    inoremap <a-i> <c-v>u03b9
-    inoremap <a-I> <c-v>u0399
-    " kappa and capital kappa
-    inoremap <a-k> <c-v>u03ba
-    inoremap <a-K> <c-v>u039a
-    " lambda and capital lambda
-    inoremap <a-l> <c-v>u03bb
-    inoremap <a-L> <c-v>u039b
-    " mu and capital mu
-    inoremap <a-m> <c-v>u03bc
-    inoremap <a-M> <c-v>u039c
-    " nu and capital nu
-    inoremap <a-n> <c-v>u03bd
-    inoremap <a-N> <c-v>u039d
-    " omicron and capital omicron
-    inoremap <a-o> <c-v>u03bf
-    inoremap <a-O> <c-v>u039f
-    " pi and capital pi
-    inoremap <a-p> <c-v>u03c0
-    inoremap <a-P> <c-v>u03a0
-    " theta and capital theta
-    inoremap <a-q> <c-v>u03b8
-    inoremap <a-Q> <c-v>u0398
-    " rho and capital rho
-    inoremap <a-r> <c-v>u03c1
-    inoremap <a-R> <c-v>u03a1
-    " sigma and capital sigma
-    inoremap <a-s> <c-v>u03c3
-    inoremap <a-S> <c-v>u03a3
-    " tau and capital tau
-    inoremap <a-t> <c-v>u03c4
-    inoremap <a-T> <c-v>u03a4
-    " upsilon and capital upsilon, υ, Ϋ
-    inoremap <a-u> <c-v>u03c5
-    inoremap <a-U> <c-v>u03ab
-    " omega and capital omega
-    inoremap <a-w> <c-v>u03c9
-    inoremap <a-W> <c-v>u03a9
-    " xi and capital xi
-    inoremap <a-x> <c-v>u03be
-    inoremap <a-X> <c-v>u039e
-    " psi and capital xi
-    inoremap <a-y> <c-v>u03c8
-    inoremap <a-Y> <c-v>u03a8
-    " zeta and capital zeta
-    inoremap <a-z> <c-v>u03b6
-    inoremap <a-Z> <c-v>u0396
+        " greek letters
+        "  <a-J> <a-v> and <a-V> are not mapped.
+        "  <a-j> is for inserting special math symbols.
+        " alpha and capital alpha.
+        inoremap <a-a> <c-v>u03b1
+        inoremap <a-A> <c-v>u0391
+        " beta and capital beta
+        inoremap <a-b> <c-v>u03b2
+        inoremap <a-B> <c-v>u0392
+        " chi and capital chi
+        inoremap <a-c> <c-v>u03c7
+        inoremap <a-C> <c-v>u03a7
+        "delta and capital delta
+        inoremap <a-d> <c-v>u03b4
+        inoremap <a-D> <c-v>u0394
+        " epsilon and capital epsilon
+        inoremap <a-e> <c-v>u03b5
+        inoremap <a-E> <c-v>u0395
+        " phi and capital phi
+        inoremap <a-f> <c-v>u03c6
+        inoremap <a-F> <c-v>u03a6
+        " gamma and capital gamma
+        inoremap <a-g> <c-v>u03b3
+        inoremap <a-G> <c-v>u0393
+        " eta and capital eta
+        inoremap <a-h> <c-v>u03b7
+        inoremap <a-H> <c-v>u0397
+        " iota and capital iota
+        inoremap <a-i> <c-v>u03b9
+        inoremap <a-I> <c-v>u0399
+        " kappa and capital kappa
+        inoremap <a-k> <c-v>u03ba
+        inoremap <a-K> <c-v>u039a
+        " lambda and capital lambda
+        inoremap <a-l> <c-v>u03bb
+        inoremap <a-L> <c-v>u039b
+        " mu and capital mu
+        inoremap <a-m> <c-v>u03bc
+        inoremap <a-M> <c-v>u039c
+        " nu and capital nu
+        inoremap <a-n> <c-v>u03bd
+        inoremap <a-N> <c-v>u039d
+        " omicron and capital omicron
+        inoremap <a-o> <c-v>u03bf
+        inoremap <a-O> <c-v>u039f
+        " pi and capital pi
+        inoremap <a-p> <c-v>u03c0
+        inoremap <a-P> <c-v>u03a0
+        " theta and capital theta
+        inoremap <a-q> <c-v>u03b8
+        inoremap <a-Q> <c-v>u0398
+        " rho and capital rho
+        inoremap <a-r> <c-v>u03c1
+        inoremap <a-R> <c-v>u03a1
+        " sigma and capital sigma
+        inoremap <a-s> <c-v>u03c3
+        inoremap <a-S> <c-v>u03a3
+        " tau and capital tau
+        inoremap <a-t> <c-v>u03c4
+        inoremap <a-T> <c-v>u03a4
+        " upsilon and capital upsilon, υ, Ϋ
+        inoremap <a-u> <c-v>u03c5
+        inoremap <a-U> <c-v>u03ab
+        " omega and capital omega
+        inoremap <a-w> <c-v>u03c9
+        inoremap <a-W> <c-v>u03a9
+        " xi and capital xi
+        inoremap <a-x> <c-v>u03be
+        inoremap <a-X> <c-v>u039e
+        " psi and capital xi
+        inoremap <a-y> <c-v>u03c8
+        inoremap <a-Y> <c-v>u03a8
+        " zeta and capital zeta
+        inoremap <a-z> <c-v>u03b6
+        inoremap <a-Z> <c-v>u0396
 
-" alt-j family
-    " special math symbols, o family
-    " circle-add symbol,⊕,
-    inoremap <a-j>o+ <c-v>u2295
-    " circle-minus symbol, ⊖
-    inoremap <a-j>o- <c-v>u2296
-    " circle-star symbol, ⊛
-    inoremap <a-j>o* <c-v>u229b
-    " circle-dot symbol, ⊙
-    inoremap <a-j>o. <c-v>u2299
-    " circle times, ⊗
-    inoremap <a-j>ox <c-v>u2297
-    " circle-equal symbol, ⊜
-    inoremap <a-j>o= <c-v>u229c
-    " circle-slash symbol, ⊘
-    inoremap <a-j>o/ <c-v>u2298
+        " alt-j family
+        " special math symbols, o family
+        " circle-add symbol,⊕,
+        inoremap <a-j>o+ <c-v>u2295
+        " circle-minus symbol, ⊖
+        inoremap <a-j>o- <c-v>u2296
+        " circle-star symbol, ⊛
+        inoremap <a-j>o* <c-v>u229b
+        " circle-dot symbol, ⊙
+        inoremap <a-j>o. <c-v>u2299
+        " circle times, ⊗
+        inoremap <a-j>ox <c-v>u2297
+        " circle-equal symbol, ⊜
+        inoremap <a-j>o= <c-v>u229c
+        " circle-slash symbol, ⊘
+        inoremap <a-j>o/ <c-v>u2298
 
-    " bullet symbol,  b for bullet-like, ∙
-    inoremap <a-j>b. <c-v>u2219
-    " asterisk, ∗
-    inoremap <a-j>b* <c-v>u2217
-    " ballot box ☐
-    inoremap <a-j>bb <c-v>u2610
-    " ballot box with x, ☒
-    inoremap <a-j>bx <c-v>u2612
-    " cross mark, ❌,
-    inoremap <a-j>xx <c-v>u274c
-    " bollot box with check, ☑
-    inoremap <a-j>by <c-v>u2611
-    " white heavy check mark, ✅
-    inoremap <a-j>yy <c-v>u2705
+        " bullet symbol,  b for bullet-like, ∙
+        inoremap <a-j>b. <c-v>u2219
+        " asterisk, ∗
+        inoremap <a-j>b* <c-v>u2217
+        " ballot box ☐
+        inoremap <a-j>bb <c-v>u2610
+        " ballot box with x, ☒
+        inoremap <a-j>bx <c-v>u2612
+        " cross mark, ❌,
+        inoremap <a-j>xx <c-v>u274c
+        " bollot box with check, ☑
+        inoremap <a-j>by <c-v>u2611
+        " white heavy check mark, ✅
+        inoremap <a-j>yy <c-v>u2705
 
-    " math operators, composition family
-    " division, ÷
-    inoremap <a-j>/  <c-v>u00f7
-    " function composition, ∘
-    inoremap <a-j>/o <c-v>u2218
-    " diamond operator, ⋄
-    inoremap <a-j>/d <c-v>u22c4
-    " multiplication, or dot operator, ⋅
-    inoremap <a-j>/. <c-v>u22c5
-    " star operator,⋆
-    inoremap <a-j>/* <c-v>u22c6
-    " convolution operator, ∗
-    inoremap <a-j>/c <c-v>u2217
-    " times, ⨉
-    inoremap <a-j>/t <c-v>u2a09
-    " cross-product,  ⨯
-    inoremap <a-j>** <c-v>u2a2f
-    " squared plus, ⊞
-    inoremap <a-j>++ <c-v>u229e
+        " math operators, composition family
+        " division, ÷
+        inoremap <a-j>/  <c-v>u00f7
+        " function composition, ∘
+        inoremap <a-j>/o <c-v>u2218
+        " diamond operator, ⋄
+        inoremap <a-j>/d <c-v>u22c4
+        " multiplication, or dot operator, ⋅
+        inoremap <a-j>/. <c-v>u22c5
+        " star operator,⋆
+        inoremap <a-j>/* <c-v>u22c6
+        " convolution operator, ∗
+        inoremap <a-j>/c <c-v>u2217
+        " times, ⨉
+        inoremap <a-j>/t <c-v>u2a09
+        " cross-product,  ⨯
+        inoremap <a-j>** <c-v>u2a2f
+        " squared plus, ⊞
+        inoremap <a-j>++ <c-v>u229e
 
-    " set related
-    " empty set, ∅
-    inoremap <a-j>/0 <c-v>u2205
-    " union, ⋃
-    inoremap <a-j>/u <c-v>u22c3
-    " intersection, ⋂
-    inoremap <a-j>/n <c-v>u22c2
-    " full set, Ω, don't consufse with greek letter Omega Ω(937)
-    inoremap <a-j>/O <c-v>u2126
-    " in set symbol, ∈
-    inoremap <a-j>(- <c-v>u2208
-    " include in set ∋
-    inoremap <a-j>-) <c-v>u220b
-    " not in set,  ∉
-    inoremap <a-j>(+ <c-v>u2209
-    " not include in set, ∌
-    inoremap <a-j>+) <c-v>u220c
-    " exist,  ∃
-    inoremap <a-j>-] <c-v>u2203
-    " not exist, ∄
-    inoremap <a-j>+] <c-v>u2204
-    " any in set, ∀
-    inoremap <a-j>v- <c-v>u2200
-    " subset, ⊂
-    inoremap <a-j>(( <c-v>u2282
-    " has subset, ⊃
-    inoremap <a-j>)) <c-v>u2283
-    " subset or equal, ⊆
-    inoremap <a-j>(= <c-v>u2286
-    " has subset or equal, ⊇
-    inoremap <a-j>)= <c-v>u2287
-    " not subset, ⊄
-    inoremap <a-j>(/ <c-v>u2284
-    " not has subset, ⊅
-    inoremap <a-j>)/ <c-v>u2285
-    " not subset or equal, ⊈
-    inoremap <a-j>(\ <c-v>u2288
-    " not has subset or equal, ⊉
-    inoremap <a-j>)\ <c-v>u2289
+        " set related
+        " empty set, ∅
+        inoremap <a-j>/0 <c-v>u2205
+        " union, ⋃
+        inoremap <a-j>/u <c-v>u22c3
+        " intersection, ⋂
+        inoremap <a-j>/n <c-v>u22c2
+        " full set, Ω, don't consufse with greek letter Omega Ω(937)
+        inoremap <a-j>/O <c-v>u2126
+        " in set symbol, ∈
+        inoremap <a-j>(- <c-v>u2208
+        " include in set ∋
+        inoremap <a-j>-) <c-v>u220b
+        " not in set,  ∉
+        inoremap <a-j>(+ <c-v>u2209
+        " not include in set, ∌
+        inoremap <a-j>+) <c-v>u220c
+        " exist,  ∃
+        inoremap <a-j>-] <c-v>u2203
+        " not exist, ∄
+        inoremap <a-j>+] <c-v>u2204
+        " any in set, ∀
+        inoremap <a-j>v- <c-v>u2200
+        " subset, ⊂
+        inoremap <a-j>(( <c-v>u2282
+        " has subset, ⊃
+        inoremap <a-j>)) <c-v>u2283
+        " subset or equal, ⊆
+        inoremap <a-j>(= <c-v>u2286
+        " has subset or equal, ⊇
+        inoremap <a-j>)= <c-v>u2287
+        " not subset, ⊄
+        inoremap <a-j>(/ <c-v>u2284
+        " not has subset, ⊅
+        inoremap <a-j>)/ <c-v>u2285
+        " not subset or equal, ⊈
+        inoremap <a-j>(\ <c-v>u2288
+        " not has subset or equal, ⊉
+        inoremap <a-j>)\ <c-v>u2289
 
-    " order family
-    " smaller or equal, ≤
-    inoremap <a-j><= <c-v>u2264
-    " bigger or equal ≥
-    inoremap <a-j>>= <c-v>2265
-    " not smaller, ≮
-    inoremap <a-j></ <c-v>u226e
-    " not larger, ≯
-    inoremap <a-j>>/ <c-v>u226f
-    " not smaller or equal, ≰
-    inoremap <a-j><\ <c-v>u2270
-    " not larger or equal, ≱
-    inoremap <a-j>>\ <c-v>u2271
-    " way bigger, ≪
-    inoremap <a-j><< <c-v>u226a
-    " way smaller, ≫
-    inoremap <a-j>>> <c-v>u226b
-    " questioned equal to, ≟
-    inoremap <a-j>?= <c-v>u225f
-    " questioned less than, ⩻
-    inoremap <a-j>?< <c-v>u2a7b
-    " questioned larger than, ⩼
-    inoremap <a-j>?> <c-v>u2a7c
-    " proportion, ∝
-    inoremap <a-j>oc <c-v>u221d
+        " order family
+        " smaller or equal, ≤
+        inoremap <a-j><= <c-v>u2264
+        " bigger or equal ≥
+        inoremap <a-j>>= <c-v>2265
+        " not smaller, ≮
+        inoremap <a-j></ <c-v>u226e
+        " not larger, ≯
+        inoremap <a-j>>/ <c-v>u226f
+        " not smaller or equal, ≰
+        inoremap <a-j><\ <c-v>u2270
+        " not larger or equal, ≱
+        inoremap <a-j>>\ <c-v>u2271
+        " way bigger, ≪
+        inoremap <a-j><< <c-v>u226a
+        " way smaller, ≫
+        inoremap <a-j>>> <c-v>u226b
+        " questioned equal to, ≟
+        inoremap <a-j>?= <c-v>u225f
+        " questioned less than, ⩻
+        inoremap <a-j>?< <c-v>u2a7b
+        " questioned larger than, ⩼
+        inoremap <a-j>?> <c-v>u2a7c
+        " proportion, ∝
+        inoremap <a-j>oc <c-v>u221d
 
-    " proceed order, ≺
-    inoremap <a-j>/< <c-v>u227a
-    " succeed order, ≻
-    inoremap <a-j>/> <c-v>u227b
-    " proceed or equal order, ≼
-    inoremap <a-j>\< <c-v>u227c
-    " succeed or euqal order, ≽
-    inoremap <a-j>\> <c-v>u227d
-    " not proceed, ⊀
-    inoremap <a-j>%< <c-v>u2280
-    " not succeed, ⊁
-    inoremap <a-j>%> <c-v>u2281
+        " proceed order, ≺
+        inoremap <a-j>/< <c-v>u227a
+        " succeed order, ≻
+        inoremap <a-j>/> <c-v>u227b
+        " proceed or equal order, ≼
+        inoremap <a-j>\< <c-v>u227c
+        " succeed or euqal order, ≽
+        inoremap <a-j>\> <c-v>u227d
+        " not proceed, ⊀
+        inoremap <a-j>%< <c-v>u2280
+        " not succeed, ⊁
+        inoremap <a-j>%> <c-v>u2281
 
-    " integral family
-    " 1-dime integral, ∫
-    inoremap <a-j>1/ <c-v>u222b
-    " 2-dim integral, ∬
-    inoremap <a-j>2/ <c-v>u222c
-    " 3-diem integral, ∭
-    inoremap <a-j>3/ <c-v>u222d
-    " curve integral, ∮
-    inoremap <a-j>1f <c-v>u222e
-    " surface integral, ∯
-    inoremap <a-j>2f <c-v>u222f
-    " volume integral,∰
-    inoremap <a-j>3f <c-v>u2230
-    " clockwiase integral, ∱
-    inoremap <a-j>>f <c-v>u2231
-    "" counter clockwise integral, ⨑
-    inoremap <a-j><f <c-v>u2a11
-    " clockwise contour integral, ∲
-    inoremap <a-j>)f <c-v>u2232
-    " counter clockwise contour integral, ∳
-    inoremap <a-j>(f <c-v>u2233
+        " integral family
+        " 1-dime integral, ∫
+        inoremap <a-j>1/ <c-v>u222b
+        " 2-dim integral, ∬
+        inoremap <a-j>2/ <c-v>u222c
+        " 3-diem integral, ∭
+        inoremap <a-j>3/ <c-v>u222d
+        " curve integral, ∮
+        inoremap <a-j>1f <c-v>u222e
+        " surface integral, ∯
+        inoremap <a-j>2f <c-v>u222f
+        " volume integral,∰
+        inoremap <a-j>3f <c-v>u2230
+        " clockwiase integral, ∱
+        inoremap <a-j>>f <c-v>u2231
+        "" counter clockwise integral, ⨑
+        inoremap <a-j><f <c-v>u2a11
+        " clockwise contour integral, ∲
+        inoremap <a-j>)f <c-v>u2232
+        " counter clockwise contour integral, ∳
+        inoremap <a-j>(f <c-v>u2233
 
-    " numbers and Furier transformation
-    " infinity, ∞
-    inoremap <a-j>oo <c-v>u221e
-    " real set,  ℝ, ℝ
-    inoremap <a-j>/R <c-v>u211d
-    " complex set, ℂ
-    inoremap <a-j>/C <c-v>u2102
-    " set of quaternions, ℍ
-    inoremap <a-j>/H <c-v>u210d
-    " set of natural numbers, ℕ
-    inoremap <a-j>/N <c-v>u2115
-    " set of integers, ℤ
-    inoremap <a-j>/Z <c-v>u2124
-    " set of prime numbers, ℙ
-    inoremap <a-j>/P <c-v>u2119
-    " set of rational numbers, ℚ
-    inoremap <a-j>/Q <c-v>u211a
-    " Furier transformation, ℱ
-    inoremap <a-j>/F <c-v>u2131
+        " numbers and Furier transformation
+        " infinity, ∞
+        inoremap <a-j>oo <c-v>u221e
+        " real set,  ℝ, ℝ
+        inoremap <a-j>/R <c-v>u211d
+        " complex set, ℂ
+        inoremap <a-j>/C <c-v>u2102
+        " set of quaternions, ℍ
+        inoremap <a-j>/H <c-v>u210d
+        " set of natural numbers, ℕ
+        inoremap <a-j>/N <c-v>u2115
+        " set of integers, ℤ
+        inoremap <a-j>/Z <c-v>u2124
+        " set of prime numbers, ℙ
+        inoremap <a-j>/P <c-v>u2119
+        " set of rational numbers, ℚ
+        inoremap <a-j>/Q <c-v>u211a
+        " Furier transformation, ℱ
+        inoremap <a-j>/F <c-v>u2131
 
-    " units and constant
-    " Aleph, ℵ
-    inoremap <a-j>/a <c-v>u2135
-    " Euler constant, ℯ
-    inoremap <a-j>/e <c-v>u212f
-    " Planck constant,  ℎ
-    inoremap <a-j>/h <c-v>u210e
-    " normalized Planck constant, ℏ
-    inoremap <a-j>\h <c-v>u210f
-    " math pi,ℼ  don't confuse with greek leter π(960)
-    inoremap <a-j>/p <c-v>u213c
-    " imaginary unit i,ⅈ  don't confuse with english letter i
-    inoremap <a-j>/i <c-v>u2148
-    " imaginary unit j,ⅉ  don't confuse with english letter j
-    inoremap <a-j>/j <c-v>u2149
+        " units and constant
+        " Aleph, ℵ
+        inoremap <a-j>/a <c-v>u2135
+        " Euler constant, ℯ
+        inoremap <a-j>/e <c-v>u212f
+        " Planck constant,  ℎ
+        inoremap <a-j>/h <c-v>u210e
+        " normalized Planck constant, ℏ
+        inoremap <a-j>\h <c-v>u210f
+        " math pi,ℼ  don't confuse with greek leter π(960)
+        inoremap <a-j>/p <c-v>u213c
+        " imaginary unit i,ⅈ  don't confuse with english letter i
+        inoremap <a-j>/i <c-v>u2148
+        " imaginary unit j,ⅉ  don't confuse with english letter j
+        inoremap <a-j>/j <c-v>u2149
 
-    " Miscellaneous
-    " mid dot, ·, don't confuse with dot operator ⋅
-    inoremap <a-j>-. <c-v>u00b7
-    " ellipses horizontal, …
-    inoremap <a-j>.. <c-v>u2026
-    " (mathematical) left angle bracket ⟨
-    inoremap <a-j>[[ <c-v>u27e8
-    " (methemetical) right angle bracket, ⟩
-    inoremap <a-j>]] <c-v>u27e9
-    " left guillemet, in latin 1 encoding, «, as quotatoin and ditto mark.
-    inoremap <a-j>\[ <c-v>u00ab
-    " right guillemet, in latin 1 encoding, », as quotation
-    " as quotation and ditto mark
-    inoremap <a-j>\] <c-v>u00bb
-    " copyright mark, captital O and c,©.
-    inoremap <a-j>Oc <c-v>u00a9
-    " trademark character, ®
-    inoremap <a-j>Or <c-v>u00ae
-    " Clesius, ℃
-    inoremap <a-j>oC <c-v>u2103
-    " Fahrenheit, ℉,
-    inoremap <a-j>oF <c-v>u2109
-    " Degree symbol
-    inoremap <a-j>dd <c-v>u00b0
+        " Miscellaneous
+        " mid dot, ·, don't confuse with dot operator ⋅
+        inoremap <a-j>-. <c-v>u00b7
+        " ellipses horizontal, …
+        inoremap <a-j>.. <c-v>u2026
+        " (mathematical) left angle bracket ⟨
+        inoremap <a-j>[[ <c-v>u27e8
+        " (methemetical) right angle bracket, ⟩
+        inoremap <a-j>]] <c-v>u27e9
+        " left guillemet, in latin 1 encoding, «, as quotatoin and ditto mark.
+        inoremap <a-j>\[ <c-v>u00ab
+        " right guillemet, in latin 1 encoding, », as quotation
+        " as quotation and ditto mark
+        inoremap <a-j>\] <c-v>u00bb
+        " copyright mark, captital O and c,©.
+        inoremap <a-j>Oc <c-v>u00a9
+        " trademark character, ®
+        inoremap <a-j>Or <c-v>u00ae
+        " Clesius, ℃
+        inoremap <a-j>oC <c-v>u2103
+        " Fahrenheit, ℉,
+        inoremap <a-j>oF <c-v>u2109
+        " Degree symbol
+        inoremap <a-j>dd <c-v>u00b0
 
-    " my name,
-    " my surname in Chinese, 李, in unified CJK encoding
-    inoremap <a-j>li <c-v>u674e
-    " my given name in Chinese, 昭, in unified CJK encoding
-    inoremap <a-j>za <c-v>u662d
+        " my name,
+        " my surname in Chinese, 李, in unified CJK encoding
+        inoremap <a-j>li <c-v>u674e
+        " my given name in Chinese, 昭, in unified CJK encoding
+        inoremap <a-j>za <c-v>u662d
 
 endif
 "  }}}
@@ -735,7 +751,7 @@ nnoremap <leader><space> :nohlsearch<CR>
 
 "  Config ack
 if executable('ag')
-  let g:ackprg = 'rg --vimgrep --smart-case'
+        let g:ackprg = 'rg --vimgrep --smart-case'
 endif
 " open ag.vim
 nnoremap <leader>a :Ack
@@ -743,22 +759,22 @@ nnoremap <leader>a :Ack
 " Config FZF
 " makes it work like CtrlP
 let g:fzf_action = {
-      \ 'ctrl-s': 'split',
-      \ 'ctrl-v': 'vsplit'
-      \ }
+                        \ 'ctrl-s': 'split',
+                        \ 'ctrl-v': 'vsplit'
+                        \ }
 " override the pagedown hotkey
 "enable multiple selection with tab and <shift-tab>
 nnoremap <leader>f :FZF -m<cr>
 augroup fzf
-  autocmd!
-  autocmd! FileType fzf
-  autocmd  FileType fzf set laststatus=0 noshowmode noruler
-    \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+        autocmd!
+        autocmd! FileType fzf
+        autocmd  FileType fzf set laststatus=0 noshowmode noruler
+                                \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 augroup END
 
 " }}}
 
- " Window, buffer, directory  and tags {{{
+" Window, buffer, directory  and tags {{{
 
 " disable default key mapping for BufExplorer.
 let g:bufExplorerDisableDefaultKeyMapping=1
@@ -766,7 +782,7 @@ let g:bufExplorerDisableDefaultKeyMapping=1
 let g:bufExplorerSortBy='extension'
 let g:winManagerWindowLayout = "BufExplorer"
 let g:winManagerWidth = 40
-nnoremap <leader>w :WMToggle<cr>
+nnoremap <leader>b :WMToggle<cr>
 
 nnoremap <leader>t :TagbarToggle<cr>
 
@@ -789,7 +805,7 @@ let g:gutentags_ctags_tagfile = '.tags'
 let s:vim_tags = expand('~/.vim_temp/tags')
 " create it if not existent.
 if !isdirectory(s:vim_tags)
-   silent! call mkdir(s:vim_tags, 'p')
+        silent! call mkdir(s:vim_tags, 'p')
 endif
 let g:gutentags_cache_dir = '~/.vim_temp/tags'
 "set ctags parameters
@@ -890,66 +906,66 @@ autocmd FileType markdown nnoremap <F3> <Esc>:syntax sync fromstart<CR>
 " strips trailing whitespaces at the end of files. this
 " is called on buffer write in the autogroup below.
 function! <SID>StripTrailingWhitespaces()
-  " save last search & cursor position
-  let _s=@/
-  let l = line(".")
-  let c = col(".")
-  %s/\s\+$//e
-  let @/=_s
-  call cursor(l, c)
+        " save last search & cursor position
+        let _s=@/
+        let l = line(".")
+        let c = col(".")
+        %s/\s\+$//e
+        let @/=_s
+        call cursor(l, c)
 endfunction
 
 augroup filegroup
-    autocmd!
-    "clear autocmds for current group
-    autocmd VimEnter * highlight clear SignColumn
-    autocmd BufEnter,BufNewFile *.tex setlocal spell
-    autocmd BufEnter,BufNewFile *.latex setlocal spell
-    autocmd BufEnter,BufNewFile *.txt setlocal spell
-    autocmd BufEnter,BufNewFile *.text setlocal spell
-    autocmd BufEnter,BufNewFile readme setlocal spell
-    autocmd BufEnter,BufNewFile ReadMe setlocal spell
-    autocmd BufEnter,BufNewFile README setlocal spell
-    autocmd BufEnter,BufNewFile Readme setlocal spell
-    autocmd BufEnter,BufNewFile *.md setlocal spell
-    autocmd BufWritePre *.php,*.py,*.js,*.txt,*.text,*.hs,*.java,readme,README,ReadMe,Readme,*.cpp,*.hpp,*.c,*.h,*vimrc,*.md,*.markdown,*.Markdown,*.MarkDown,*.MD :call <SID>StripTrailingWhitespaces()
-    autocmd BufRead,BufNewFile *.c set filetype=c
-    autocmd FileType tex setlocal tabstop=2
-    autocmd FileType tex setlocal shiftwidth=2
-    autocmd FileType tex setlocal softtabstop=2
-    autocmd FileType cs setlocal noexpandtab
-    autocmd FileType cs setlocal list
-    autocmd FileType cs setlocal listchars=tab:+\ ,eol:-
-    autocmd FileType cs setlocal formatprg=par\ -w80\ -T4
-    autocmd FileType java setlocal noexpandtab
-    autocmd FileType java setlocal list
-    autocmd FileType java setlocal listchars=tab:+\ ,eol:-
-    autocmd FileType java setlocal formatprg=par\ -w80\ -T4
-    autocmd FileType php setlocal expandtab
-    autocmd FileType php setlocal list
-    autocmd FileType php setlocal listchars=tab:+\ ,eol:-
-    autocmd FileType php setlocal formatprg=par\ -w80\ -T4
-    autocmd FileType ruby setlocal tabstop=2
-    autocmd FileType ruby setlocal shiftwidth=2
-    autocmd FileType ruby setlocal softtabstop=2
-    autocmd FileType ruby setlocal commentstring=#\ %s
-    autocmd FileType python setlocal commentstring=#\ %s
-    autocmd FileType python setlocal tabstop=4
-    autocmd FileType python setlocal shiftwidth=4
-    autocmd FileType python setlocal softtabstop=4
-    autocmd FileType python setlocal expandtab
-    autocmd BufEnter *.cls setlocal filetype=java
-    autocmd BufEnter *.zsh-theme setlocal filetype=zsh
-    autocmd BufEnter Makefile setlocal noexpandtab
-    autocmd BufEnter *.sh setlocal tabstop=2
-    autocmd BufEnter *.sh setlocal shiftwidth=2
-    autocmd BufEnter *.sh setlocal softtabstop=2
-    autocmd BufEnter *.csv setlocal noexpandtab
-    autocmd FileType markdown setlocal noexpandtab
-    autocmd FileType markdown setlocal tabstop=4
-    autocmd FileType markdown setlocal shiftwidth=4
-    autocmd FileType markdown setlocal softtabstop=4
-    autocmd FileType markdown setlocal spell
+        autocmd!
+        "clear autocmds for current group
+        autocmd VimEnter * highlight clear SignColumn
+        autocmd BufEnter,BufNewFile *.tex setlocal spell
+        autocmd BufEnter,BufNewFile *.latex setlocal spell
+        autocmd BufEnter,BufNewFile *.txt setlocal spell
+        autocmd BufEnter,BufNewFile *.text setlocal spell
+        autocmd BufEnter,BufNewFile readme setlocal spell
+        autocmd BufEnter,BufNewFile ReadMe setlocal spell
+        autocmd BufEnter,BufNewFile README setlocal spell
+        autocmd BufEnter,BufNewFile Readme setlocal spell
+        autocmd BufEnter,BufNewFile *.md setlocal spell
+        autocmd BufWritePre *.php,*.py,*.js,*.txt,*.text,*.hs,*.java,readme,README,ReadMe,Readme,*.cpp,*.hpp,*.c,*.h,*vimrc,*.md,*.markdown,*.Markdown,*.MarkDown,*.MD :call <SID>StripTrailingWhitespaces()
+        autocmd BufRead,BufNewFile *.c set filetype=c
+        autocmd FileType tex setlocal tabstop=2
+        autocmd FileType tex setlocal shiftwidth=2
+        autocmd FileType tex setlocal softtabstop=2
+        autocmd FileType cs setlocal noexpandtab
+        autocmd FileType cs setlocal list
+        autocmd FileType cs setlocal listchars=tab:+\ ,eol:-
+        autocmd FileType cs setlocal formatprg=par\ -w80\ -T4
+        autocmd FileType java setlocal noexpandtab
+        autocmd FileType java setlocal list
+        autocmd FileType java setlocal listchars=tab:+\ ,eol:-
+        autocmd FileType java setlocal formatprg=par\ -w80\ -T4
+        autocmd FileType php setlocal expandtab
+        autocmd FileType php setlocal list
+        autocmd FileType php setlocal listchars=tab:+\ ,eol:-
+        autocmd FileType php setlocal formatprg=par\ -w80\ -T4
+        autocmd FileType ruby setlocal tabstop=2
+        autocmd FileType ruby setlocal shiftwidth=2
+        autocmd FileType ruby setlocal softtabstop=2
+        autocmd FileType ruby setlocal commentstring=#\ %s
+        autocmd FileType python setlocal commentstring=#\ %s
+        autocmd FileType python setlocal tabstop=4
+        autocmd FileType python setlocal shiftwidth=4
+        autocmd FileType python setlocal softtabstop=4
+        autocmd FileType python setlocal expandtab
+        autocmd BufEnter *.cls setlocal filetype=java
+        autocmd BufEnter *.zsh-theme setlocal filetype=zsh
+        autocmd BufEnter Makefile setlocal noexpandtab
+        autocmd BufEnter *.sh setlocal tabstop=2
+        autocmd BufEnter *.sh setlocal shiftwidth=2
+        autocmd BufEnter *.sh setlocal softtabstop=2
+        autocmd BufEnter *.csv setlocal noexpandtab
+        autocmd FileType markdown setlocal noexpandtab
+        autocmd FileType markdown setlocal tabstop=4
+        autocmd FileType markdown setlocal shiftwidth=4
+        autocmd FileType markdown setlocal softtabstop=4
+        autocmd FileType markdown setlocal spell
 augroup END
 " }}}
 
@@ -959,7 +975,7 @@ set backup
 let s:backup_dir = expand('$HOME/.vim_temp/backup')
 " if backup_dir doesn't exist, create it.
 if !isdirectory(s:backup_dir)
-   silent! call mkdir(s:backup_dir, 'p')
+        silent! call mkdir(s:backup_dir, 'p')
 endif
 set backupdir=~/.vim_temp/backup,~/.temp,/var/tmp,/tmp "for backup files
 set backupskip+=/tmp/*,/temp/*
@@ -967,7 +983,7 @@ set backupskip+=/tmp/*,/temp/*
 let s:swap_dir = expand('~/.vim_temp/swap')
 set directory^=~/.vim_temp/swap "append path to head of directory, use absolute path
 if !isdirectory(s:swap_dir)
-   silent! call mkdir(s:swap_dir, 'p')
+        silent! call mkdir(s:swap_dir, 'p')
 endif
 
 set undofile " Maintain undo history between sessions
@@ -975,7 +991,7 @@ set undodir=~/.vim_temp/undodir
 let s:undo_dir = expand('~/.vim_temp/undodir')
 " create undo_dir if not existent.
 if !isdirectory(s:undo_dir)
-   silent! call mkdir(s:undo_dir, 'p')
+        silent! call mkdir(s:undo_dir, 'p')
 endif
 
 " }}}
@@ -984,11 +1000,11 @@ endif
 " allows cursor change in tmux mode. Show cursor as a vertical bar in Tmux
 " instead of a block
 if exists('$TMUX')
-    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+        let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+        let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
 else
-    let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-    let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+        let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+        let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
 
 " let vim use aliases defined in .zshrc
@@ -1003,11 +1019,11 @@ let g:neoformat_only_msg_on_error = 1 "only msg when there is an error
 
 " use F10 toggle quick fix window
 function! ToggleQuickFix()
-    if empty(filter(getwininfo(), 'v:val.quickfix'))
-        copen
-    else
-        cclose
-    endif
+        if empty(filter(getwininfo(), 'v:val.quickfix'))
+                copen
+        else
+                cclose
+        endif
 endfunction
 nnoremap <silent> <F10> :call ToggleQuickFix()<cr>
 
@@ -1019,19 +1035,19 @@ nnoremap <F12> <Esc>:Neoformat<CR>
 inoremap <F12> <Esc>:Neoformat<CR>
 
 function! MyOnBattery()
-  if filereadable('/sys/class/power_supply/AC/online')
-  return readfile('/sys/class/power_supply/AC/online') == ['0']
-  else
-          return '1'=='0'
-  endif
+        if filereadable('/sys/class/power_supply/AC/online')
+                return readfile('/sys/class/power_supply/AC/online') == ['0']
+        else
+                return '1'=='0'
+        endif
 endfunction
 
 if MyOnBattery()
-" When writing a buffer (no delay)
-  call neomake#configure#automake('w')
+        " When writing a buffer (no delay)
+        call neomake#configure#automake('w')
 else
-" When writing a buffer (no delay), and on normal mode changes (after 1000ms).
-  call neomake#configure#automake('nw', 1000)
+        " When writing a buffer (no delay), and on normal mode changes (after 1000ms).
+        call neomake#configure#automake('nw', 1000)
 endif
 
 " asyncrun root markers.
@@ -1059,9 +1075,9 @@ command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
 " let AsyncRun work with vim-fugitive
 " run 'Gpush' and 'Gfetch' through AsyncRun.
 command! -bang -bar -nargs=* Gpush execute 'AsyncRun<bang> -cwd=' .
-          \ fnameescape(FugitiveGitDir()) 'git push' <q-args>
+                        \ fnameescape(FugitiveGitDir()) 'git push' <q-args>
 command! -bang -bar -nargs=* Gfetch execute 'AsyncRun<bang> -cwd=' .
-          \ fnameescape(FugitiveGitDir()) 'git fetch' <q-args>
+                        \ fnameescape(FugitiveGitDir()) 'git fetch' <q-args>
 
 " Rooter and CurtineIncSw
 let g:rooter_patterns = ['.svn', '.git', '.root', '*.sln', 'build/env.sh']
@@ -1094,31 +1110,31 @@ let g:header_field_modified_by = 0
 let g:c_syntax_for_h=1
 let g:neomake_c_enabled_makers = ['clang']
 let g:neomake_c_clang_maker = {
-  \ 'exe': 'clang',
-  \ 'args': ['-Wall', '-Wextra', '-fsyntax-only',
-  \ '-Wno-error=unused-command-line-argument',
-  \ '-Qunused-arguments',
-  \ '-fwrapv', '-fno-delete-null-pointer-checks', '-pthread',
-  \ '-I', '.', '-I', 'src', '-I', 'include', '-I', '..',
-  \ ],
-  \ }
+                        \ 'exe': 'clang',
+                        \ 'args': ['-Wall', '-Wextra', '-fsyntax-only',
+                        \ '-Wno-error=unused-command-line-argument',
+                        \ '-Qunused-arguments',
+                        \ '-fwrapv', '-fno-delete-null-pointer-checks', '-pthread',
+                        \ '-I', '.', '-I', 'src', '-I', 'include', '-I', '..',
+                        \ ],
+                        \ }
 let g:neoformat_enabled_c = ['clangformat']
 "C++
 let g:neomake_cpp_enabled_makers = ['clang', 'cppcheck']
 " add -fsyntax-only to supress clang amke *.gch files.
 let g:neomake_cpp_clang_maker = {
-   \ 'exe': 'clang++',
-   \ 'args': ['-Wall', '-Wextra', '-fsyntax-only',
-   \ '-Wno-error=unused-command-line-argument',
-   \ '-Qunused-arguments',
-   \ '-fno-exceptions', '-fwrapv', '-fno-delete-null-pointer-checks',
-   \ '-pthreads',
-   \ '-Wno-sign-conversion',
-   \ '-Wno-zero-as-null-pointer-constant',
-   \ '-Wno-padded', '-Wno-unused-parameter',
-   \ '-I', '.', '-I', 'src', '-I', 'include', '-I', '..',
-   \ ],
-   \ }
+                        \ 'exe': 'clang++',
+                        \ 'args': ['-Wall', '-Wextra', '-fsyntax-only',
+                        \ '-Wno-error=unused-command-line-argument',
+                        \ '-Qunused-arguments',
+                        \ '-fno-exceptions', '-fwrapv', '-fno-delete-null-pointer-checks',
+                        \ '-pthreads',
+                        \ '-Wno-sign-conversion',
+                        \ '-Wno-zero-as-null-pointer-constant',
+                        \ '-Wno-padded', '-Wno-unused-parameter',
+                        \ '-I', '.', '-I', 'src', '-I', 'include', '-I', '..',
+                        \ ],
+                        \ }
 
 let g:neoformat_enabled_cpp = ['clangformat']
 
@@ -1222,24 +1238,24 @@ let g:neomake_python_enabled_makers = ['python','pylint']
 let g:neomake_python_python_exe = 'python3'
 let g:neomake_python_pylint_exe = 'python3'
 let g:neomake_python_pylint_maker = {
-  \ 'args': [
-  \ '-d', 'C0103, C0111',
-  \ '-f', 'text',
-  \ '--msg-template="{path}:{line}:{column}:{C}: [{symbol}] {msg}"',
-  \ '-r', 'n'
-  \ ],
-  \ 'errorformat':
-  \ '%A%f:%l:%c:%t: %m,' .
-  \ '%A%f:%l: %m,' .
-  \ '%A%f:(%l): %m,' .
-  \ '%-Z%p^%.%#,' .
-  \ '%-G%.%#',
-  \ }
+                        \ 'args': [
+                        \ '-d', 'C0103, C0111',
+                        \ '-f', 'text',
+                        \ '--msg-template="{path}:{line}:{column}:{C}: [{symbol}] {msg}"',
+                        \ '-r', 'n'
+                        \ ],
+                        \ 'errorformat':
+                        \ '%A%f:%l:%c:%t: %m,' .
+                        \ '%A%f:%l: %m,' .
+                        \ '%A%f:(%l): %m,' .
+                        \ '%-Z%p^%.%#,' .
+                        \ '%-G%.%#',
+                        \ }
 
 let g:neoformat_enabled_python = ['yapf']
 let g:neoformat_python_yapf= {
-            \ 'exe': 'yapf3',
-            \ }
+                        \ 'exe': 'yapf3',
+                        \ }
 " }}}
 
 " Other programming languages {{{
@@ -1298,12 +1314,12 @@ nnoremap <leader>u :GundoToggle<CR>
 
 " toggle between number and relativenumber
 function! ToggleNumber()
-    if(&relativenumber == 1)
-        set norelativenumber
-        set number
-    else
-        set relativenumber
-    endif
+        if(&relativenumber == 1)
+                set norelativenumber
+                set number
+        else
+                set relativenumber
+        endif
 endfunc
 nnoremap <leader>n :call ToggleNumber()<CR>
 
@@ -1321,7 +1337,7 @@ nnoremap <leader>x <Esc>: vert term <CR> <C-w><C-r>
 " laptop.
 inoremap <RightMouse> <Esc>
 
-nnoremap rw <Esc>: /\(\<\w\+\>\)\_s*\<\1\><CR>
+nnoremap <leader>rw <Esc>: /\(\<\w\+\>\)\_s*\<\1\><CR>
 " type r-w will find repeated words in text.
 
 " press <F3> in visual mode to execute the selected as shell command in a vim
