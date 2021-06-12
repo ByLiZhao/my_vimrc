@@ -38,7 +38,7 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'skywind3000/gutentags_plus'
 
 "auto completion
-Plug 'Valloric/YouCompleteMe', {'do': 'python3 install.py --clangd-completer'}
+Plug 'Valloric/YouCompleteMe', {'do': 'python3 install.py --clangd-completer --rust-completer'}
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
@@ -134,11 +134,13 @@ if has("gui_running")
   " GUI is running or is about to start,  maximize gvim window.
   " this doesn't work on windows.
   set lines=999 columns=999
-
-" TODO: config vim-quickui
-
-"
 endif
+
+" Airline configuration
+" If only one tab is opened, show all buffers at the top of the window
+" in a tab-like style. They can be switched to use buffer commands.
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_alt_sep = '|'
 
 " This enables automatic indentation as you type.
 filetype indent on " load filetype-specific indent files
@@ -175,7 +177,7 @@ set expandtab       " tabs are spaces
 
 " Shortcuts to switch between tabs, buffers,and in location and quick-fix list {{{
 " gt to go to next tab,  wrap at the end.
-" press [w to previous tab,  and ]w to next tab
+" press [w to previous tab, same as gT,  and ]w to next tab, same as gt
 nnoremap <silent> [w <Esc>:update<CR>:tabprevious<CR>
 nnoremap <silent> ]w <Esc>:update<CR>:tabnext<CR>
 " press [t to previous matched tag,  and ]t to next matched tag.
@@ -769,6 +771,10 @@ augroup END
 "  nnoremap <c-h> <c-w><c-h>
 "  nnoremap <c-l> <c-w><c-l>
 
+" disable default key mapping for BufExplorer.
+let g:bufExplorerDisableDefaultKeyMapping=1
+" sort buffer by file extensions.
+let g:bufExplorerSortBy='extension'
 let g:winManagerWindowLayout = "BufExplorer"
 let g:winManagerWidth = 40
 nnoremap wm :WMToggle<cr>
