@@ -97,53 +97,65 @@ Plug 'edkolev/tmuxline.vim'
 call plug#end()
 "}}}
 
-" General Settings. {{{
+" General Settings: Encoding, Colorscheme, Airline, GUI, Folding, Visual {{{
 set nocompatible
 filetype plugin on
 
-" }}}
-
-" Set encoding {{{
+" Encoding
 set fileencodings=utf-8,ucs-bom,shift-jis,latin1,big5,gb18030,gbk,gb2312,cp936
 "set everything encoded by utf-8
 set fileencoding=utf-8
 set encoding=utf-8
 set termencoding=utf-8
-set guifontset=
-set guifont=Consolas\ 14
-set guifontwide=Microsoft\ Yahei\ 14
-" }}}
 
-" Highlight{{{
+" Color scheme
 syntax enable
 colorscheme gruvbox
 set background=light
-" let g:airline_theme='solarized'
 let g:airline_theme='gruvbox'
-" let g:airline_solarized_bg='light'
 let g:airline_gruvbox_bf='light'
-" let g:solarized_contrast = "high"
-" let g:solarized_visibility= "high"
 let g:gruvbox_contrast_light='high'
 let g:gruvbox_visibility='high'
+" let g:airline_theme='solarized'
+" let g:airline_solarized_bg='light'
+" let g:solarized_contrast = "high"
+" let g:solarized_visibility= "high"
 
-" }}}
-
-" GUI, indent, and folding {{{
-if has("gui_running")
-  " GUI is running or is about to start,  maximize gvim window.
-  " this doesn't work on windows.
-  set lines=999 columns=999
-endif
-
-" Airline configuration
+" Airline
 " If only one tab is opened, show all buffers at the top of the window
 " in a tab-like style. They can be switched to use buffer commands.
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_alt_sep = '|'
 
-" This enables automatic indentation as you type.
+"GUI
+if has("gui_running")
+  " GUI is running or is about to start,  maximize gvim window.
+  " this doesn't work on windows.
+  set lines=999 columns=999
+endif
+set guifontset=
+set guifont=Consolas\ 14
+set guifontwide=Microsoft\ Yahei\ 14
+
+" Folding
+set foldenable          " enable folding
+set foldlevelstart=10   " open most folds by default
+set foldnestmax=10      " 10 nested fold max
+
+" Indent
 filetype indent on " load filetype-specific indent files
+" tabstop is the number of spaces a tab counts for. So, when Vim opens a file and reads a <TAB> character,
+" it uses that many spaces to visually show the <TAB>.
+set tabstop=4       " number of visual spaces per TAB
+" softabstop is the number of spaces a tab counts for when editing.
+"  So this value is the number of spaces that is inserted when you hit <TAB>
+"  and also the number of spaces that are removed when you backspace.
+set softtabstop=4   " number of spaces in tab when editing
+" expandtab turns <TAB>s into spaces.
+" So <TAB> just becomes a shortcut for "insert four spaces".
+set expandtab       " tabs are spaces
+
+" Visual
 set number " show line numbers
 set showcmd    " show command in bottom bar
 set cursorline          " highlight current line
@@ -157,23 +169,9 @@ set linebreak  "only wrap at a character in the breakat option
 set nolist  " list disables linebreak
 set textwidth=0 "disable automatic word wrapping
 set wrapmargin=0 " prevent Vim from automatically inserting line breaks in newly entered text.
-" set folding
-set foldenable          " enable folding
-set foldlevelstart=10   " open most folds by default
-set foldnestmax=10      " 10 nested fold max
-
-"Tabs and spaces
-" tabstop is the number of spaces a tab counts for. So, when Vim opens a file and reads a <TAB> character,
-" it uses that many spaces to visually show the <TAB>.
-set tabstop=4       " number of visual spaces per TAB
-" softabstop is the number of spaces a tab counts for when editing.
-"  So this value is the number of spaces that is inserted when you hit <TAB>
-"  and also the number of spaces that are removed when you backspace.
-set softtabstop=4   " number of spaces in tab when editing
-" expandtab turns <TAB>s into spaces. That's it.
-" So <TAB> just becomes a shortcut for "insert four spaces".
-set expandtab       " tabs are spaces
 " }}}
+
+
 
 " Shortcuts to switch between tabs, buffers,and in location and quick-fix list {{{
 " gt to go to next tab,  wrap at the end.
