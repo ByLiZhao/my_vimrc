@@ -1,14 +1,15 @@
-"Vim-plug settings. {{{
+"Plugins: {{{
 call plug#begin('~/.vim/plugged')
 
-" Colorscheme and Airline {{{
+" General: {{{
 Plug 'morhetz/gruvbox'
 Plug 'altercation/vim-colors-solarized'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'sjl/gundo.vim'    "undo and redo
 " }}}
 
-" Editing Enhancement{{{
+" Editing Enhancement: {{{
 " minor things that make certain things convenient.
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
@@ -19,87 +20,90 @@ Plug 'svermeulen/vim-cutlass' "make cut better
 Plug 'svermeulen/vim-yoink' " yank history
 Plug 'machakann/vim-highlightedyank' "highlight yank
 Plug 'svermeulen/vim-subversive' " replace
-Plug 'sjl/gundo.vim'    "undo and redo
 Plug 'tomtom/tcomment_vim'  " comments
 Plug 'godlygeek/tabular'    "align texts
 Plug 'junegunn/vim-easy-align'  "align texts.
 " }}}
 
-" enhance sessions
-Plug 'tpope/vim-obsession'
-
-"editing
-
-"UI, files directories and buffers and UI
+" Searching: {{{
 Plug 'jlanzarotta/bufexplorer'
 Plug 'vim-scripts/winmanager'
 Plug 'preservim/nerdtree'
+Plug 'junegunn/fzf', { 'dir': '~/home_local/src/fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'mileszs/ack.vim'
+" }}}
 
-"tags
+" Tags: {{{
 Plug 'universal-ctags/ctags', {'dir': '~/home_local/src/ctags',
                         \ 'do': './autogen.sh && ./configure --prefix=$HOME/home_local
                         \ && make && make install'}
 Plug 'majutsushi/tagbar' "tag displaying.
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'skywind3000/gutentags_plus'
+" }}}
 
-"auto completion
+" Completion: {{{
 Plug 'Valloric/YouCompleteMe', {'do': 'python3 install.py --clangd-completer --rust-completer'}
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
+" }}}
 
-"special file formats
+" Sessions: {{{
+" enhance sessions
+Plug 'tpope/vim-obsession'
+" working with tmux
+Plug 'benmills/vimux'
+Plug 'edkolev/tmuxline.vim'
+" }}}
+
+" Writing: {{{
 Plug 'vim-latex/vim-latex', {'for': 'tex'}
-Plug 'elzr/vim-json'
 " Syntax highlighting, matching rules and mappings for the original Markdown and extensions
 Plug 'plasticboy/vim-markdown'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
-Plug 'chrisbra/csv.vim'
-
-"color scheme and highlighting.
-Plug 'McSinyx/vim-octave'
-Plug 'octol/vim-cpp-enhanced-highlight'
-
-"search
-Plug 'junegunn/fzf', { 'dir': '~/home_local/src/fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-Plug 'mileszs/ack.vim'
-
-"Programming enhancement
 " add an argument text object 'aa' and 'ia'
 Plug 'vim-scripts/argtextobj.vim'
 " add indentation based text objext 'ii' and 'ai' and 'aI'
 Plug 'michaeljsmith/vim-indent-object'
+" }}}
+
+" Programming: {{{
 Plug 'neomake/neomake'
 Plug 'sbdchd/neoformat'
-Plug 'skywind3000/asyncrun.vim'
-Plug 'embear/vim-localvimrc'
-" work with go-lang.
-" Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-" work with python
-Plug 'jmcantrell/vim-virtualenv'
-" work with Jupyter notebook
-Plug 'jupyter-vim/jupyter-vim'
-" auto set pwd to project rooter
-Plug 'airblade/vim-rooter'
-Plug 'ericcurtin/CurtineIncSw.vim'
-
 " Documentation tools
 Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } }
 Plug 'alpertuna/vim-header'
+Plug 'McSinyx/vim-octave'
+Plug 'elzr/vim-json'
+Plug 'chrisbra/csv.vim'
+" }}}
 
-" Building and version control
+" Project: {{{
+Plug 'skywind3000/asyncrun.vim'
+" auto set pwd to project rooter
+Plug 'airblade/vim-rooter'
+Plug 'embear/vim-localvimrc'
 Plug 'mh21/errormarker.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
+" }}}
 
-" working with tmux
-Plug 'benmills/vimux'
-Plug 'edkolev/tmuxline.vim'
+" C/C++: {{{
+Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'ericcurtin/CurtineIncSw.vim'
+" }}}
+
+" Python: {{{
+Plug 'jmcantrell/vim-virtualenv'
+" work with Jupyter notebook
+Plug 'jupyter-vim/jupyter-vim'
+" }}}
+
 call plug#end()
 "}}}
 
-" General Settings: Encoding, Colorscheme, Airline, GUI, Folding, Visual {{{
+" General: {{{
 set nocompatible
 filetype plugin on
 
@@ -178,9 +182,106 @@ set nolist  " list disables linebreak
 set textwidth=0 "disable automatic word wrapping
 set wrapmargin=0 " prevent Vim from automatically inserting line breaks in newly entered text.
 " }}}
+
+" File specific settings {{{
+" strips trailing whitespaces at the end of files. this
+" is called on buffer write in the autogroup below.
+function! <SID>StripTrailingWhitespaces()
+        " save last search & cursor position
+        let _s=@/
+        let l = line(".")
+        let c = col(".")
+        %s/\s\+$//e
+        let @/=_s
+        call cursor(l, c)
+endfunction
+
+augroup filegroup
+        autocmd!
+        "clear autocmds for current group
+        autocmd VimEnter * highlight clear SignColumn
+        autocmd BufEnter,BufNewFile *.tex setlocal spell
+        autocmd BufEnter,BufNewFile *.latex setlocal spell
+        autocmd BufEnter,BufNewFile *.txt setlocal spell
+        autocmd BufEnter,BufNewFile *.text setlocal spell
+        autocmd BufEnter,BufNewFile readme setlocal spell
+        autocmd BufEnter,BufNewFile ReadMe setlocal spell
+        autocmd BufEnter,BufNewFile README setlocal spell
+        autocmd BufEnter,BufNewFile Readme setlocal spell
+        autocmd BufEnter,BufNewFile *.md setlocal spell
+        autocmd BufWritePre *.php,*.py,*.js,*.txt,*.text,*.hs,*.java,readme,README,ReadMe,Readme,*.cpp,*.hpp,*.c,*.h,*vimrc,*.md,*.markdown,*.Markdown,*.MarkDown,*.MD :call <SID>StripTrailingWhitespaces()
+        autocmd BufRead,BufNewFile *.c set filetype=c
+        autocmd FileType tex setlocal tabstop=2
+        autocmd FileType tex setlocal shiftwidth=2
+        autocmd FileType tex setlocal softtabstop=2
+        autocmd FileType cs setlocal noexpandtab
+        autocmd FileType cs setlocal list
+        autocmd FileType cs setlocal listchars=tab:+\ ,eol:-
+        autocmd FileType cs setlocal formatprg=par\ -w80\ -T4
+        autocmd FileType java setlocal noexpandtab
+        autocmd FileType java setlocal list
+        autocmd FileType java setlocal listchars=tab:+\ ,eol:-
+        autocmd FileType java setlocal formatprg=par\ -w80\ -T4
+        autocmd FileType php setlocal expandtab
+        autocmd FileType php setlocal list
+        autocmd FileType php setlocal listchars=tab:+\ ,eol:-
+        autocmd FileType php setlocal formatprg=par\ -w80\ -T4
+        autocmd FileType ruby setlocal tabstop=2
+        autocmd FileType ruby setlocal shiftwidth=2
+        autocmd FileType ruby setlocal softtabstop=2
+        autocmd FileType ruby setlocal commentstring=#\ %s
+        autocmd FileType python setlocal commentstring=#\ %s
+        autocmd FileType python setlocal tabstop=4
+        autocmd FileType python setlocal shiftwidth=4
+        autocmd FileType python setlocal softtabstop=4
+        autocmd FileType python setlocal expandtab
+        autocmd BufEnter *.cls setlocal filetype=java
+        autocmd BufEnter *.zsh-theme setlocal filetype=zsh
+        autocmd BufEnter Makefile setlocal noexpandtab
+        autocmd BufEnter *.sh setlocal tabstop=2
+        autocmd BufEnter *.sh setlocal shiftwidth=2
+        autocmd BufEnter *.sh setlocal softtabstop=2
+        autocmd BufEnter *.csv setlocal noexpandtab
+        autocmd FileType markdown setlocal noexpandtab
+        autocmd FileType markdown setlocal tabstop=4
+        autocmd FileType markdown setlocal shiftwidth=4
+        autocmd FileType markdown setlocal softtabstop=4
+        autocmd FileType markdown setlocal spell
+augroup END
 " }}}
 
-" Editing Enhancement: Jumping, Pairs, Cut, Copy, Replace, Algin, etc.  {{{
+" Backup, swap and undofile {{{
+"set writebackup " set backup actually override set writebackup
+set backup
+let s:backup_dir = expand('$HOME/.vim_temp/backup')
+" if backup_dir doesn't exist, create it.
+if !isdirectory(s:backup_dir)
+        silent! call mkdir(s:backup_dir, 'p')
+endif
+set backupdir=~/.vim_temp/backup,~/.temp,/var/tmp,/tmp "for backup files
+set backupskip+=/tmp/*,/temp/*
+
+let s:swap_dir = expand('~/.vim_temp/swap')
+set directory^=~/.vim_temp/swap "append path to head of directory, use absolute path
+if !isdirectory(s:swap_dir)
+        silent! call mkdir(s:swap_dir, 'p')
+endif
+
+set undofile " Maintain undo history between sessions
+set undodir=~/.vim_temp/undodir
+let s:undo_dir = expand('~/.vim_temp/undodir')
+" create undo_dir if not existent.
+if !isdirectory(s:undo_dir)
+        silent! call mkdir(s:undo_dir, 'p')
+endif
+
+" toggle gundo
+let g:gundo_prefer_python3 = 1
+nnoremap <leader>u :GundoToggle<CR>
+" }}}
+" }}}
+
+" Editing Enhancement: {{{
 " Shortcuts to switch between windows, tabs, buffers, location list, and quick-fix list {{{
 " leader-w to loop between windows.
 nnoremap <leader>w  <c-w>w
@@ -289,6 +390,7 @@ nmap <c-=> <plug>(YoinkPostPasteToggleFormat)
 
 " Replace: vim-subsersive{{{
 " define new text object, ie = inner entire buffer
+" only use it with vim-subsersive.
 onoremap ie :exec "normal! ggVG"<cr>
 " s for substitute an text object with content in the register.
 nmap s <plug>(SubversiveSubstitute)
@@ -317,12 +419,536 @@ xmap ga <Plug>(EasyAlign)
 " nmap ga <Plug>(EasyAlign)
 "}}}
 
-" Other: vim-radical, vim-speedating, vim-repeat{{{
+" Other: vim-radical, vim-speedating, vim-repeat
 " vim-radical use gA to show four different representations of a number.
 " use <ctrl-a> to increase date and <ctrl-x> to decrease date under the
 " cursor.
 "}}}
+
+" Searching:  {{{
+" Setup Vim's search{{{
+set incsearch           " search as characters are entered
+set hlsearch            " highlight matches
+" turn off search highlight
+nnoremap <leader><space> :nohlsearch<CR>
+" search repeated words.
+nnoremap <leader>rw <Esc>: /\(\<\w\+\>\)\_s*\<\1\><CR>
+" }}}
+
+"  Ack{{{
+if executable('rg')
+        let g:ackprg = 'rg --vimgrep --smart-case'
+endif
+" open ack.vim
+nnoremap <leader>a :Ack!<Space>
+" }}}
+
+" FZF{{{
+" makes it work like CtrlP
+let g:fzf_action = {
+                        \ 'ctrl-s': 'split',
+                        \ 'ctrl-v': 'vsplit'
+                        \ }
+" override the pagedown hotkey
+"enable multiple selection with tab and <shift-tab>
+nnoremap <leader>f :FZF -m<cr>
+augroup fzf
+        autocmd!
+        autocmd! FileType fzf
+        autocmd  FileType fzf set laststatus=0 noshowmode noruler
+                                \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+augroup END
+" }}}
+
+" BufExplorer, Nerdtree{{{
+" disable default key mapping for BufExplorer.
+let g:bufExplorerDisableDefaultKeyMapping=1
+" sort buffer by file extensions.
+let g:bufExplorerSortBy='extension'
+let g:winManagerWindowLayout = "BufExplorer"
+let g:winManagerWidth = 40
+nnoremap <leader>b :WMToggle<cr>
+nnoremap - :NERDTreeToggle<CR>
+" }}}
+" }}}
+
+" Tags: {{{
+" launch tagbar
+nnoremap <leader>t :TagbarToggle<cr>
+"set vim-gutentags
+" enable gtags module, depending on GNU global,
+" for languages natively supported by gtags, don't use pygments
+let $GTAGSLABEL = 'native-pygments'
+" for languages not natively supported by gtags, use pygments, which can be installed by pip
+let $GTAGSCONF = '/home/johnzli/home_local/share/gtags/gtags.conf'
+
+let g:gutentags_modules = ['ctags', 'gtags_cscope']
+
+"set root of project folder
+let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
+"name of tags file
+let g:gutentags_ctags_tagfile = '.tags'
+" put tag files in the following folder
+let s:vim_tags = expand('~/.vim_temp/tags')
+" create it if not existent.
+if !isdirectory(s:vim_tags)
+        silent! call mkdir(s:vim_tags, 'p')
+endif
+let g:gutentags_cache_dir = '~/.vim_temp/tags'
+"set ctags parameters
+let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
+let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
+let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+
+" for universal ctags only, not exuberant ctags
+let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
+
+
+" disable key mappings by gutentags_plus
+let g:gutentags_plus_nomap = 1
+" Find symbol (reference) under cursor
+noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
+" Find symbol definition under cursor
+noremap <silent> <leader>gg :GscopeFind g <C-R><C-W><cr>
+" Functions calling this function
+noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
+" Function called by this function
+noremap <silent> <leader>gd :GscopeFind d <C-R><C-W><cr>
+" Find this text string
+noremap <silent> <leader>gt :GscopeFind t <C-R><C-W><cr>
+" Find this egrep pattern
+noremap <silent> <leader>ge :GscopeFind e <C-R><C-W><cr>
+" Find file name under cursor
+noremap <silent> <leader>gf :GscopeFind f <C-R>=expand("<cfile>")<cr><cr>
+" Find files #including the file under the cursor
+noremap <silent> <leader>gi :GscopeFind i <C-R>=expand("<cfile>")<cr><cr>
+" Find places where this symbol is assigned a value
+noremap <silent> <leader>ga :GscopeFind a <C-R><C-W><cr>
+" Find current word in ctags database
+noremap <silent> <leader>gz :GscopeFind z <C-R><C-W><cr>
+" }}}
+
+" Completion: {{{
+" Spell {{{
+set spell spelllang=en_us
+set dictionary-=/usr/share/dict/words dictionary+=/usr/share/dict/words
+set spellfile=~/.vim/spell/lizhao-spell.add
+" for word completeion
+inoremap <F2> <C-x><C-k>
+" launch word correction menu
+nnoremap <F2> z=
+" }}}
+
+" YouCompleteMe{{{
+" set python interpreter for ycm server
+let g:ycm_server_python_interpreter='/usr/bin/python3'
+
+" do not show detail information of a completion candidate in a top window
+let g:ycm_add_preview_to_completeopt = 0
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_complete_in_comments = 1
+
+" press <F1> or the right button of the mouse in normal mode to show documentation
+" of the identifier under cursor.
+nmap <F1> <plug>(YCMHover)
+nmap <RightMouse> <plug>(YCMHover)
+
+" Let clangd fully control code completion
+" Use installed clangd, not YCM-bundled clangd which doesn't get updates.
+let g:ycm_clangd_binary_path = exepath("clangd")
+" use clangd's caching and filtering algorithm
+let g:ycm_clangd_uses_ycmd_caching = 0
+
+"no diagnostic message
+let g:ycm_show_diagnostics_ui = 0
+let g:ycm_use_ultisnips_completer = 1
+" }}}
+
+" Snips{{{
+" config ulti-snips
+let g:UltiSnipsExpandTrigger="<c-l>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-h>"
+" }}}
+" }}}
+
+" Sessions: {{{
+" allows cursor change in tmux mode. Show cursor as a vertical bar in Tmux
+" instead of a block
+if exists('$TMUX')
+        let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+        let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+else
+        let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+        let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
+
+" let vim use aliases defined in .zshrc
+" this causes error when vim launched from terminal
+"set shellcmdflag=-ic
+" }}}
+
+" Writing: {{{
+" IMPORTANT: grep will sometimes skip displaying the file name if you
+" search in a singe file. This will confuse Latex-Suite. Set your grep
+" program to always generate a file-name.
+autocmd BufRead,BufNewFile *.tex set grepprg=grep\ -nH\ $*
+let g:tex_flavor='latex'
+let g:Tex_DefaultTargetFormat = 'pdf'
+let g:Tex_ViewRule_pdf ='okular --unique'
+let g:Tex_CompileRule_pdf = 'pdflatex -synctex=-1 -src-specials -interaction=nonstopmode $*'
+autocmd FileType tex nnoremap <Leader>lb :<C-U>exec '!bibtex '.Tex_GetMainFileName(':p:t:r')<CR>
+function! SyncTexForward()
+        let execstr = "silent !okular --unique %:p:r.pdf\#src:".line(".")."%:p &"
+        exec exec execstr
+endfunction
+autocmd FileType tex nnoremap <Leader>ls :call SyncTexForward()<CR>
+" do not use any marker for tex files.
+let g:neomake_tex_enabled_makers = []
+" press <F3> in normal mode will sync syntax from start
+autocmd FileType tex nnoremap <F3> <Esc>:syntax sync fromstart<CR>
+
+" markdown-preview.nvim
+let g:mkdp_auto_start = 1 "open preview window automatically
+autocmd FileType markdown nnoremap <leader>lv :MarkdownPreview
+autocmd FileType markdown nnoremap <leader>ls :MarkdownPreviewStop
+" press <F3> in normal mode will sync syntax from start
+autocmd FileType markdown nnoremap <F3> <Esc>:syntax sync fromstart<CR>
+" }}}
+
+" Programming: {{{
+" Neomake and Neoformat {{{
+"open the error and warning list automatically:
+let g:neomake_open_list = 2
+let g:neoformat_only_msg_on_error = 1 "only msg when there is an error
+
+" use F10 toggle quick fix window
+function! ToggleQuickFix()
+        if empty(filter(getwininfo(), 'v:val.quickfix'))
+                copen
+        else
+                cclose
+        endif
+endfunction
+nnoremap <silent> <F10> :call ToggleQuickFix()<cr>
+
+"toggle Neomake with F11
+nnoremap <F11> <Esc>:NeomakeToggle<CR>
+inoremap <F11> <Esc>:NeomakeToggle<CR>
+"invoke the formatter for current buffer
+nnoremap <F12> <Esc>:Neoformat<CR>
+inoremap <F12> <Esc>:Neoformat<CR>
+
+function! MyOnBattery()
+        if filereadable('/sys/class/power_supply/AC/online')
+                return readfile('/sys/class/power_supply/AC/online') == ['0']
+        else
+                return '1'=='0'
+        endif
+endfunction
+
+if MyOnBattery()
+        " When writing a buffer (no delay)
+        call neomake#configure#automake('w')
+else
+        " When writing a buffer (no delay), and on normal mode changes (after 1000ms).
+        call neomake#configure#automake('nw', 1000)
+endif
 "}}}
+
+" vim-doge{{{
+" do not enable built-in key mappings
+let g:doge_enable_mappings = 0
+" use ',,' as the default mapping.
+nmap ,, <Esc>:DogeGenerate<CR>
+let g:doge_mapping = ',,'
+" only jusmping among items in normal mode
+let g:doge_comment_jump_modes =['n']
+"}}}
+
+" vim-header: {{{
+" do not auto add header
+let g:header_field_author = 'John Z. Li (李昭)'
+let g:header_field_author_email = 'lizhao.johnlee@gmail.com'
+let g:header_auto_add_header = 0
+let g:header_field_timestamp = 0
+let g:header_field_modified_timestamp = 0
+let g:header_field_modified_by = 0
+" }}}
+" }}}
+
+" Project: {{{
+" Building: {{{
+" make related custom commands.
+" Run "make" asynchronously
+command AsyncMake AsyncRun -cwd=<root> make -j$(nproc)
+" Run "make run" asynchronously.
+command AsyncMakeRun AsyncRun -cwd=<root> -mode=term -pos=right -raw make run
+" Run "make test" asynchronously.
+command AsyncMakeTest AsyncRun -cwd=<root> -mode=term -pos=right make test
+" Run "make clean" asynchronously.
+command AsyncMakeClean AsyncRun -cwd=<root> -mode=term -pos=right -raw make clean
+
+" Cmake related custom commands.
+" :CMake creates a build directory and generates cmake project
+command CMake AsyncRun -cwd=<root> -mode=term -pos=right -raw mkdir -p build&& cd build&& cmake ..
+" :CMakeBuild builds current cmake project in subdirectory build.
+command CMakeBuild AsyncRun -cwd=<root> cmake --build build -j $(nproc)
+" :CMakeInstall install the built project, CMake 3.15+ only
+command CMakeInstall AsyncRun -cwd=<root> -mode=term -pos=right -raw cmake --install build
+" :CMakeClean removes the whole build directory
+command CMakeClean AsyncRun -cwd=<root> -mode=term -pos=right -raw rm -rf build
+" :CMakeTest to run all the test
+command CMakeTest AsyncRun -cwd=<root> -mode=term -pos=right -raw cd build& ctest
+" }}}
+
+" AsyncRun:{{{
+" asyncrun root markers.
+let g:asyncrun_rootmarks = ['.svn', '.git', '.root', '_darcs', 'build.xml', '.project']
+
+" open quick fix after async_run
+let g:asyncrun_open = 6
+
+" ring when async_run returns
+let g:asyncrun_bell = 1
+
+" let errormarker work with Asyncrun
+let g:asyncrun_auto = "make"
+
+" let AsyncRun work with airline
+let g:asyncrun_status = ''
+let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status}'])
+
+" let AsyncRun work with makeprg.
+" Asyncrun first pick up the command specified by vim's "makeprg", then add
+" any arguments passed by the user. The resulted command is executed in a
+" vim terminal at last.
+command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
+
+" let AsyncRun work with vim-fugitive
+" run 'Gpush' and 'Gfetch' through AsyncRun.
+command! -bang -bar -nargs=* Gpush execute 'AsyncRun<bang> -cwd=' .
+                        \ fnameescape(FugitiveGitDir()) 'git push' <q-args>
+command! -bang -bar -nargs=* Gfetch execute 'AsyncRun<bang> -cwd=' .
+                        \ fnameescape(FugitiveGitDir()) 'git fetch' <q-args>
+" }}}
+
+" Rooter: {{{
+" Rooter
+let g:rooter_patterns = ['.svn', '.git', '.root', '*.sln', 'build/env.sh']
+let g:rooter_manual_only = 1 "manual only
+nnoremap <leader>rt :Rooter<CR>:pwd<CR>
+" }}}
+" }}}
+
+" C/C++: {{{
+"switch header
+nnoremap <leader>h :Rooter<CR>:call CurtineIncSw()<CR>
+"C
+let g:c_syntax_for_h=1
+let g:neomake_c_enabled_makers = ['clang']
+let g:neomake_c_clang_maker = {
+                        \ 'exe': 'clang',
+                        \ 'args': ['-Wall', '-Wextra', '-fsyntax-only',
+                        \ '-Wno-error=unused-command-line-argument',
+                        \ '-Qunused-arguments',
+                        \ '-fwrapv', '-fno-delete-null-pointer-checks', '-pthread',
+                        \ '-I', '.', '-I', 'src', '-I', 'include', '-I', '..',
+                        \ ],
+                        \ }
+let g:neoformat_enabled_c = ['clangformat']
+"C++
+let g:neomake_cpp_enabled_makers = ['clang', 'cppcheck']
+" add -fsyntax-only to supress clang amke *.gch files.
+let g:neomake_cpp_clang_maker = {
+                        \ 'exe': 'clang++',
+                        \ 'args': ['-Wall', '-Wextra', '-fsyntax-only',
+                        \ '-Wno-error=unused-command-line-argument',
+                        \ '-Qunused-arguments',
+                        \ '-fno-exceptions', '-fwrapv', '-fno-delete-null-pointer-checks',
+                        \ '-pthreads',
+                        \ '-Wno-sign-conversion',
+                        \ '-Wno-zero-as-null-pointer-constant',
+                        \ '-Wno-padded', '-Wno-unused-parameter',
+                        \ '-I', '.', '-I', 'src', '-I', 'include', '-I', '..',
+                        \ ],
+                        \ }
+
+let g:neoformat_enabled_cpp = ['clangformat']
+
+
+" rename the variable under cursor
+autocmd FileType cpp nnoremap <leader>rn :YcmCompleter RefactorRename<space>
+autocmd FileType c nnoremap <leader>rn :YcmCompleter RefactorRename<space>
+
+" Press F3 to delete object file and executable file.
+autocmd FileType cpp nnoremap <silent> <F3> :AsyncRun -cwd=$(VIM_FILEDIR) rm -f $VIM_PATHNOEXT $VIM_PATHNOEXT.o <cr>
+autocmd FileType c nnoremap <silent> <F3> :AsyncRun -cwd=$(VIM_FILEDIR) rm -f $VIM_PATHNOEXT $VIM_PATHNOEXT.o <cr>
+
+" define the following for cpp, c and java  projects
+" Press F4 to compile current buffer
+autocmd  FileType cpp nnoremap <silent> <F4> :AsyncRun g++ -Wall -Wextra
+                        \ -fno-exceptions -fwrapv -fno-delete-null-pointer-checks
+                        \ -pthread -O2
+                        \ -Wno-sign-conversion
+                        \ -Wno-zero-as-null-pointer-constant
+                        \ -Wno-padded -Wno-unused-parameter
+                        \ -I. -I src -I include -I..
+                        \ "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+
+autocmd  FileType cpp nnoremap <silent> <leader>c :AsyncRun g++ -Wall -Wextra
+                        \ -fno-exceptions -fwrapv -fno-delete-null-pointer-checks
+                        \ -pthread -O2
+                        \ -Wno-sign-conversion
+                        \ -Wno-zero-as-null-pointer-constant
+                        \ -Wno-padded -Wno-unused-parameter
+                        \ -I. -I src -I include -I..
+                        \ "$(VIM_FILEPATH)" -c <cr>
+
+autocmd  FileType c nnoremap <silent> <F4> :AsyncRun gcc -Wall -Wextra
+                        \ -fwrapv -fno-delete-null-pointer-checks -pthread -O2
+                        \ -I. -I src -I include -I..
+                        \ "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+
+autocmd FileType c nnoremap <silent> <leader>c :AsyncRun gcc -Wall -Wextra
+                        \ -fwrapv -fno-delete-null-pointer-checks -pthread -O2
+                        \ -I. -I src -I include -I..
+                        \ "$(VIM_FILEPATH)" -c <cr>
+
+" Press F5 run the executable from current file
+autocmd  FileType cpp nnoremap <silent> <F5> :AsyncRun -mode=term -pos=right -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+autocmd  FileType c nnoremap <silent> <F5> :AsyncRun -mode=term -pos=right -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+
+" Press F6 to Looks up the current line for a header and jumps to it.
+" work with c, cpp, objc, objcpp, cuda
+autocmd  FileType cpp nnoremap <silent> <F6> :YcmCompleter GoToInclude <cr>
+autocmd  FileType c nnoremap <silent> <F6> :YcmCompleter GoToInclude <cr>
+autocmd  FileType cuda nnoremap <silent> <F6> :YcmCompleter GoToInclude <cr>
+
+" Press F7 to Looks up the symbol under the cursor and jumps to its declaration.
+" Supported in filetypes: c, cpp, objc, objcpp, cuda, cs, go, java, javascript, python, rust, typescript
+autocmd  FileType cpp nnoremap <silent> <F7> :YcmCompleter GoToDeclaration <cr>
+autocmd  FileType c nnoremap <silent> <F7> :YcmCompleter GoToDeclaration <cr>
+autocmd  FileType cuda nnoremap <silent> <F7> :YcmCompleter GoToDeclaration <cr>
+
+" Press F8 to kooks up the symbol under the cursor and jumps to its definition
+" Supported in filetypes: c, cpp, objc, objcpp, cuda, cs, go, java, javascript, python, rust, typescript
+" For C-family languages, only works when the definition is in current TU.
+autocmd  FileType cpp nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
+autocmd  FileType c nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
+autocmd  FileType cuda nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
+
+" Press F9 jump to a header, or definition, or declaration.
+autocmd FileType cpp nnoremap <silent> <F9> :YcmCompleter GoTo<CR>
+autocmd FileType c nnoremap <silent> <F9> :YcmCompleter GoTo<CR>
+
+" cpp highlight
+let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+let g:cpp_class_decl_highlight = 1
+let g:cpp_posix_standard = 1
+let g:cpp_experimental_simple_template_highlight = 1
+let g:cpp_concepts_highlight = 1
+" let g:cpp_no_function_highlight = 1
+
+" }}}
+
+" Python: {{{
+" Python
+let g:jupyter_mapkeys = 0 " disable default key mappings.
+" press F4 to connect current python file to a Jupyter console in a terminal on the right and change the working directory of Jupyter to current folder of the file.
+autocmd FileType python nnoremap <silent> <F4> :vert term ++shell jupyter console<CR> <C-w><C-r> <Esc> <C-w><C-p> :sleep 1<CR> :JupyterConnect<CR>
+" press F5 to execute current file
+autocmd  FileType python nnoremap <silent> <F5> :JupyterRunFile<CR>
+" press F6 to send current cell, cursor will jump to next block
+autocmd FileType python nnoremap <silent> <F6> :JupyterSendCell<CR>:set nowrapscan<CR>:/##/<CR>j:nohlsearch<CR>:set wrapscan<CR>
+" press F7 to run code that is visual selected
+autocmd FileType python vmap <silent> <F7> <Plug>JupyterRunVisual
+" press F8 to run code object of current "paragraph".
+autocmd FileType python nmap <silent> <F7> vap<Plug>JupyterRunVisual
+" press F8 to add a breaking point at the current line.
+autocmd FileType python nnoremap <silent> <F8> :PythonSetBreak<CR>
+" press F9 go to definition of the token under cursor.
+autocmd  FileType python nnoremap <silent> <F9> :YcmCompleter GoToDefinition <cr>
+
+"python
+let g:neomake_python_enabled_makers = ['python','pylint']
+let g:neomake_python_python_exe = 'python3'
+let g:neomake_python_pylint_exe = 'python3'
+let g:neomake_python_pylint_maker = {
+                        \ 'args': [
+                        \ '-d', 'C0103, C0111',
+                        \ '-f', 'text',
+                        \ '--msg-template="{path}:{line}:{column}:{C}: [{symbol}] {msg}"',
+                        \ '-r', 'n'
+                        \ ],
+                        \ 'errorformat':
+                        \ '%A%f:%l:%c:%t: %m,' .
+                        \ '%A%f:%l: %m,' .
+                        \ '%A%f:(%l): %m,' .
+                        \ '%-Z%p^%.%#,' .
+                        \ '%-G%.%#',
+                        \ }
+
+let g:neoformat_enabled_python = ['yapf']
+let g:neoformat_python_yapf= {
+                        \ 'exe': 'yapf3',
+                        \ }
+" }}}
+
+" Bash: {{{
+" for bash
+let g:neomake_shell_enabled_makers = ['shellcheck']
+" }}}
+
+" Some useful shortcuts: {{{
+" " move vertically by visual line
+nnoremap j gj
+nnoremap k gk
+nnoremap gj j
+nnoremap gk k
+
+" toggle between number and relativenumber
+function! ToggleNumber()
+        if(&relativenumber == 1)
+                set norelativenumber
+                set number
+        else
+                set relativenumber
+        endif
+endfunc
+nnoremap <leader>n :call ToggleNumber()<CR>
+
+" jk is escape
+inoremap jk <esc>
+" Press j and k to enter terminal normal mode.
+tnoremap jk <C-\><C-n>
+
+" Press F1 quit terminal window from insert mode
+tnoremap <F1> <C-\><C-n>:q! <cr>
+" <leader>t to open a terminal on the right, ready to type
+nnoremap <leader>x <Esc>: vert term <CR> <C-w><C-r>
+
+" leave insert mode  with the <RightMouse>-key,  convenient when work on
+" laptop.
+inoremap <RightMouse> <Esc>
+
+" press <F3> in visual mode to execute the selected as shell command in a vim
+" terminal
+xnoremap <F3> "xy:term<CR><c-w>"x<CR>
+
+" Press <F3> to enter "overstrike" mode in insert mode
+inoremap <F3> <insert>
+
+" edit vimrc/zshrc and load vimrc bindings
+nnoremap <leader>ev :vsp $MYVIMRC<CR>
+nnoremap <leader>ez :vsp ~/.zshrc<CR>
+nnoremap <leader>sv :source $MYVIMRC<CR>
+
+" change pwd to the folder of the current file, and echo
+nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
+"  }}}
 
 " Useful shortcuts to input special character {{{
 " don't access menu by using alt key combinations
@@ -730,630 +1356,6 @@ if has("gui_running")
         inoremap <a-j>za <c-v>u662d
 
 endif
-"  }}}
-
-" Spell {{{
-set spell spelllang=en_us
-set dictionary-=/usr/share/dict/words dictionary+=/usr/share/dict/words
-set spellfile=~/.vim/spell/lizhao-spell.add
-" for word completeion
-inoremap <F2> <C-x><C-k>
-" launch word correction menu
-nnoremap <F2> z=
-" }}}
-
-" Searching {{{
-
-set incsearch           " search as characters are entered
-set hlsearch            " highlight matches
-" turn off search highlight
-nnoremap <leader><space> :nohlsearch<CR>
-
-"  Config ack
-if executable('ag')
-        let g:ackprg = 'rg --vimgrep --smart-case'
-endif
-" open ag.vim
-nnoremap <leader>a :Ack
-
-" Config FZF
-" makes it work like CtrlP
-let g:fzf_action = {
-                        \ 'ctrl-s': 'split',
-                        \ 'ctrl-v': 'vsplit'
-                        \ }
-" override the pagedown hotkey
-"enable multiple selection with tab and <shift-tab>
-nnoremap <leader>f :FZF -m<cr>
-augroup fzf
-        autocmd!
-        autocmd! FileType fzf
-        autocmd  FileType fzf set laststatus=0 noshowmode noruler
-                                \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-augroup END
-
-" }}}
-
-" Window, buffer, directory  and tags {{{
-
-" disable default key mapping for BufExplorer.
-let g:bufExplorerDisableDefaultKeyMapping=1
-" sort buffer by file extensions.
-let g:bufExplorerSortBy='extension'
-let g:winManagerWindowLayout = "BufExplorer"
-let g:winManagerWidth = 40
-nnoremap <leader>b :WMToggle<cr>
-
-nnoremap <leader>t :TagbarToggle<cr>
-
-nnoremap - :NERDTreeToggle<CR>
-
-"set vim-gutentags
-" enable gtags module
-" for languages natively supported by gtags, don't use pygments
-let $GTAGSLABEL = 'native-pygments'
-" for languages not natively supported by gtags, use pygments
-let $GTAGSCONF = '/home/johnzli/home_local/share/gtags/gtags.conf'
-
-let g:gutentags_modules = ['ctags', 'gtags_cscope']
-
-"set root of project folder
-let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
-"name of tags file
-let g:gutentags_ctags_tagfile = '.tags'
-" put tag files in the following folder
-let s:vim_tags = expand('~/.vim_temp/tags')
-" create it if not existent.
-if !isdirectory(s:vim_tags)
-        silent! call mkdir(s:vim_tags, 'p')
-endif
-let g:gutentags_cache_dir = '~/.vim_temp/tags'
-"set ctags parameters
-let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
-let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
-let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
-
-" for universal ctags only, not exuberant ctags
-let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
-
-
-" disable key mappings by gutentags_plus
-let g:gutentags_plus_nomap = 1
-" Find symbol (reference) under cursor
-noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
-" Find symbol definition under cursor
-noremap <silent> <leader>gg :GscopeFind g <C-R><C-W><cr>
-" Functions calling this function
-noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
-" Function called by this function
-noremap <silent> <leader>gd :GscopeFind d <C-R><C-W><cr>
-" Find this text string
-noremap <silent> <leader>gt :GscopeFind t <C-R><C-W><cr>
-" Find this egrep pattern
-noremap <silent> <leader>ge :GscopeFind e <C-R><C-W><cr>
-" Find file name under cursor
-noremap <silent> <leader>gf :GscopeFind f <C-R>=expand("<cfile>")<cr><cr>
-" Find files #including the file under the cursor
-noremap <silent> <leader>gi :GscopeFind i <C-R>=expand("<cfile>")<cr><cr>
-" Find places where this symbol is assigned a value
-noremap <silent> <leader>ga :GscopeFind a <C-R><C-W><cr>
-" Find current word in ctags database
-noremap <silent> <leader>gz :GscopeFind z <C-R><C-W><cr>
-" }}}
-
-" Set YouCompleteMe and UltiSnips{{{
-" set python interpreter for ycm server
-let g:ycm_server_python_interpreter='/usr/bin/python3'
-
-" do not show detail information of a completion candidate in a top window
-let g:ycm_add_preview_to_completeopt = 0
-let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_autoclose_preview_window_after_insertion = 1
-let g:ycm_complete_in_comments = 1
-
-" press <F1> or the right button of the mouse in normal mode to show documentation
-" of the identifier under cursor.
-nmap <F1> <plug>(YCMHover)
-nmap <RightMouse> <plug>(YCMHover)
-
-
-" Let clangd fully control code completion
-" Use installed clangd, not YCM-bundled clangd which doesn't get updates.
-let g:ycm_clangd_binary_path = exepath("clangd")
-" use clangd's caching and filtering algorithm
-let g:ycm_clangd_uses_ycmd_caching = 0
-
-"no diagnostic message
-let g:ycm_show_diagnostics_ui = 0
-let g:ycm_use_ultisnips_completer = 1
-
-" config ulti-snips
-let g:UltiSnipsExpandTrigger="<c-l>"
-let g:UltiSnipsJumpForwardTrigger="<c-j>"
-let g:UltiSnipsJumpBackwardTrigger="<c-h>"
-
-" }}}
-
-" Tex and Markdown Settings {{{
-" IMPORTANT: grep will sometimes skip displaying the file name if you
-" search in a singe file. This will confuse Latex-Suite. Set your grep
-" program to always generate a file-name.
-autocmd BufRead,BufNewFile *.tex set grepprg=grep\ -nH\ $*
-let g:tex_flavor='latex'
-let g:Tex_DefaultTargetFormat = 'pdf'
-let g:Tex_ViewRule_pdf ='okular --unique'
-let g:Tex_CompileRule_pdf = 'pdflatex -synctex=-1 -src-specials -interaction=nonstopmode $*'
-autocmd FileType tex nnoremap <Leader>lb :<C-U>exec '!bibtex '.Tex_GetMainFileName(':p:t:r')<CR>
-function! SyncTexForward()
-        let execstr = "silent !okular --unique %:p:r.pdf\#src:".line(".")."%:p &"
-        exec exec execstr
-endfunction
-autocmd FileType tex nnoremap <Leader>ls :call SyncTexForward()<CR>
-" do not use any marker for tex files.
-let g:neomake_tex_enabled_makers = []
-" press <F3> in normal mode will sync syntax from start
-autocmd FileType tex nnoremap <F3> <Esc>:syntax sync fromstart<CR>
-
-" markdown-preview.nvim
-let g:mkdp_auto_start = 1 "open preview window automatically
-autocmd FileType markdown nnoremap <leader>lv :MarkdownPreview
-autocmd FileType markdown nnoremap <leader>ls :MarkdownPreviewStop
-" press <F3> in normal mode will sync syntax from start
-autocmd FileType markdown nnoremap <F3> <Esc>:syntax sync fromstart<CR>
-" }}}
-
-" File specific settings {{{
-" strips trailing whitespaces at the end of files. this
-" is called on buffer write in the autogroup below.
-function! <SID>StripTrailingWhitespaces()
-        " save last search & cursor position
-        let _s=@/
-        let l = line(".")
-        let c = col(".")
-        %s/\s\+$//e
-        let @/=_s
-        call cursor(l, c)
-endfunction
-
-augroup filegroup
-        autocmd!
-        "clear autocmds for current group
-        autocmd VimEnter * highlight clear SignColumn
-        autocmd BufEnter,BufNewFile *.tex setlocal spell
-        autocmd BufEnter,BufNewFile *.latex setlocal spell
-        autocmd BufEnter,BufNewFile *.txt setlocal spell
-        autocmd BufEnter,BufNewFile *.text setlocal spell
-        autocmd BufEnter,BufNewFile readme setlocal spell
-        autocmd BufEnter,BufNewFile ReadMe setlocal spell
-        autocmd BufEnter,BufNewFile README setlocal spell
-        autocmd BufEnter,BufNewFile Readme setlocal spell
-        autocmd BufEnter,BufNewFile *.md setlocal spell
-        autocmd BufWritePre *.php,*.py,*.js,*.txt,*.text,*.hs,*.java,readme,README,ReadMe,Readme,*.cpp,*.hpp,*.c,*.h,*vimrc,*.md,*.markdown,*.Markdown,*.MarkDown,*.MD :call <SID>StripTrailingWhitespaces()
-        autocmd BufRead,BufNewFile *.c set filetype=c
-        autocmd FileType tex setlocal tabstop=2
-        autocmd FileType tex setlocal shiftwidth=2
-        autocmd FileType tex setlocal softtabstop=2
-        autocmd FileType cs setlocal noexpandtab
-        autocmd FileType cs setlocal list
-        autocmd FileType cs setlocal listchars=tab:+\ ,eol:-
-        autocmd FileType cs setlocal formatprg=par\ -w80\ -T4
-        autocmd FileType java setlocal noexpandtab
-        autocmd FileType java setlocal list
-        autocmd FileType java setlocal listchars=tab:+\ ,eol:-
-        autocmd FileType java setlocal formatprg=par\ -w80\ -T4
-        autocmd FileType php setlocal expandtab
-        autocmd FileType php setlocal list
-        autocmd FileType php setlocal listchars=tab:+\ ,eol:-
-        autocmd FileType php setlocal formatprg=par\ -w80\ -T4
-        autocmd FileType ruby setlocal tabstop=2
-        autocmd FileType ruby setlocal shiftwidth=2
-        autocmd FileType ruby setlocal softtabstop=2
-        autocmd FileType ruby setlocal commentstring=#\ %s
-        autocmd FileType python setlocal commentstring=#\ %s
-        autocmd FileType python setlocal tabstop=4
-        autocmd FileType python setlocal shiftwidth=4
-        autocmd FileType python setlocal softtabstop=4
-        autocmd FileType python setlocal expandtab
-        autocmd BufEnter *.cls setlocal filetype=java
-        autocmd BufEnter *.zsh-theme setlocal filetype=zsh
-        autocmd BufEnter Makefile setlocal noexpandtab
-        autocmd BufEnter *.sh setlocal tabstop=2
-        autocmd BufEnter *.sh setlocal shiftwidth=2
-        autocmd BufEnter *.sh setlocal softtabstop=2
-        autocmd BufEnter *.csv setlocal noexpandtab
-        autocmd FileType markdown setlocal noexpandtab
-        autocmd FileType markdown setlocal tabstop=4
-        autocmd FileType markdown setlocal shiftwidth=4
-        autocmd FileType markdown setlocal softtabstop=4
-        autocmd FileType markdown setlocal spell
-augroup END
-" }}}
-
-" Set backup, swap and undofile {{{
-"set writebackup " set backup actually override set writebackup
-set backup
-let s:backup_dir = expand('$HOME/.vim_temp/backup')
-" if backup_dir doesn't exist, create it.
-if !isdirectory(s:backup_dir)
-        silent! call mkdir(s:backup_dir, 'p')
-endif
-set backupdir=~/.vim_temp/backup,~/.temp,/var/tmp,/tmp "for backup files
-set backupskip+=/tmp/*,/temp/*
-
-let s:swap_dir = expand('~/.vim_temp/swap')
-set directory^=~/.vim_temp/swap "append path to head of directory, use absolute path
-if !isdirectory(s:swap_dir)
-        silent! call mkdir(s:swap_dir, 'p')
-endif
-
-set undofile " Maintain undo history between sessions
-set undodir=~/.vim_temp/undodir
-let s:undo_dir = expand('~/.vim_temp/undodir')
-" create undo_dir if not existent.
-if !isdirectory(s:undo_dir)
-        silent! call mkdir(s:undo_dir, 'p')
-endif
-
-" }}}
-
-" Work with TMux ans zsh {{{
-" allows cursor change in tmux mode. Show cursor as a vertical bar in Tmux
-" instead of a block
-if exists('$TMUX')
-        let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-        let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-else
-        let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-        let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-endif
-
-" let vim use aliases defined in .zshrc
-" this causes error when vim launched from terminal
-"set shellcmdflag=-ic
-" }}}
-
-" Programming enhancement, asyncrun, neomake, neoformat, vim-header, vim-doge,Hotkeys: F10-12 {{{
-"open the error and warning list automatically:
-let g:neomake_open_list = 2
-let g:neoformat_only_msg_on_error = 1 "only msg when there is an error
-
-" use F10 toggle quick fix window
-function! ToggleQuickFix()
-        if empty(filter(getwininfo(), 'v:val.quickfix'))
-                copen
-        else
-                cclose
-        endif
-endfunction
-nnoremap <silent> <F10> :call ToggleQuickFix()<cr>
-
-"toggle Neomake with F11
-nnoremap <F11> <Esc>:NeomakeToggle<CR>
-inoremap <F11> <Esc>:NeomakeToggle<CR>
-"invoke the formatter for current buffer
-nnoremap <F12> <Esc>:Neoformat<CR>
-inoremap <F12> <Esc>:Neoformat<CR>
-
-function! MyOnBattery()
-        if filereadable('/sys/class/power_supply/AC/online')
-                return readfile('/sys/class/power_supply/AC/online') == ['0']
-        else
-                return '1'=='0'
-        endif
-endfunction
-
-if MyOnBattery()
-        " When writing a buffer (no delay)
-        call neomake#configure#automake('w')
-else
-        " When writing a buffer (no delay), and on normal mode changes (after 1000ms).
-        call neomake#configure#automake('nw', 1000)
-endif
-
-" asyncrun root markers.
-let g:asyncrun_rootmarks = ['.svn', '.git', '.root', '_darcs', 'build.xml', '.project']
-
-" open quick fix after async_run
-let g:asyncrun_open = 6
-
-" ring when async_run returns
-let g:asyncrun_bell = 1
-
-" let errormarker work with Asyncrun
-let g:asyncrun_auto = "make"
-
-" let AsyncRun work with airline
-let g:asyncrun_status = ''
-let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status}'])
-
-" let AsyncRun work with makeprg.
-" Asyncrun first pick up the command specified by vim's "makeprg", then add
-" any arguments passed by the user. The resulted command is executed in a
-" vim terminal at last.
-command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
-
-" let AsyncRun work with vim-fugitive
-" run 'Gpush' and 'Gfetch' through AsyncRun.
-command! -bang -bar -nargs=* Gpush execute 'AsyncRun<bang> -cwd=' .
-                        \ fnameescape(FugitiveGitDir()) 'git push' <q-args>
-command! -bang -bar -nargs=* Gfetch execute 'AsyncRun<bang> -cwd=' .
-                        \ fnameescape(FugitiveGitDir()) 'git fetch' <q-args>
-
-" Rooter and CurtineIncSw
-let g:rooter_patterns = ['.svn', '.git', '.root', '*.sln', 'build/env.sh']
-let g:rooter_manual_only = 1 "manual only
-nnoremap <leader>rt :Rooter<CR>:pwd<CR>
-"switch header
-nnoremap <leader>h :Rooter<CR>:call CurtineIncSw()<CR>
-
-" vim-doge
-" do not enable built-in key mappings
-let g:doge_enable_mappings = 0
-" use ',,' as the default mapping.
-nmap ,, <Esc>:DogeGenerate<CR>
-let g:doge_mapping = ',,'
-" only jusmping among items in normal mode
-let g:doge_comment_jump_modes =['n']
-
-" vim-header
-" do not auto add header
-let g:header_field_author = 'John Z. Li'
-let g:header_field_author_email = 'lizhao.johnlee@gmail.com'
-let g:header_auto_add_header = 0
-let g:header_field_timestamp = 0
-let g:header_field_modified_timestamp = 0
-let g:header_field_modified_by = 0
-" }}}
-
-" C and C++ programming {{{
-"C
-let g:c_syntax_for_h=1
-let g:neomake_c_enabled_makers = ['clang']
-let g:neomake_c_clang_maker = {
-                        \ 'exe': 'clang',
-                        \ 'args': ['-Wall', '-Wextra', '-fsyntax-only',
-                        \ '-Wno-error=unused-command-line-argument',
-                        \ '-Qunused-arguments',
-                        \ '-fwrapv', '-fno-delete-null-pointer-checks', '-pthread',
-                        \ '-I', '.', '-I', 'src', '-I', 'include', '-I', '..',
-                        \ ],
-                        \ }
-let g:neoformat_enabled_c = ['clangformat']
-"C++
-let g:neomake_cpp_enabled_makers = ['clang', 'cppcheck']
-" add -fsyntax-only to supress clang amke *.gch files.
-let g:neomake_cpp_clang_maker = {
-                        \ 'exe': 'clang++',
-                        \ 'args': ['-Wall', '-Wextra', '-fsyntax-only',
-                        \ '-Wno-error=unused-command-line-argument',
-                        \ '-Qunused-arguments',
-                        \ '-fno-exceptions', '-fwrapv', '-fno-delete-null-pointer-checks',
-                        \ '-pthreads',
-                        \ '-Wno-sign-conversion',
-                        \ '-Wno-zero-as-null-pointer-constant',
-                        \ '-Wno-padded', '-Wno-unused-parameter',
-                        \ '-I', '.', '-I', 'src', '-I', 'include', '-I', '..',
-                        \ ],
-                        \ }
-
-let g:neoformat_enabled_cpp = ['clangformat']
-
-
-" rename the variable under cursor
-autocmd FileType cpp nnoremap <leader>rn :YcmCompleter RefactorRename<space>
-autocmd FileType c nnoremap <leader>rn :YcmCompleter RefactorRename<space>
-
-" Press F3 to delete object file and executable file.
-autocmd FileType cpp nnoremap <silent> <F3> :AsyncRun -cwd=$(VIM_FILEDIR) rm -f $VIM_PATHNOEXT $VIM_PATHNOEXT.o <cr>
-autocmd FileType c nnoremap <silent> <F3> :AsyncRun -cwd=$(VIM_FILEDIR) rm -f $VIM_PATHNOEXT $VIM_PATHNOEXT.o <cr>
-
-" define the following for cpp, c and java  projects
-" Press F4 to compile current buffer
-autocmd  FileType cpp nnoremap <silent> <F4> :AsyncRun g++ -Wall -Wextra
-                        \ -fno-exceptions -fwrapv -fno-delete-null-pointer-checks
-                        \ -pthread -O2
-                        \ -Wno-sign-conversion
-                        \ -Wno-zero-as-null-pointer-constant
-                        \ -Wno-padded -Wno-unused-parameter
-                        \ -I. -I src -I include -I..
-                        \ "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
-
-autocmd  FileType cpp nnoremap <silent> <leader>c :AsyncRun g++ -Wall -Wextra
-                        \ -fno-exceptions -fwrapv -fno-delete-null-pointer-checks
-                        \ -pthread -O2
-                        \ -Wno-sign-conversion
-                        \ -Wno-zero-as-null-pointer-constant
-                        \ -Wno-padded -Wno-unused-parameter
-                        \ -I. -I src -I include -I..
-                        \ "$(VIM_FILEPATH)" -c <cr>
-
-autocmd  FileType c nnoremap <silent> <F4> :AsyncRun gcc -Wall -Wextra
-                        \ -fwrapv -fno-delete-null-pointer-checks -pthread -O2
-                        \ -I. -I src -I include -I..
-                        \ "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
-
-autocmd FileType c nnoremap <silent> <leader>c :AsyncRun gcc -Wall -Wextra
-                        \ -fwrapv -fno-delete-null-pointer-checks -pthread -O2
-                        \ -I. -I src -I include -I..
-                        \ "$(VIM_FILEPATH)" -c <cr>
-
-" Press F5 run the executable from current file
-autocmd  FileType cpp nnoremap <silent> <F5> :AsyncRun -mode=term -pos=right -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
-autocmd  FileType c nnoremap <silent> <F5> :AsyncRun -mode=term -pos=right -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
-
-" Press F6 to Looks up the current line for a header and jumps to it.
-" work with c, cpp, objc, objcpp, cuda
-autocmd  FileType cpp nnoremap <silent> <F6> :YcmCompleter GoToInclude <cr>
-autocmd  FileType c nnoremap <silent> <F6> :YcmCompleter GoToInclude <cr>
-autocmd  FileType cuda nnoremap <silent> <F6> :YcmCompleter GoToInclude <cr>
-
-" Press F7 to Looks up the symbol under the cursor and jumps to its declaration.
-" Supported in filetypes: c, cpp, objc, objcpp, cuda, cs, go, java, javascript, python, rust, typescript
-autocmd  FileType cpp nnoremap <silent> <F7> :YcmCompleter GoToDeclaration <cr>
-autocmd  FileType c nnoremap <silent> <F7> :YcmCompleter GoToDeclaration <cr>
-autocmd  FileType cuda nnoremap <silent> <F7> :YcmCompleter GoToDeclaration <cr>
-
-" Press F8 to kooks up the symbol under the cursor and jumps to its definition
-" Supported in filetypes: c, cpp, objc, objcpp, cuda, cs, go, java, javascript, python, rust, typescript
-" For C-family languages, only works when the definition is in current TU.
-autocmd  FileType cpp nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
-autocmd  FileType c nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
-autocmd  FileType cuda nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
-
-" Press F9 jump to a header, or definition, or declaration.
-autocmd FileType cpp nnoremap <silent> <F9> :YcmCompleter GoTo<CR>
-autocmd FileType c nnoremap <silent> <F9> :YcmCompleter GoTo<CR>
-
-" cpp highlight
-let g:cpp_class_scope_highlight = 1
-let g:cpp_member_variable_highlight = 1
-let g:cpp_class_decl_highlight = 1
-let g:cpp_posix_standard = 1
-let g:cpp_experimental_simple_template_highlight = 1
-let g:cpp_concepts_highlight = 1
-" let g:cpp_no_function_highlight = 1
-
-" }}}
-
-" Python programming {{{
-" Python
-let g:jupyter_mapkeys = 0 " disable default key mappings.
-" press F4 to connect current python file to a Jupyter console in a terminal on the right and change the working directory of Jupyter to current folder of the file.
-autocmd FileType python nnoremap <silent> <F4> :vert term ++shell jupyter console<CR> <C-w><C-r> <Esc> <C-w><C-p> :sleep 1<CR> :JupyterConnect<CR>
-" press F5 to execute current file
-autocmd  FileType python nnoremap <silent> <F5> :JupyterRunFile<CR>
-" press F6 to send current cell, cursor will jump to next block
-autocmd FileType python nnoremap <silent> <F6> :JupyterSendCell<CR>:set nowrapscan<CR>:/##/<CR>j:nohlsearch<CR>:set wrapscan<CR>
-" press F7 to run code that is visual selected
-autocmd FileType python vmap <silent> <F7> <Plug>JupyterRunVisual
-" press F8 to run code object of current "paragraph".
-autocmd FileType python nmap <silent> <F7> vap<Plug>JupyterRunVisual
-" press F8 to add a breaking point at the current line.
-autocmd FileType python nnoremap <silent> <F8> :PythonSetBreak<CR>
-" press F9 go to definition of the token under cursor.
-autocmd  FileType python nnoremap <silent> <F9> :YcmCompleter GoToDefinition <cr>
-
-"python
-let g:neomake_python_enabled_makers = ['python','pylint']
-let g:neomake_python_python_exe = 'python3'
-let g:neomake_python_pylint_exe = 'python3'
-let g:neomake_python_pylint_maker = {
-                        \ 'args': [
-                        \ '-d', 'C0103, C0111',
-                        \ '-f', 'text',
-                        \ '--msg-template="{path}:{line}:{column}:{C}: [{symbol}] {msg}"',
-                        \ '-r', 'n'
-                        \ ],
-                        \ 'errorformat':
-                        \ '%A%f:%l:%c:%t: %m,' .
-                        \ '%A%f:%l: %m,' .
-                        \ '%A%f:(%l): %m,' .
-                        \ '%-Z%p^%.%#,' .
-                        \ '%-G%.%#',
-                        \ }
-
-let g:neoformat_enabled_python = ['yapf']
-let g:neoformat_python_yapf= {
-                        \ 'exe': 'yapf3',
-                        \ }
-" }}}
-
-" Other programming languages {{{
-" for Go-lang semantic engine.
-" use gopls for code completion.
-let g:go_def_mode='gopls'
-let g:go_info_mode='gopls'
-
-" for java
-autocmd FileType java nnoremap <silent> <F4> :AsyncRun javac "$(VIM_FILEPATH)" <cr>
-" autocmd  FileType java nnoremap <silent> <F5> :!java -cp '%:p:h' '%:t:r' <cr>
-autocmd  FileType java nnoremap <silent> <F5> :AsyncRun -mode=term -pos=right -raw -cwd=$(VIM_FILEDIR) cd "$(VIM_FILEDIR)/"&&java "$(VIM_FILENOEXT)" <cr>
-" press F9 go to definition of the token under cursor.
-autocmd  FileType java nnoremap <silent> <F9> :YcmCompleter GoToDefinition <cr>
-
-" for bash
-let g:neomake_shell_enabled_makers = ['shellcheck']
-" }}}
-
-" Building, and version control {{{
-
-" make related custom commands.
-" Run "make" asynchronously
-command AsyncMake AsyncRun -cwd=<root> make -j$(nproc)
-" Run "make run" asynchronously.
-command AsyncMakeRun AsyncRun -cwd=<root> -mode=term -pos=right -raw make run
-" Run "make test" asynchronously.
-command AsyncMakeTest AsyncRun -cwd=<root> -mode=term -pos=right make test
-" Run "make clean" asynchronously.
-command AsyncMakeClean AsyncRun -cwd=<root> -mode=term -pos=right -raw make clean
-
-" Cmake related custom commands.
-" :CMake creates a build directory and generates cmake project
-command CMake AsyncRun -cwd=<root> -mode=term -pos=right -raw mkdir -p build&& cd build&& cmake ..
-" :CMakeBuild builds current cmake project in subdirectory build.
-command CMakeBuild AsyncRun -cwd=<root> cmake --build build -j $(nproc)
-" :CMakeInstall install the built project, CMake 3.15+ only
-command CMakeInstall AsyncRun -cwd=<root> -mode=term -pos=right -raw cmake --install build
-" :CMakeClean removes the whole build directory
-command CMakeClean AsyncRun -cwd=<root> -mode=term -pos=right -raw rm -rf build
-" :CMakeTest to run all the test
-command CMakeTest AsyncRun -cwd=<root> -mode=term -pos=right -raw cd build& ctest
-
-" }}}
-
-" Some useful shortcuts. {{{
-" " move vertically by visual line
-nnoremap j gj
-nnoremap k gk
-nnoremap gj j
-nnoremap gk k
-
-" toggle gundo
-let g:gundo_prefer_python3 = 1
-nnoremap <leader>u :GundoToggle<CR>
-
-" toggle between number and relativenumber
-function! ToggleNumber()
-        if(&relativenumber == 1)
-                set norelativenumber
-                set number
-        else
-                set relativenumber
-        endif
-endfunc
-nnoremap <leader>n :call ToggleNumber()<CR>
-
-" jk is escape
-inoremap jk <esc>
-" Press j and k to enter terminal normal mode.
-tnoremap jk <C-\><C-n>
-
-" Press F1 quit terminal window from insert mode
-tnoremap <F1> <C-\><C-n>:q! <cr>
-" <leader>t to open a terminal on the right, ready to type
-nnoremap <leader>x <Esc>: vert term <CR> <C-w><C-r>
-
-" leave insert mode  with the <RightMouse>-key,  convenient when work on
-" laptop.
-inoremap <RightMouse> <Esc>
-
-nnoremap <leader>rw <Esc>: /\(\<\w\+\>\)\_s*\<\1\><CR>
-" type r-w will find repeated words in text.
-
-" press <F3> in visual mode to execute the selected as shell command in a vim
-" terminal
-xnoremap <F3> "xy:term<CR><c-w>"x<CR>
-
-" Press <F3> to enter "overstrike" mode in insert mode
-inoremap <F3> <insert>
-
-" edit vimrc/zshrc and load vimrc bindings
-nnoremap <leader>ev :vsp $MYVIMRC<CR>
-nnoremap <leader>ez :vsp ~/.zshrc<CR>
-nnoremap <leader>sv :source $MYVIMRC<CR>
-
-" change pwd to the folder of the current file, and echo
-nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
 "  }}}
 
 "Folding method for this file {{{
