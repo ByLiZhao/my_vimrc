@@ -97,7 +97,7 @@ Plug 'ericcurtin/CurtineIncSw.vim'
 " Python: {{{
 Plug 'jmcantrell/vim-virtualenv'
 " work with Jupyter notebook
-Plug 'jupyter-vim/jupyter-vim'
+Plug 'sillybun/vim-repl'
 " }}}
 
 call plug#end()
@@ -606,15 +606,11 @@ endfunction
 autocmd FileType tex nnoremap <Leader>ls :call SyncTexForward()<CR>
 " do not use any marker for tex files.
 let g:neomake_tex_enabled_makers = []
-" press <F3> in normal mode will sync syntax from start
-autocmd FileType tex nnoremap <F3> <Esc>:syntax sync fromstart<CR>
 
 " markdown-preview.nvim
 let g:mkdp_auto_start = 1 "open preview window automatically
 autocmd FileType markdown nnoremap <leader>lv :MarkdownPreview
 autocmd FileType markdown nnoremap <leader>ls :MarkdownPreviewStop
-" press <F3> in normal mode will sync syntax from start
-autocmd FileType markdown nnoremap <F3> <Esc>:syntax sync fromstart<CR>
 " }}}
 
 " Programming: {{{
@@ -743,8 +739,6 @@ nnoremap <leader>rt :Rooter<CR>:pwd<CR>
 " }}}
 
 " C/C++: {{{
-"switch header
-nnoremap <leader>h :Rooter<CR>:call CurtineIncSw()<CR>
 "C
 let g:c_syntax_for_h=1
 let g:neomake_c_enabled_makers = ['clang']
@@ -763,7 +757,7 @@ let g:neomake_cpp_enabled_makers = ['clang', 'cppcheck']
 " add -fsyntax-only to supress clang amke *.gch files.
 let g:neomake_cpp_clang_maker = {
                         \ 'exe': 'clang++',
-                        \ 'args': ['-Wall', '-Wextra', '-fsyntax-only',
+                        \ 'args': ['-Wall', '-Wextra', '-fsyntax-only', '-std=c++17',
                         \ '-Wno-error=unused-command-line-argument',
                         \ '-Qunused-arguments',
                         \ '-fno-exceptions', '-fwrapv', '-fno-delete-null-pointer-checks',
@@ -779,16 +773,12 @@ let g:neoformat_enabled_cpp = ['clangformat']
 
 
 " rename the variable under cursor
-autocmd FileType cpp nnoremap <leader>rn :YcmCompleter RefactorRename<space>
-autocmd FileType c nnoremap <leader>rn :YcmCompleter RefactorRename<space>
-
-" Press F3 to delete object file and executable file.
-autocmd FileType cpp nnoremap <silent> <F3> :AsyncRun -cwd=$(VIM_FILEDIR) rm -f $VIM_PATHNOEXT $VIM_PATHNOEXT.o <cr>
-autocmd FileType c nnoremap <silent> <F3> :AsyncRun -cwd=$(VIM_FILEDIR) rm -f $VIM_PATHNOEXT $VIM_PATHNOEXT.o <cr>
+autocmd FileType cpp nnoremap <leader>n :YcmCompleter RefactorRename<space>
+autocmd FileType c nnoremap <leader>n :YcmCompleter RefactorRename<space>
 
 " define the following for cpp, c and java  projects
 " Press F4 to compile current buffer
-autocmd  FileType cpp nnoremap <silent> <F4> :AsyncRun g++ -Wall -Wextra
+autocmd  FileType cpp nnoremap <silent> <F4> :AsyncRun g++ -Wall -Wextra -std=c++17
                         \ -fno-exceptions -fwrapv -fno-delete-null-pointer-checks
                         \ -pthread -O2
                         \ -Wno-sign-conversion
@@ -797,7 +787,7 @@ autocmd  FileType cpp nnoremap <silent> <F4> :AsyncRun g++ -Wall -Wextra
                         \ -I. -I src -I include -I..
                         \ "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
 
-autocmd  FileType cpp nnoremap <silent> <leader>c :AsyncRun g++ -Wall -Wextra
+autocmd  FileType cpp nnoremap <silent> <leader>c :AsyncRun g++ -Wall -Wextra -std=c++17
                         \ -fno-exceptions -fwrapv -fno-delete-null-pointer-checks
                         \ -pthread -O2
                         \ -Wno-sign-conversion
@@ -856,21 +846,17 @@ let g:cpp_concepts_highlight = 1
 
 " Python: {{{
 " Python
-let g:jupyter_mapkeys = 0 " disable default key mappings.
-" press F4 to connect current python file to a Jupyter console in a terminal on the right and change the working directory of Jupyter to current folder of the file.
-autocmd FileType python nnoremap <silent> <F4> :vert term ++shell jupyter console<CR> <C-w><C-r> <Esc> <C-w><C-p> :sleep 1<CR> :JupyterConnect<CR>
-" press F5 to execute current file
-autocmd  FileType python nnoremap <silent> <F5> :JupyterRunFile<CR>
-" press F6 to send current cell, cursor will jump to next block
-autocmd FileType python nnoremap <silent> <F6> :JupyterSendCell<CR>:set nowrapscan<CR>:/##/<CR>j:nohlsearch<CR>:set wrapscan<CR>
-" press F7 to run code that is visual selected
-autocmd FileType python vmap <silent> <F7> <Plug>JupyterRunVisual
-" press F8 to run code object of current "paragraph".
-autocmd FileType python nmap <silent> <F7> vap<Plug>JupyterRunVisual
-" press F8 to add a breaking point at the current line.
-autocmd FileType python nnoremap <silent> <F8> :PythonSetBreak<CR>
-" press F9 go to definition of the token under cursor.
-autocmd  FileType python nnoremap <silent> <F9> :YcmCompleter GoToDefinition <cr>
+autocmd FileType python nnoremap <F4> <Esc>:REPLToggle<CR><c-w>t<c-w>H
+autocmd FileType python nnoremap <F5> <Esc>:REPLSendAll<CR>
+autocmd FileType python nnoremap <F6> <Esc>:REPLSendSession<CR>
+" debug stop at current line
+autocmd FileType python nnoremap <F7> <Esc>:REPLDebugStopAtCurrentLine<Cr><c-w>t<c-w>H
+" F8 send current line, or code block, works in normal mode and visual mode
+let g:sendtorepl_invoke_key = '<F8>'
+" debug execute next line
+autocmd FileType python nnoremap <F9> <Esc>:REPLPDBN<CR>
+" debug execute next line, go into function if needed
+autocmd FileType python nnoremap <leader>w <Esc>:REPLPDBS<CR>
 
 "python
 let g:neomake_python_enabled_makers = ['python','pylint']
@@ -926,13 +912,16 @@ inoremap jk <esc>
 tnoremap jk <C-\><C-n>
 
 " Press F1 quit terminal window from insert mode
-tnoremap <F1> <C-\><C-n>:q! <cr>
+tnoremap <F1> <C-\><C-n>:q!<cr>
 " <leader>t to open a terminal on the right, ready to type
 nnoremap <leader>x <Esc>: vert term <CR> <C-w><C-r>
 
 " leave insert mode  with the <RightMouse>-key,  convenient when work on
 " laptop.
 inoremap <RightMouse> <Esc>
+
+" press <F3> in normal mode will sync syntax from start
+nnoremap <F3> <Esc>:syntax sync fromstart<CR>
 
 " press <F3> in visual mode to execute the selected as shell command in a vim
 " terminal
