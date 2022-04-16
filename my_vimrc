@@ -565,7 +565,7 @@ let g:UltiSnipsJumpBackwardTrigger="<c-h>"
 " }}}
 " }}}
 
-" Sessions: {{{
+" Tmux: {{{
 " allows cursor change in tmux mode. Show cursor as a vertical bar in Tmux
 " instead of a block
 if exists('$TMUX')
@@ -723,8 +723,10 @@ command! -bang -bar -nargs=* Gfetch execute 'AsyncRun<bang> -cwd=' .
 " }}}
 
 " Rooter: {{{
-" Rooter
-let g:rooter_patterns = ['.svn', '.git', '.root', '*.sln', 'build/env.sh']
+" Rooter is needed to handle the case where a workspace is composed of
+" multiple projects and the "root" of the workspace is the outmost folder
+" that contains all projects. The idea is like a workspace in ROS.
+let g:rooter_patterns = ['.workspace']
 let g:rooter_manual_only = 1 "manual only
 nnoremap <leader>rt :Rooter<CR>:pwd<CR>
 " }}}
