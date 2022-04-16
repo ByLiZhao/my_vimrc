@@ -111,6 +111,7 @@ filetype plugin on
 " Don't access menu by using alt key combinations
 " for example,  don't use alt-f to access file menu
 set winaltkeys=no
+set foldenable          " enable folding
 
 " Encoding {{{
 set fileencodings=utf-8,ucs-bom,shift-jis,latin1,big5,gb18030,gbk,gb2312,cp936
@@ -134,13 +135,6 @@ let g:gruvbox_visibility='high'
 " let g:solarized_visibility= "high"
 " }}}
 
-" Airline{{{
-" If only one tab is opened, show all buffers at the top of the window
-" in a tab-like style. They can be switched to use buffer commands.
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_alt_sep = '|'
-" }}}
-
 "GUI{{{
 if has("gui_running")
   " GUI is running or is about to start,  maximize gvim window.
@@ -150,12 +144,6 @@ endif
 set guifontset=
 set guifont=Consolas\ 14
 set guifontwide=Microsoft\ Yahei\ 14
-" }}}
-
-" Folding{{{
-set foldenable          " enable folding
-set foldlevelstart=10   " open most folds by default
-set foldnestmax=10      " 10 nested fold max
 " }}}
 
 " Indent{{{
@@ -295,7 +283,7 @@ nnoremap <silent> [w <Esc>:update<CR>:tabprevious<CR>
 nnoremap <silent> ]w <Esc>:update<CR>:tabnext<CR>
 " press [t to previous matched tag,  and ]t to next matched tag.
 nnoremap <silent> [t <Esc>:update<CR>:tprevious<CR>
-nnoremap <silent> [t <Esc>:update<CR>:tnext<CR>
+nnoremap <silent> ]t <Esc>:update<CR>:tnext<CR>
 
 " press [a to previous file in arglist. ]a to next file in arglist.
 nnoremap <silent> [a <Esc>:update<CR>:previous<CR>
@@ -351,19 +339,19 @@ inoremap jj <right>
 " Notice that with nested surroundings, following commands are different from
 " "va(" or "va)". 'va(' and 'va)' matches the surrounding contains the cursor.
 " select between brackets.
-" cursor at (, matching innermost nearest )
+" cursor at (, matching the next ) that matches a (
 nnoremap <leader>( <Esc>/)<CR>:nohlsearch<CR>v[(
-" cursor at ), matching nearest (
+" cursor at ), matching the next previous ( that matches a )
 nnoremap <leader>) <Esc>?(<CR>:nohlsearch<CR>v])
 "select between square bracket
-" cursor at [, matching nearest ]
+" cursor at [, matching the next ] that matches a [
 nnoremap <leader>[ <Esc>/]<CR>:nohlsearch<CR>v%
-" cursor at ], matching nearest [
+" cursor at ], matching the next previous [ that matches a ]
 nnoremap <leader>] <Esc>?[<CR>:nohlsearch<CR>v%
 "select between braces
-" cursor at {, matching nearest }
+" cursor at {, matching the } that matches a {
 nnoremap <leader>{ <Esc>/}<CR>:nohlsearch<CR>v[{
-" cursor at }, matching nearest {
+" cursor at }, matching the next previous { that matches a }
 nnoremap <leader>} <Esc>?{<CR>:nohlsearch<CR>v]}
 " }}}
 
