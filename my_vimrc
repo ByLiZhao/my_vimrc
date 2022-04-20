@@ -320,7 +320,7 @@ inoremap <leader>- **<Left>
 " Bold in markdown
 inoremap <leader>_ ****<Left><Left>
 " type jj to move out of surroudings.
-inoremap jj <right>
+inoremap jj <right><right>
 " }}}
 
 " Change pairs{{{
