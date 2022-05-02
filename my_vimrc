@@ -609,7 +609,7 @@ function! SyncTexForward()
         exec exec execstr
 endfunction
 autocmd FileType tex nnoremap <Leader>ls :call SyncTexForward()<CR>
-" do not use any marker for tex files.
+" do not use any maker for tex files.
 let g:neomake_tex_enabled_makers = []
 
 " markdown-preview.nvim
