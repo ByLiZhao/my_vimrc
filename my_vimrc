@@ -1,15 +1,16 @@
 " Plugins: {{{
 call plug#begin('~/.vim/plugged')
 
-" General: {{{
+" Theme: {{{
 Plug 'morhetz/gruvbox'
 Plug 'altercation/vim-colors-solarized'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'sjl/gundo.vim'    "undo and redo
 " }}}
 
 " Editing Enhancement: {{{
+Plug 'sjl/gundo.vim'    "undo and redo
+Plug 'tpope/vim-sensible'
 " input special characters
 Plug 'ByLiZhao/vim-literate'
 " minor things that make certain things convenient.
@@ -17,46 +18,37 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-speeddating'
 " different representation of numbers.
+Plug 'glts/vim-magnum'
 Plug 'glts/vim-radical'
 Plug 'svermeulen/vim-cutlass' "make cut better
-Plug 'svermeulen/vim-yoink' " yank history
 Plug 'machakann/vim-highlightedyank' "highlight yank
 Plug 'svermeulen/vim-subversive' " replace
 Plug 'tomtom/tcomment_vim'  " comments
 Plug 'godlygeek/tabular'    "align texts
 Plug 'junegunn/vim-easy-align'  "align texts.
+" enhance sessions
+Plug 'tpope/vim-obsession'
 " }}}
 
 " Searching: {{{
 Plug 'jlanzarotta/bufexplorer'
 Plug 'vim-scripts/winmanager'
 Plug 'preservim/nerdtree'
-Plug 'junegunn/fzf', { 'dir': '~/home_local/src/fzf', 'do': './install --all' }
+Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'mileszs/ack.vim'
 " }}}
 
 " Tags: {{{
-Plug 'universal-ctags/ctags', {'dir': '~/home_local/src/ctags',
-                        \ 'do': './autogen.sh && ./configure --prefix=$HOME/home_local
-                        \ && make && make install'}
-Plug 'majutsushi/tagbar' "tag displaying.
+" requires universal-ctags installed.
+Plug 'preservim/tagbar' "tag displaying.
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'skywind3000/gutentags_plus'
 " }}}
 
 " Completion: {{{
-Plug 'Valloric/YouCompleteMe', {'do': 'python3 install.py --clangd-completer --rust-completer'}
+Plug 'Valloric/YouCompleteMe'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-" }}}
-
-" Sessions: {{{
-" enhance sessions
-Plug 'tpope/vim-obsession'
-" working with tmux
-Plug 'benmills/vimux'
-Plug 'edkolev/tmuxline.vim'
 " }}}
 
 " Writing: {{{
@@ -73,15 +65,6 @@ Plug 'michaeljsmith/vim-indent-object'
 " Programming: {{{
 Plug 'neomake/neomake'
 Plug 'sbdchd/neoformat'
-" Documentation tools
-Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } }
-Plug 'alpertuna/vim-header'
-Plug 'McSinyx/vim-octave'
-Plug 'elzr/vim-json'
-Plug 'chrisbra/csv.vim'
-" }}}
-
-" Project: {{{
 Plug 'skywind3000/asyncrun.vim'
 " auto set pwd to project rooter
 Plug 'airblade/vim-rooter'
@@ -89,17 +72,9 @@ Plug 'embear/vim-localvimrc'
 Plug 'mh21/errormarker.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
-" }}}
-
-" C/C++: {{{
 Plug 'octol/vim-cpp-enhanced-highlight'
+" Todo add <leader>h to switch between header and source
 Plug 'ericcurtin/CurtineIncSw.vim'
-" }}}
-
-" Python: {{{
-Plug 'jmcantrell/vim-virtualenv'
-" work with Jupyter notebook
-Plug 'sillybun/vim-repl'
 " }}}
 
 call plug#end()
@@ -111,6 +86,8 @@ filetype plugin on
 " Don't access menu by using alt key combinations
 " for example,  don't use alt-f to access file menu
 set winaltkeys=no
+
+" Folding: {{{
 set foldenable          " enable folding
 set foldmethod=indent   " fold by indent
 " disable fold in insert mode
@@ -126,6 +103,7 @@ augroup folds
 augroup END
 " press <space> to open all folds under cursor
 nnoremap <space> zA
+" }}}
 
 " Encoding {{{
 set fileencodings=utf-8,ucs-bom,shift-jis,latin1,big5,gb18030,gbk,gb2312,cp936
@@ -138,7 +116,7 @@ set termencoding=utf-8
 " Colorscheme{{{
 syntax enable
 colorscheme gruvbox
-set background=light
+set background=dark
 let g:airline_theme='gruvbox'
 let g:airline_gruvbox_bf='light'
 let g:gruvbox_contrast_light='high'
@@ -158,6 +136,23 @@ endif
 set guifontset=
 set guifont=Consolas\ 14
 set guifontwide=Microsoft\ Yahei\ 14
+" }}}
+
+" Cusor shape in Tmux and terminal: {{{
+" allows cursor change in tmux mode. Show cursor as a vertical bar in Tmux
+" instead of a block
+if exists('$TMUX')
+        let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+        let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+else
+        let &t_SI = "\<esc>[5 q"  " blinking I-beam in insert mode
+        let &t_SR = "\<esc>[3 q"  " blinking underline in replace mode
+        let &t_EI = "\<esc>[ q"  " default cursor (usually blinking block) otherwise
+endif
+
+" let vim use aliases defined in .zshrc
+" this causes error when vim launched from terminal
+"set shellcmdflag=-ic
 " }}}
 
 " Indent{{{
@@ -382,19 +377,6 @@ nnoremap mm dd
 nnoremap M D
 " }}}
 
-" Yank: vim-yoink{{{
-" immediately after performing a paste,
-" one can cycle through the history by hitting <c-n> and <c-p>
-let g:yoinkIncludeDeleteOperations = 1
-nmap <c-p> <plug>(YoinkPostPasteSwapBack)
-nmap <c-n> <plug>(YoinkPostPasteSwapForward)
-nmap p <plug>(YoinkPaste_p)
-" notice that the below P is the capital P
-nmap P <plug>(YoinkPaste_P)
-" hitting <c-=> after a paste will toggle between formatted and unformatted
-" unformatted is default
-nmap <c-=> <plug>(YoinkPostPasteToggleFormat)
-" }}}
 
 " Replace: vim-subsersive{{{
 " define new text object, ie = inner entire buffer
@@ -580,22 +562,6 @@ let g:UltiSnipsJumpBackwardTrigger="<c-h>"
 " }}}
 " }}}
 
-" Tmux: {{{
-" allows cursor change in tmux mode. Show cursor as a vertical bar in Tmux
-" instead of a block
-if exists('$TMUX')
-        let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-        let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-else
-        let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-        let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-endif
-
-" let vim use aliases defined in .zshrc
-" this causes error when vim launched from terminal
-"set shellcmdflag=-ic
-" }}}
-
 " Writing: {{{
 " IMPORTANT: grep will sometimes skip displaying the file name if you
 " search in a singe file. This will confuse Latex-Suite. Set your grep
@@ -660,25 +626,6 @@ else
 endif
 "}}}
 
-" vim-doge{{{
-" do not enable built-in key mappings
-let g:doge_enable_mappings = 0
-" use ',,' as the default mapping.
-nmap ,, <Esc>:DogeGenerate<CR>
-let g:doge_mapping = ',,'
-" only jusmping among items in normal mode
-let g:doge_comment_jump_modes =['n']
-"}}}
-
-" vim-header: {{{
-" do not auto add header
-let g:header_field_author = 'John Z. Li (李昭)'
-let g:header_field_author_email = 'lizhao.johnlee@gmail.com'
-let g:header_auto_add_header = 0
-let g:header_field_timestamp = 0
-let g:header_field_modified_timestamp = 0
-let g:header_field_modified_by = 0
-" }}}
 " }}}
 
 " Project: {{{
@@ -854,19 +801,6 @@ let g:cpp_concepts_highlight = 1
 " }}}
 
 " Python: {{{
-" Python
-autocmd FileType python nnoremap <F4> <Esc>:REPLToggle<CR><c-w>t<c-w>H
-autocmd FileType python nnoremap <F5> <Esc>:REPLSendAll<CR>
-autocmd FileType python nnoremap <F6> <Esc>:REPLSendSession<CR>
-" debug stop at current line
-autocmd FileType python nnoremap <F7> <Esc>:REPLDebugStopAtCurrentLine<Cr><c-w>t<c-w>H
-" debug execute next line
-autocmd FileType python nnoremap <F8> <Esc>:REPLPDBN<CR>
-" debug execute next line, go into function if needed
-autocmd FileType python nnoremap <leader>w <Esc>:REPLPDBS<CR>
-" F9 send current line, or code block, works in normal mode and visual mode
-let g:sendtorepl_invoke_key = '<F9>'
-
 "python
 let g:neomake_python_enabled_makers = ['python','pylint']
 let g:neomake_python_python_exe = 'python3'
