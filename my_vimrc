@@ -602,28 +602,11 @@ function! ToggleQuickFix()
 endfunction
 nnoremap <silent> <F10> :call ToggleQuickFix()<cr>
 
-"toggle Neomake with F11
-nnoremap <F11> <Esc>:NeomakeToggle<CR>
-inoremap <F11> <Esc>:NeomakeToggle<CR>
 "invoke the formatter for current buffer
 nnoremap <F12> <Esc>:Neoformat<CR>
 inoremap <F12> <Esc>:Neoformat<CR>
 
-function! MyOnBattery()
-        if filereadable('/sys/class/power_supply/AC/online')
-                return readfile('/sys/class/power_supply/AC/online') == ['0']
-        else
-                return '1'=='0'
-        endif
-endfunction
-
-if MyOnBattery()
-        " When writing a buffer (no delay)
-        call neomake#configure#automake('w')
-else
-        " When writing a buffer (no delay), and on normal mode changes (after 1000ms).
-        call neomake#configure#automake('nw', 1000)
-endif
+" dont't run Neomake automatically.
 "}}}
 
 " }}}
@@ -729,8 +712,8 @@ let g:neoformat_enabled_cpp = ['clangformat']
 
 
 " rename the variable under cursor
-autocmd FileType cpp nnoremap <leader>n :YcmCompleter RefactorRename<space>
-autocmd FileType c nnoremap <leader>n :YcmCompleter RefactorRename<space>
+autocmd FileType cpp nnoremap <leader>rn :YcmCompleter RefactorRename<space>
+autocmd FileType c nnoremap <leader>rn :YcmCompleter RefactorRename<space>
 
 " define the following for cpp, c and java  projects
 " Press F4 to compile current buffer
