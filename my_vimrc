@@ -601,7 +601,7 @@ function! ToggleQuickFix()
         endif
 endfunction
 nnoremap <silent> <F10> :call ToggleQuickFix()<cr>
-
+" use F11 to run the default maker via Neomake.
 "invoke the formatter for current buffer
 nnoremap <F12> <Esc>:Neoformat<CR>
 inoremap <F12> <Esc>:Neoformat<CR>
