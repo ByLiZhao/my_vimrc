@@ -1,12 +1,15 @@
 # configuration file for YouCompleteMe with Cpp
 def Settings(**kwargs):
     return {
-        'flags': [ '-x', 'c', \
-            '-Wall', '-Wextra', \
-            '-fwrapv', '-fno-delete-null-pointer-checks', '-pthread', \
-            '-I', '.', \
-            '-I', 'src', \
-            '-I', 'include', \
-            '-I', '..', \
+        'flags': [ '-x', 'c',
+            '-Wall', '-Wextra',
+            '-Wno-error=unused-command-line-argument',
+            '-Qunused-arguments',
+            '-fwrapv', '-fno-delete-null-pointer-checks', '-pthread',
+            '-I', '.',
+            '-I', 'include',
+            '-I', 'src',
+            '-I', '..',
+            '-I', '../include',
             ],
     }
