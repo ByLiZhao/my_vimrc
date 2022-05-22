@@ -5,14 +5,15 @@ def Settings(**kwargs):
             '-Wall', '-Wextra', \
             '-Wno-error=unused-command-line-argument', \
             '-Qunused-arguments', \
-            '-fnoexceptions', '-fwrapv', '-fno-delete-null-pointer-checks', \
+            '-fwrapv', '-fno-delete-null-pointer-checks', \
             '-pthread', \
             '-Wno-sign-conversion', \
             '-Wno-zero-as-null-pointer-constant', \
             '-Wno-padded', '-Wnoc++98-compat', '-Wunused-parameter', \
             '-I', '.', \
-            '-I', 'src', \
             '-I', 'include', \
+            '-I', 'src', \
             '-I', '..', \
+            '-I', '../include', \
             ],
     }
