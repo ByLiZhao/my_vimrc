@@ -424,14 +424,6 @@ nnoremap <leader><space> :nohlsearch<CR>
 nnoremap <leader>rw <Esc>: /\(\<\w\+\>\)\_s*\<\1\><CR>
 " }}}
 
-"  Ack{{{
-if executable('rg')
-        let g:ackprg = 'rg --vimgrep --smart-case'
-endif
-" open ack.vim
-nnoremap <leader>a :Ack!<Space>
-" }}}
-
 " FZF{{{
 " makes it work like CtrlP
 let g:fzf_action = {
