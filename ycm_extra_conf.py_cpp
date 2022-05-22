@@ -3,6 +3,8 @@ def Settings(**kwargs):
     return {
         'flags': [ '-x', 'c++', \
             '-Wall', '-Wextra', \
+            '-Wno-error=unused-command-line-argument', \
+            '-Qunused-arguments', \
             '-fnoexceptions', '-fwrapv', '-fno-delete-null-pointer-checks', \
             '-pthread', \
             '-Wno-sign-conversion', \
