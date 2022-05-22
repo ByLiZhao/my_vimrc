@@ -72,8 +72,6 @@ Plug 'embear/vim-localvimrc'
 Plug 'mh21/errormarker.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
-" Todo add <leader>h to switch between header and source
-Plug 'ericcurtin/CurtineIncSw.vim'
 " }}}
 
 call plug#end()
