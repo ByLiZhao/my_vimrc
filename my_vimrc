@@ -532,16 +532,14 @@ nnoremap <F2> z=
 " set python interpreter for ycm server
 let g:ycm_server_python_interpreter='/usr/bin/python3'
 
-" do not show detail information of a completion candidate in a top window
-let g:ycm_add_preview_to_completeopt = 0
+let g:ycm_add_preview_to_completeopt = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_complete_in_comments = 1
 
-" press <F1> or the right button of the mouse in normal mode to show documentation
+" press <F1> in normal mode to show documentation
 " of the identifier under cursor.
 nmap <F1> <plug>(YCMHover)
-nmap <RightMouse> <plug>(YCMHover)
 
 " Let clangd fully control code completion
 " Use installed clangd, not YCM-bundled clangd which doesn't get updates.
