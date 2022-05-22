@@ -118,8 +118,8 @@ syntax enable
 colorscheme gruvbox
 set background=dark
 let g:airline_theme='gruvbox'
-let g:airline_gruvbox_bf='light'
-let g:gruvbox_contrast_light='high'
+let g:airline_gruvbox_bf='dark'
+let g:gruvbox_contrast_dark='high'
 let g:gruvbox_visibility='high'
 " let g:airline_theme='solarized'
 " let g:airline_solarized_bg='light'
