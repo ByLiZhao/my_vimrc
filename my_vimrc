@@ -72,7 +72,6 @@ Plug 'embear/vim-localvimrc'
 Plug 'mh21/errormarker.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
-Plug 'octol/vim-cpp-enhanced-highlight'
 " Todo add <leader>h to switch between header and source
 Plug 'ericcurtin/CurtineIncSw.vim'
 " }}}
@@ -749,36 +748,26 @@ autocmd  FileType c nnoremap <silent> <F5> :AsyncRun -mode=term -pos=right -raw 
 
 " Press F6 to Looks up the current line for a header and jumps to it.
 " work with c, cpp, objc, objcpp, cuda
-autocmd  FileType cpp nnoremap <silent> <F6> :YcmCompleter GoToInclude <cr>
-autocmd  FileType c nnoremap <silent> <F6> :YcmCompleter GoToInclude <cr>
-autocmd  FileType cuda nnoremap <silent> <F6> :YcmCompleter GoToInclude <cr>
+autocmd  FileType cpp nnoremap <silent> <F6> :vsp<cr>:YcmCompleter GoToInclude <cr>
+autocmd  FileType c nnoremap <silent> <F6> :vsp<cr>:YcmCompleter GoToInclude <cr>
+autocmd  FileType cuda nnoremap <silent> <F6> :vsp<cr>:YcmCompleter GoToInclude <cr>
 
 " Press F7 to Looks up the symbol under the cursor and jumps to its declaration.
 " Supported in filetypes: c, cpp, objc, objcpp, cuda, cs, go, java, javascript, python, rust, typescript
-autocmd  FileType cpp nnoremap <silent> <F7> :YcmCompleter GoToDeclaration <cr>
-autocmd  FileType c nnoremap <silent> <F7> :YcmCompleter GoToDeclaration <cr>
-autocmd  FileType cuda nnoremap <silent> <F7> :YcmCompleter GoToDeclaration <cr>
+autocmd  FileType cpp nnoremap <silent> <F7> :vsp<cr>:YcmCompleter GoToDeclaration <cr>
+autocmd  FileType c nnoremap <silent> <F7> :vsp<cr>:YcmCompleter GoToDeclaration <cr>
+autocmd  FileType cuda nnoremap <silent> <F7> :vsp<cr>:YcmCompleter GoToDeclaration <cr>
 
 " Press F8 to kooks up the symbol under the cursor and jumps to its definition
 " Supported in filetypes: c, cpp, objc, objcpp, cuda, cs, go, java, javascript, python, rust, typescript
 " For C-family languages, only works when the definition is in current TU.
-autocmd  FileType cpp nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
-autocmd  FileType c nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
-autocmd  FileType cuda nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
+autocmd  FileType cpp nnoremap <silent> <F8> :vsp<cr>:YcmCompleter GoToDefinition <cr>
+autocmd  FileType c nnoremap <silent> <F8> :vsp<cr>:YcmCompleter GoToDefinition <cr>
+autocmd  FileType cuda nnoremap <silent> <F8> :vsp<cr>:YcmCompleter GoToDefinition <cr>
 
 " Press F9 jump to a header, or definition, or declaration.
-autocmd FileType cpp nnoremap <silent> <F9> :YcmCompleter GoTo<CR>
-autocmd FileType c nnoremap <silent> <F9> :YcmCompleter GoTo<CR>
-
-" cpp highlight
-let g:cpp_class_scope_highlight = 1
-let g:cpp_member_variable_highlight = 1
-let g:cpp_class_decl_highlight = 1
-let g:cpp_posix_standard = 1
-let g:cpp_experimental_simple_template_highlight = 1
-let g:cpp_concepts_highlight = 1
-" let g:cpp_no_function_highlight = 1
-
+autocmd FileType cpp nnoremap <silent> <F9> :vsp<cr>:YcmCompleter GoTo<CR>
+autocmd FileType c nnoremap <silent> <F9> :vsp<cr>:YcmCompleter GoTo<CR>
 " }}}
 
 " Python: {{{
