@@ -677,34 +677,12 @@ nnoremap <leader>rt :Rooter<CR>:pwd<CR>
 " C/C++: {{{
 "C
 let g:c_syntax_for_h=1
-let g:neomake_c_enabled_makers = ['clang']
-let g:neomake_c_clang_maker = {
-                        \ 'exe': 'clang',
-                        \ 'args': ['-Wall', '-Wextra', '-fsyntax-only',
-                        \ '-Wno-error=unused-command-line-argument',
-                        \ '-Qunused-arguments',
-                        \ '-fwrapv', '-fno-delete-null-pointer-checks', '-pthread',
-                        \ '-I', '.', '-I', 'src', '-I', 'include', '-I', '..',
-                        \ ],
-                        \ }
+let g:neomake_c_enabled_makers = [] " no default linter for C
 let g:neoformat_enabled_c = ['clangformat']
-"C++
-let g:neomake_cpp_enabled_makers = ['clang', 'cppcheck']
-" add -fsyntax-only to supress clang amke *.gch files.
-let g:neomake_cpp_clang_maker = {
-                        \ 'exe': 'clang++',
-                        \ 'args': ['-Wall', '-Wextra', '-fsyntax-only', '-std=c++17',
-                        \ '-Wno-error=unused-command-line-argument',
-                        \ '-Qunused-arguments',
-                        \ '-fno-exceptions', '-fwrapv', '-fno-delete-null-pointer-checks',
-                        \ '-pthreads',
-                        \ '-Wno-sign-conversion',
-                        \ '-Wno-zero-as-null-pointer-constant',
-                        \ '-Wno-padded', '-Wno-unused-parameter',
-                        \ '-I', '.', '-I', 'src', '-I', 'include', '-I', '..',
-                        \ ],
-                        \ }
 
+"C++
+let g:neomake_cpp_enabled_makers = [] " no default linter for C++
+" add -fsyntax-only to supress clang amke *.gch files.
 let g:neoformat_enabled_cpp = ['clangformat']
 
 
