@@ -570,10 +570,6 @@ autocmd FileType markdown nnoremap <leader>ls :MarkdownPreviewStop
 
 " Programming: {{{
 " Neomake and Neoformat {{{
-"open the error and warning list automatically:
-let g:neomake_open_list = 2
-let g:neoformat_only_msg_on_error = 1 "only msg when there is an error
-
 " use F10 toggle quick fix window
 function! ToggleQuickFix()
         if empty(filter(getwininfo(), 'v:val.quickfix'))
@@ -582,16 +578,17 @@ function! ToggleQuickFix()
                 cclose
         endif
 endfunction
-nnoremap <silent> <F10> :call ToggleQuickFix()<cr>
-" use F11 to run the default maker via Neomake.
+nnoremap <silent> <F10> :call ToggleQuickFix()<CR>
+
+" Neomake open the error and warning list automatically:
+let g:neomake_open_list = 2
+" use F11 to run Neomake on the current buffer.
+nnoremap <F11> <Esc>:Neomake<CR>
+
+let g:neoformat_only_msg_on_error = 1 "only msg when there is an error
 "invoke the formatter for current buffer
 nnoremap <F12> <Esc>:Neoformat<CR>
-inoremap <F12> <Esc>:Neoformat<CR>
-
-" dont't run Neomake automatically.
 "}}}
-
-" }}}
 
 " AsyncRun:{{{
 " asyncrun root markers.
@@ -610,7 +607,7 @@ let g:asyncrun_auto = "make"
 let g:asyncrun_status = ''
 let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status}'])
 
-" let AsyncRun work with makeprg.
+" Command Make, let AsyncRun work with makeprg.
 " Asyncrun first pick up the command specified by vim's "makeprg", then add
 " any arguments passed by the user. The resulted command is executed in a
 " vim terminal at last.
@@ -635,8 +632,17 @@ nnoremap <leader>rt :Rooter<CR>:pwd<CR>
 " }}}
 
 " C: {{{
-"C
-let g:neomake_c_enabled_makers = [] " no default linter for C
+let g:neomake_c_enabled_makers = ['clang']
+let g:neomake_c_clang_maker = {
+                        \ 'exe': 'clang',
+                        \ 'args': ['-Wall', '-Wextra', '-fsyntax-only',
+                        \ '-Wno-error=unused-command-line-argument',
+                        \ '-Qunused-arguments',
+                        \ '-fwrapv', '-fno-delete-null-pointer-checks', '-pthread',
+                        \ '-I', '.', '-I', 'src', '-I', 'include', '-I', '..', '-I', '../include',
+                        \ ],
+                        \ }
+
 let g:neoformat_enabled_c = ['clangformat']
 
 " rename the variable under cursor
@@ -645,12 +651,12 @@ autocmd FileType c nnoremap <leader>rn :YcmCompleter RefactorRename<space>
 " Press F4 to compile current buffer
 autocmd  FileType c nnoremap <silent> <F4> :AsyncRun gcc -Wall -Wextra
                         \ -fwrapv -fno-delete-null-pointer-checks -pthread -O2
-                        \ -I. -I src -I include -I..
+                        \ -I. -I src -I include -I.. -I../include
                         \ "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
 
 autocmd FileType c nnoremap <silent> <leader>c :AsyncRun gcc -Wall -Wextra
                         \ -fwrapv -fno-delete-null-pointer-checks -pthread -O2
-                        \ -I. -I src -I include -I..
+                        \ -I. -I src -I include -I.. -I../include
                         \ "$(VIM_FILEPATH)" -c <cr>
 
 " Press F5 run the executable from current file
@@ -666,10 +672,23 @@ autocmd  FileType c nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
 autocmd FileType c nnoremap <silent> <F9> :AsyncRun rm $(VIM_FILEDIR)/$(VIM_FILENOEXT) $(VIM_FILEDIR)/$(VIM_FILENOEXT).o <cr>
 " }}}
 
-" C/C++: {{{
-"C++
-let g:neomake_cpp_enabled_makers = [] " no default linter for C++
-" add -fsyntax-only to supress clang amke *.gch files.
+" C++: {{{
+let g:neomake_cpp_enabled_makers = ['clang', 'cppcheck']
+let g:neomake_cpp_clang_maker = {
+                        \ 'exe': 'clang++',
+                        \ 'args': ['-Wall', '-Wextra', '-fsyntax-only', '-std=c++17',
+                        \ '-Wno-error=unused-command-line-argument',
+                        \ '-Qunused-arguments',
+                        \ '-fno-exceptions', '-fwrapv', '-fno-delete-null-pointer-checks',
+                        \ '-pthreads',
+                        \ '-Wno-sign-conversion',
+                        \ '-Wno-zero-as-null-pointer-constant',
+                        \ '-Wno-padded', '-Wno-unused-parameter',
+                        \ '-I', '.', '-I', 'src', '-I', 'include', '-I', '..', '-I', '../include',
+                        \ ],
+                        \ }
+let g:neomake_cpp_cppcheck_maker = { 'exe': 'cppcheck', 'args': ['--force'],}
+
 let g:neoformat_enabled_cpp = ['clangformat']
 
 " rename the variable under cursor
