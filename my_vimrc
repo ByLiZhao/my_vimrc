@@ -661,7 +661,6 @@ nnoremap <leader>rt :Rooter<CR>:pwd<CR>
 
 " C/C++: {{{
 "C
-let g:c_syntax_for_h=1
 let g:neomake_c_enabled_makers = [] " no default linter for C
 let g:neoformat_enabled_c = ['clangformat']
 
