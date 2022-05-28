@@ -3,7 +3,6 @@ call plug#begin('~/.vim/plugged')
 
 " Theme: {{{
 Plug 'morhetz/gruvbox'
-Plug 'altercation/vim-colors-solarized'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " }}}
@@ -118,10 +117,6 @@ let g:airline_theme='gruvbox'
 let g:airline_gruvbox_bf='dark'
 let g:gruvbox_contrast_dark='high'
 let g:gruvbox_visibility='high'
-" let g:airline_theme='solarized'
-" let g:airline_solarized_bg='light'
-" let g:solarized_contrast = "high"
-" let g:solarized_visibility= "high"
 " }}}
 
 "GUI{{{
