@@ -593,31 +593,6 @@ inoremap <F12> <Esc>:Neoformat<CR>
 
 " }}}
 
-" Project: {{{
-" Building: {{{
-" make related custom commands.
-" Run "make" asynchronously
-command AsyncMake AsyncRun -cwd=<root> make -j$(nproc)
-" Run "make run" asynchronously.
-command AsyncMakeRun AsyncRun -cwd=<root> -mode=term -pos=right -raw make run
-" Run "make test" asynchronously.
-command AsyncMakeTest AsyncRun -cwd=<root> -mode=term -pos=right make test
-" Run "make clean" asynchronously.
-command AsyncMakeClean AsyncRun -cwd=<root> -mode=term -pos=right -raw make clean
-
-" Cmake related custom commands.
-" :CMake creates a build directory and generates cmake project
-command CMake AsyncRun -cwd=<root> -mode=term -pos=right -raw mkdir -p build&& cd build&& cmake ..
-" :CMakeBuild builds current cmake project in subdirectory build.
-command CMakeBuild AsyncRun -cwd=<root> cmake --build build -j $(nproc)
-" :CMakeInstall install the built project, CMake 3.15+ only
-command CMakeInstall AsyncRun -cwd=<root> -mode=term -pos=right -raw cmake --install build
-" :CMakeClean removes the whole build directory
-command CMakeClean AsyncRun -cwd=<root> -mode=term -pos=right -raw rm -rf build
-" :CMakeTest to run all the test
-command CMakeTest AsyncRun -cwd=<root> -mode=term -pos=right -raw cd build& ctest
-" }}}
-
 " AsyncRun:{{{
 " asyncrun root markers.
 let g:asyncrun_rootmarks = ['.svn', '.git', '.root', '_darcs', 'build.xml', '.project']
@@ -659,22 +634,47 @@ nnoremap <leader>rt :Rooter<CR>:pwd<CR>
 " }}}
 " }}}
 
-" C/C++: {{{
+" C: {{{
 "C
 let g:neomake_c_enabled_makers = [] " no default linter for C
 let g:neoformat_enabled_c = ['clangformat']
 
+" rename the variable under cursor
+autocmd FileType c nnoremap <leader>rn :YcmCompleter RefactorRename<space>
+
+" Press F4 to compile current buffer
+autocmd  FileType c nnoremap <silent> <F4> :AsyncRun gcc -Wall -Wextra
+                        \ -fwrapv -fno-delete-null-pointer-checks -pthread -O2
+                        \ -I. -I src -I include -I..
+                        \ "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+
+autocmd FileType c nnoremap <silent> <leader>c :AsyncRun gcc -Wall -Wextra
+                        \ -fwrapv -fno-delete-null-pointer-checks -pthread -O2
+                        \ -I. -I src -I include -I..
+                        \ "$(VIM_FILEPATH)" -c <cr>
+
+" Press F5 run the executable from current file
+autocmd  FileType c nnoremap <silent> <F5> :AsyncRun -mode=term -pos=right -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+" Press F6 to Looks up the current line for a header and jumps to it.
+autocmd  FileType c nnoremap <silent> <F6> :YcmCompleter GoToInclude <cr>
+" Press F7 to Looks up the symbol under the cursor and jumps to its declaration.
+autocmd  FileType c nnoremap <silent> <F7> :YcmCompleter GoToDeclaration <cr>
+" Press F8 to kooks up the symbol under the cursor and jumps to its definition
+" only works when the definition is in current TU.
+autocmd  FileType c nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
+" Press F9 jump to a header, or definition, or declaration.
+autocmd FileType c nnoremap <silent> <F9> :AsyncRun rm $(VIM_FILEDIR)/$(VIM_FILENOEXT) $(VIM_FILEDIR)/$(VIM_FILENOEXT).o <cr>
+" }}}
+
+" C/C++: {{{
 "C++
 let g:neomake_cpp_enabled_makers = [] " no default linter for C++
 " add -fsyntax-only to supress clang amke *.gch files.
 let g:neoformat_enabled_cpp = ['clangformat']
 
-
 " rename the variable under cursor
 autocmd FileType cpp nnoremap <leader>rn :YcmCompleter RefactorRename<space>
-autocmd FileType c nnoremap <leader>rn :YcmCompleter RefactorRename<space>
 
-" define the following for cpp, c and java  projects
 " Press F4 to compile current buffer
 autocmd  FileType cpp nnoremap <silent> <F4> :AsyncRun g++ -Wall -Wextra -std=c++17
                         \ -fno-exceptions -fwrapv -fno-delete-null-pointer-checks
@@ -694,42 +694,17 @@ autocmd  FileType cpp nnoremap <silent> <leader>c :AsyncRun g++ -Wall -Wextra -s
                         \ -I. -I src -I include -I..
                         \ "$(VIM_FILEPATH)" -c <cr>
 
-autocmd  FileType c nnoremap <silent> <F4> :AsyncRun gcc -Wall -Wextra
-                        \ -fwrapv -fno-delete-null-pointer-checks -pthread -O2
-                        \ -I. -I src -I include -I..
-                        \ "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
-
-autocmd FileType c nnoremap <silent> <leader>c :AsyncRun gcc -Wall -Wextra
-                        \ -fwrapv -fno-delete-null-pointer-checks -pthread -O2
-                        \ -I. -I src -I include -I..
-                        \ "$(VIM_FILEPATH)" -c <cr>
-
 " Press F5 run the executable from current file
 autocmd  FileType cpp nnoremap <silent> <F5> :AsyncRun -mode=term -pos=right -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
-autocmd  FileType c nnoremap <silent> <F5> :AsyncRun -mode=term -pos=right -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
-
 " Press F6 to Looks up the current line for a header and jumps to it.
-" work with c, cpp, objc, objcpp, cuda
 autocmd  FileType cpp nnoremap <silent> <F6> :vsp<cr>:YcmCompleter GoToInclude <cr>
-autocmd  FileType c nnoremap <silent> <F6> :vsp<cr>:YcmCompleter GoToInclude <cr>
-autocmd  FileType cuda nnoremap <silent> <F6> :vsp<cr>:YcmCompleter GoToInclude <cr>
-
 " Press F7 to Looks up the symbol under the cursor and jumps to its declaration.
-" Supported in filetypes: c, cpp, objc, objcpp, cuda, cs, go, java, javascript, python, rust, typescript
 autocmd  FileType cpp nnoremap <silent> <F7> :vsp<cr>:YcmCompleter GoToDeclaration <cr>
-autocmd  FileType c nnoremap <silent> <F7> :vsp<cr>:YcmCompleter GoToDeclaration <cr>
-autocmd  FileType cuda nnoremap <silent> <F7> :vsp<cr>:YcmCompleter GoToDeclaration <cr>
-
 " Press F8 to kooks up the symbol under the cursor and jumps to its definition
-" Supported in filetypes: c, cpp, objc, objcpp, cuda, cs, go, java, javascript, python, rust, typescript
-" For C-family languages, only works when the definition is in current TU.
+" only works when the definition is in current TU.
 autocmd  FileType cpp nnoremap <silent> <F8> :vsp<cr>:YcmCompleter GoToDefinition <cr>
-autocmd  FileType c nnoremap <silent> <F8> :vsp<cr>:YcmCompleter GoToDefinition <cr>
-autocmd  FileType cuda nnoremap <silent> <F8> :vsp<cr>:YcmCompleter GoToDefinition <cr>
-
 " Press F9 jump to a header, or definition, or declaration.
-autocmd FileType cpp nnoremap <silent> <F9> :vsp<cr>:YcmCompleter GoTo<CR>
-autocmd FileType c nnoremap <silent> <F9> :vsp<cr>:YcmCompleter GoTo<CR>
+autocmd FileType cpp nnoremap <silent> <F9> :AsyncRun rm $(VIM_FILEDIR)/$(VIM_FILENOEXT) $(VIM_FILEDIR)/$(VIM_FILENOEXT).o <cr>
 " }}}
 
 " Python: {{{
