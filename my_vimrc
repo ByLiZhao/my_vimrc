@@ -562,6 +562,7 @@ autocmd FileType tex nnoremap <Leader>ls :call SyncTexForward()<CR>
 " do not use any maker for tex files.
 let g:neomake_tex_enabled_makers = []
 
+let g:vim_markdown_folding_disabled = 1 " disable folding configuration of vim-markdown
 " markdown-preview.nvim
 let g:mkdp_auto_start = 1 "open preview window automatically
 autocmd FileType markdown nnoremap <leader>lv :MarkdownPreview
