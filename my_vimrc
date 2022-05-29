@@ -62,6 +62,8 @@ Plug 'michaeljsmith/vim-indent-object'
 " }}}
 
 " Programming: {{{
+Plug 'elzr/vim-json'
+Plug 'cespare/vim-toml'
 Plug 'neomake/neomake'
 Plug 'sbdchd/neoformat'
 Plug 'skywind3000/asyncrun.vim'
@@ -563,8 +565,20 @@ autocmd FileType tex nnoremap <Leader>ls :call SyncTexForward()<CR>
 let g:neomake_tex_enabled_makers = []
 
 let g:vim_markdown_folding_disabled = 1 " disable folding configuration of vim-markdown
+let g:vim_markdown_no_default_key_mappings = 1 " disable default keys from vim-markdown
+set conceallevel=2
+let g:vim_markdown_conceal = 1 " auto conceal
+let g:vim_markdown_conceal_code_blocks = 0
+" use `ge` to follow named anchors
+let g:vim_markdown_follow_anchor = 1
+let g:vim_markdown_math = 1
+let g:vim_markdown_frontmatter = 1 " enable YAML frontmatter
+let g:vim_markdown_toml_frontmatter = 1 " enable TOML frontmatter
+let g:vim_markdown_json_frontmatter = 1 " enable Json frontmatter
+let g:vim_markdown_strikethrough = 1 " enable strike through using ~~xxx~~
+
 " markdown-preview.nvim
-let g:mkdp_auto_start = 1 "open preview window automatically
+let g:mkdp_auto_start = 0 "open preview window automatically
 autocmd FileType markdown nnoremap <leader>lv :MarkdownPreview
 autocmd FileType markdown nnoremap <leader>ls :MarkdownPreviewStop
 " }}}
