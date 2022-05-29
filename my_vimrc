@@ -54,7 +54,7 @@ Plug 'honza/vim-snippets'
 Plug 'vim-latex/vim-latex', {'for': 'tex'}
 " Syntax highlighting, matching rules and mappings for the original Markdown and extensions
 Plug 'plasticboy/vim-markdown'
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+Plug 'iamcco/markdown-preview.nvim', {'for': 'markdown'}
 " add an argument text object 'aa' and 'ia'
 Plug 'vim-scripts/argtextobj.vim'
 " add indentation based text objext 'ii' and 'ai' and 'aI'
