@@ -41,7 +41,6 @@ Plug 'junegunn/fzf.vim'
 " requires universal-ctags installed.
 Plug 'preservim/tagbar' "tag displaying.
 Plug 'ludovicchabant/vim-gutentags'
-Plug 'skywind3000/gutentags_plus'
 " }}}
 
 " Completion: {{{
@@ -451,13 +450,7 @@ nnoremap - :NERDTreeToggle<CR>
 " launch tagbar
 nnoremap <leader>t :TagbarToggle<cr>
 "set vim-gutentags
-" enable gtags module, depending on GNU global,
-" for languages natively supported by gtags, don't use pygments
-let $GTAGSLABEL = 'native-pygments'
-" for languages not natively supported by gtags, use pygments, which can be installed by pip
-let $GTAGSCONF = '/home/johnzli/home_local/share/gtags/gtags.conf'
-
-let g:gutentags_modules = ['ctags', 'gtags_cscope']
+let g:gutentags_modules = ['ctags']
 
 "set root of project folder
 let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
@@ -477,29 +470,6 @@ let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
 
 " for universal ctags only, not exuberant ctags
 let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
-
-" disable key mappings by gutentags_plus
-let g:gutentags_plus_nomap = 1
-" Find symbol (reference) under cursor
-noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
-" Find symbol definition under cursor
-noremap <silent> <leader>gg :GscopeFind g <C-R><C-W><cr>
-" Functions calling this function
-noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
-" Function called by this function
-noremap <silent> <leader>gd :GscopeFind d <C-R><C-W><cr>
-" Find this text string
-noremap <silent> <leader>gt :GscopeFind t <C-R><C-W><cr>
-" Find this egrep pattern
-noremap <silent> <leader>ge :GscopeFind e <C-R><C-W><cr>
-" Find file name under cursor
-noremap <silent> <leader>gf :GscopeFind f <C-R>=expand("<cfile>")<cr><cr>
-" Find files #including the file under the cursor
-noremap <silent> <leader>gi :GscopeFind i <C-R>=expand("<cfile>")<cr><cr>
-" Find places where this symbol is assigned a value
-noremap <silent> <leader>ga :GscopeFind a <C-R><C-W><cr>
-" Find current word in ctags database
-noremap <silent> <leader>gz :GscopeFind z <C-R><C-W><cr>
 " }}}
 
 " Completion: {{{
@@ -742,9 +712,9 @@ autocmd FileType cpp nnoremap <silent> <F9> :AsyncRun rm $(VIM_FILEDIR)/$(VIM_FI
 
 " Python: {{{
 "python
-let g:neomake_python_enabled_makers = ['python','pylint']
+let g:neomake_python_enabled_makers = ['python', 'pylint', 'pyflakes', 'mypy']
 let g:neomake_python_python_exe = 'python3'
-let g:neomake_python_pylint_exe = 'python3'
+let g:neomake_python_pylint_exe = 'pylint'
 let g:neomake_python_pylint_maker = {
                         \ 'args': [
                         \ '-d', 'C0103, C0111',
@@ -760,9 +730,9 @@ let g:neomake_python_pylint_maker = {
                         \ '%-G%.%#',
                         \ }
 
-let g:neoformat_enabled_python = ['yapf']
+let g:neoformat_enabled_python = ['black']
 let g:neoformat_python_yapf= {
-                        \ 'exe': 'yapf3',
+                        \ 'exe': 'black',
                         \ }
 " }}}
 
