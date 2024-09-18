@@ -576,6 +576,8 @@ nnoremap <leader>rt :Rooter<CR>:pwd<CR>
 "}}}
 
 " C: {{{
+" no maker for C
+let g:neomake_c_enabled_makers = []
 let g:neoformat_enabled_c = ['clangformat']
 
 " rename the variable under cursor
