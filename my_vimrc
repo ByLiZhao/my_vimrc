@@ -142,9 +142,6 @@ else
         let &t_EI = "\<esc>[ q"  " default cursor (usually blinking block) otherwise
 endif
 
-" let vim use aliases defined in .zshrc
-" this causes error when vim launched from terminal
-"set shellcmdflag=-ic
 " }}}
 
 " Indent{{{
@@ -765,8 +762,8 @@ tnoremap jk <C-\><C-n>
 
 " Press F1 quit terminal window from insert mode
 tnoremap <F1> <C-\><C-n>:q!<cr>
-" <leader>t to open a terminal on the right with zsh running in it.
-nnoremap <leader>x <Esc>: wa<CR>: vert botright term zsh<CR>
+" <leader>t to open a terminal on the right.
+nnoremap <leader>x <Esc>: wa<CR>: vert botright term<CR>
 
 " press <F3> in normal mode will sync syntax from start
 nnoremap <F3> <Esc>:syntax sync fromstart<CR>
@@ -779,11 +776,9 @@ xnoremap <F3> "xy:term<CR><c-w>"x<CR>
 " Use key <Backspace> to undo
 inoremap <F3> <insert>
 
-" edit vimrc/zshrc and load vimrc bindings
+" edit vimrc and load vimrc bindings
 " <leader>ev to edit vimrc.
 nnoremap <leader>ev :vsp $MYVIMRC<CR>
-" <leader>ez to edit zshrc.
-nnoremap <leader>ez :vsp ~/.zshrc<CR>
 " <leader>sv to source vimrc.
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
