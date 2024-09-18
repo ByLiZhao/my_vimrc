@@ -608,8 +608,8 @@ autocmd FileType c nnoremap <silent> <F9> :AsyncRun rm $(VIM_FILEDIR)/$(VIM_FILE
 "}}}
 
 " C++: {{{
-let g:neomake_cpp_enabled_makers = ['cppcheck']
-let g:neomake_cpp_cppcheck_maker = { 'exe': 'cppcheck', 'args': ['--force'],}
+" no maker for C++
+let g:neomake_cpp_enabled_makers = []
 
 let g:neoformat_enabled_cpp = ['clangformat']
 
@@ -623,7 +623,7 @@ autocmd  FileType cpp nnoremap <silent> <F4> :AsyncRun g++ -Wall -Wextra -std=c+
                         \ -Wno-sign-conversion
                         \ -Wno-zero-as-null-pointer-constant
                         \ -Wno-padded -Wno-unused-parameter
-                        \ -I. -I src -I include -I..
+                        \ -I. -I src -I include -I.. -I../src -I../include
                         \ "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
 
 autocmd  FileType cpp nnoremap <silent> <leader>c :AsyncRun g++ -Wall -Wextra -std=c++17
@@ -632,7 +632,7 @@ autocmd  FileType cpp nnoremap <silent> <leader>c :AsyncRun g++ -Wall -Wextra -s
                         \ -Wno-sign-conversion
                         \ -Wno-zero-as-null-pointer-constant
                         \ -Wno-padded -Wno-unused-parameter
-                        \ -I. -I src -I include -I..
+                        \ -I. -I src -I include -I.. -I../src -I../include
                         \ "$(VIM_FILEPATH)" -c <cr>
 
 " Press F5 run the executable from current file
