@@ -15,7 +15,6 @@ Plug 'ByLiZhao/vim-literate'
 " minor things that make certain things convenient.
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-speeddating'
 " different representation of numbers.
 Plug 'glts/vim-magnum'
 Plug 'glts/vim-radical'
