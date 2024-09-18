@@ -60,7 +60,6 @@ Plug 'skywind3000/asyncrun.vim'
 Plug 'airblade/vim-rooter'
 Plug 'embear/vim-localvimrc'
 Plug 'mh21/errormarker.vim'
-Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
 call plug#end()
@@ -558,13 +557,6 @@ let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status
 " any arguments passed by the user. The resulted command is executed in a
 " vim terminal at last.
 command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
-
-" let AsyncRun work with vim-fugitive
-" run 'Gpush' and 'Gfetch' through AsyncRun.
-command! -bang -bar -nargs=* Gpush execute 'AsyncRun<bang> -cwd=' .
-                        \ fnameescape(FugitiveGitDir()) 'git push' <q-args>
-command! -bang -bar -nargs=* Gfetch execute 'AsyncRun<bang> -cwd=' .
-                        \ fnameescape(FugitiveGitDir()) 'git fetch' <q-args>
 
 " Rooter:
 " Rooter is needed to handle the case where a workspace is composed of
