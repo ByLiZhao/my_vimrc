@@ -601,10 +601,9 @@ autocmd  FileType c nnoremap <silent> <F6> :YcmCompleter GoToInclude <cr>
 " Press F7 to Looks up the symbol under the cursor and jumps to its declaration.
 autocmd  FileType c nnoremap <silent> <F7> :YcmCompleter GoToDeclaration <cr>
 " Press F8 to kooks up the symbol under the cursor and jumps to its definition
-" only works when the definition is in current TU.
 autocmd  FileType c nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
 " Press F9 jump to a header, or definition, or declaration.
-autocmd FileType c nnoremap <silent> <F9> :AsyncRun rm $(VIM_FILEDIR)/$(VIM_FILENOEXT) $(VIM_FILEDIR)/$(VIM_FILENOEXT).o <cr>
+autocmd FileType c nnoremap <silent> <F9> :AsyncRun rm -f $(VIM_FILEDIR)/$(VIM_FILENOEXT) $(VIM_FILEDIR)/$(VIM_FILENOEXT).o <cr>
 "}}}
 
 " C++: {{{
@@ -642,10 +641,9 @@ autocmd  FileType cpp nnoremap <silent> <F6> :vsp<cr>:YcmCompleter GoToInclude <
 " Press F7 to Looks up the symbol under the cursor and jumps to its declaration.
 autocmd  FileType cpp nnoremap <silent> <F7> :vsp<cr>:YcmCompleter GoToDeclaration <cr>
 " Press F8 to kooks up the symbol under the cursor and jumps to its definition
-" only works when the definition is in current TU.
 autocmd  FileType cpp nnoremap <silent> <F8> :vsp<cr>:YcmCompleter GoToDefinition <cr>
 " Press F9 jump to a header, or definition, or declaration.
-autocmd FileType cpp nnoremap <silent> <F9> :AsyncRun rm $(VIM_FILEDIR)/$(VIM_FILENOEXT) $(VIM_FILEDIR)/$(VIM_FILENOEXT).o <cr>
+autocmd FileType cpp nnoremap <silent> <F9> :AsyncRun rm -f $(VIM_FILEDIR)/$(VIM_FILENOEXT) $(VIM_FILEDIR)/$(VIM_FILENOEXT).o <cr>
 "}}}
 
 " Python: {{{
