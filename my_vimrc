@@ -1,13 +1,12 @@
 " Plugins: {{{
 call plug#begin('~/.vim/plugged')
 
-" Theme: {{{
+" Theme:
 Plug 'morhetz/gruvbox'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-" }}}
 
-" Editing Enhancement: {{{
+" Editing Enhancement:
 Plug 'tpope/vim-sensible'
 Plug 'sjl/gundo.vim'    "undo and redo
 " input special characters
@@ -24,29 +23,25 @@ Plug 'svermeulen/vim-subversive' " replace
 Plug 'tomtom/tcomment_vim'  " comments
 Plug 'godlygeek/tabular'    "align texts
 Plug 'junegunn/vim-easy-align'  "align texts.
-" }}}
 
-" Searching: {{{
+" Searching:
 Plug 'jlanzarotta/bufexplorer'
 Plug 'vim-scripts/winmanager'
 Plug 'preservim/nerdtree'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
-" }}}
 
-" Tags: {{{
+" Tags:
 " requires universal-ctags installed.
 Plug 'preservim/tagbar' "tag displaying.
 Plug 'ludovicchabant/vim-gutentags'
-" }}}
 
-" Completion: {{{
+" Completion:
 Plug 'Valloric/YouCompleteMe'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-" }}}
 
-" Writing: {{{
+" Writing:
 Plug 'vim-latex/vim-latex', {'for': 'tex'}
 " Syntax highlighting, matching rules and mappings for the original Markdown and extensions
 Plug 'plasticboy/vim-markdown'
@@ -54,9 +49,8 @@ Plug 'plasticboy/vim-markdown'
 Plug 'vim-scripts/argtextobj.vim'
 " add indentation based text objext 'ii' and 'ai' and 'aI'
 Plug 'michaeljsmith/vim-indent-object'
-" }}}
 
-" Programming: {{{
+" Programming:
 Plug 'elzr/vim-json'
 Plug 'cespare/vim-toml'
 Plug 'neomake/neomake'
@@ -68,7 +62,6 @@ Plug 'embear/vim-localvimrc'
 Plug 'mh21/errormarker.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
-" }}}
 
 call plug#end()
 "}}}
@@ -80,7 +73,7 @@ filetype plugin on
 " for example,  don't use alt-f to access file menu
 set winaltkeys=no
 
-" Folding: {{{
+" Folding
 set foldenable          " enable folding
 set foldmethod=indent   " fold by indent
 " disable fold in insert mode
@@ -96,17 +89,15 @@ augroup folds
 augroup END
 " press <space> to open all folds under cursor
 nnoremap <space> zA
-" }}}
 
-" Encoding {{{
+" Encoding
 set fileencodings=utf-8,ucs-bom,shift-jis,latin1,big5,gb18030,gbk,gb2312,cp936
 "set everything encoded by utf-8
 set fileencoding=utf-8
 set encoding=utf-8
 set termencoding=utf-8
-" }}}
 
-" Colorscheme{{{
+" Colorscheme
 syntax enable
 colorscheme gruvbox
 set background=dark
@@ -114,9 +105,8 @@ let g:airline_theme='gruvbox'
 let g:airline_gruvbox_bf='dark'
 let g:gruvbox_contrast_dark='high'
 let g:gruvbox_visibility='high'
-" }}}
 
-"GUI{{{
+" GUI
 if has("gui_running")
   " GUI is running or is about to start,  maximize gvim window.
   " this doesn't work on windows.
@@ -125,9 +115,8 @@ endif
 set guifontset=
 set guifont=Consolas\ 14
 set guifontwide=Microsoft\ Yahei\ 14
-" }}}
 
-" Cusor shape in Tmux and terminal: {{{
+" Cusor shape in Tmux and terminal:
 " allows cursor change in tmux mode. Show cursor as a vertical bar in Tmux
 " instead of a block
 if exists('$TMUX')
@@ -139,9 +128,7 @@ else
         let &t_EI = "\<esc>[1 q"  " default cursor (usually blinking block) otherwise
 endif
 
-" }}}
-
-" Indent{{{
+" Indent
 filetype indent on " load filetype-specific indent files
 " tabstop is the number of spaces a tab counts for. So, when Vim opens a file and reads a <TAB> character,
 " it uses that many spaces to visually show the <TAB>.
@@ -153,9 +140,8 @@ set softtabstop=4   " number of spaces in tab when editing
 " expandtab turns <TAB>s into spaces.
 " So <TAB> just becomes a shortcut for "insert four spaces".
 set expandtab       " tabs are spaces
-" }}}
 
-" Visual{{{
+" Visual
 set number " show line numbers
 set showcmd    " show command in bottom bar
 set cursorline          " highlight current line
@@ -170,9 +156,8 @@ set nolist  " list disables linebreak
 set textwidth=0 "disable automatic word wrapping
 set wrapmargin=0 " prevent Vim from automatically inserting line breaks in newly entered text.
 set cmdheight=2
-" }}}
 
-" File specific settings {{{
+" File specific settings
 " strips trailing whitespaces at the end of files. this
 " is called on buffer write in the autogroup below.
 function! <SID>StripTrailingWhitespaces()
@@ -237,10 +222,17 @@ augroup filegroup
         autocmd FileType markdown setlocal softtabstop=4
         autocmd FileType markdown setlocal spell
 augroup END
-" }}}
-" }}}
 
-" Backup, swap and undofile {{{
+" Spell
+set spell spelllang=en_us
+set dictionary-=/usr/share/dict/words dictionary+=/usr/share/dict/words
+set spellfile=~/.vim/spell/lizhao-spell.add
+" for word completeion
+inoremap <F2> <C-x><C-k>
+" launch word correction menu
+nnoremap <F2> z=
+
+" Backup, swap and undofile
 "set writebackup " set backup actually override set writebackup
 set backup
 let s:backup_dir = expand('$HOME/.vim_temp/backup')
@@ -268,10 +260,10 @@ endif
 " toggle gundo
 let g:gundo_prefer_python3 = 1
 nnoremap <leader>u :GundoToggle<CR>
-" }}}
+"}}}
 
 " Editing Enhancement: {{{
-" Shortcuts to switch between windows, tabs, buffers, location list, and quick-fix list {{{
+" Shortcuts to switch between windows, tabs, buffers, location list, and quick-fix list
 " leader-w to loop between windows.
 nnoremap <leader>w  <c-w>w
 " press [w to previous tab, same as gT,  and ]w to next tab, same as gt
@@ -298,9 +290,8 @@ nnoremap <silent> ]q <Esc>:update<CR>:cnext<CR>
 " press [l to previous location of location list,  and ]l to next location.
 nnoremap <silent> [l <Esc>:update<CR>:lprevious<CR>
 nnoremap <silent> ]l <Esc>:update<CR>:endif<CR> :lnext<CR>
-"}}}
 
-" Insert backslash, pairs {{{
+" Insert backslash, pairs
 " two leader insert one backslash
 inoremap <leader><leader> \
 " insert () [] {} <> pairings.
@@ -317,9 +308,8 @@ inoremap <leader>- **<Left>
 inoremap <leader>_ ****<Left><Left>
 " type jj to move out of surroudings.
 inoremap jj <right><right>
-" }}}
 
-" Change pairs{{{
+" Change pairs
 " Use vim-surround manipulate surroudings.
 " use 'cs"'' to change double quote to single quote.
 " use 'cst"' to change xml tag to double quote
@@ -328,9 +318,8 @@ inoremap jj <right><right>
 " 'ysiwb' equals to 'ysiw)'
 " 'yasb' wraps the current sentence in ().
 " 'S<surrounding-marker>' in visual mode add surrounding to the selected
-" }}}
 
-"Select between pairs.{{{
+"Select between pairs.
 "select everything between surroundings,
 " Notice that with nested surroundings, following commands are different from
 " "va(" or "va)". 'va(' and 'va)' matches the surrounding contains the cursor.
@@ -349,9 +338,8 @@ nnoremap <leader>] <Esc>?[<CR>:nohlsearch<CR>v%
 nnoremap <leader>{ <Esc>/}<CR>:nohlsearch<CR>v[{
 " cursor at }, matching the next previous { that matches a }
 nnoremap <leader>} <Esc>?{<CR>:nohlsearch<CR>v]}
-" }}}
 
-" Cut: vim-cutlass {{{
+" Cut: vim-cutlass
 " gm to add marker, because m is remapped
 " vim's built-in gm command is shadowed.
 nnoremap gm m
@@ -361,10 +349,8 @@ nnoremap m d
 xnoremap m d
 nnoremap mm dd
 nnoremap M D
-" }}}
 
-
-" Replace: vim-subsersive{{{
+" Replace: vim-subsersive
 " define new text object, ie = inner entire buffer
 " only use it with vim-subsersive.
 onoremap ie :exec "normal! ggVG"<cr>
@@ -384,34 +370,30 @@ xmap <leader>s <plug>(SubversiveSubstituteRange)
 " replaces all instances of current word in the current paragraph, but only
 " with perfect matching.
 nmap <leader>ss <plug>(SubversiveSubstituteWordRange)
-"}}}
 
-" Align: EasyAlign{{{
+" Align: EasyAlign
 " Start interactive EasyAlign in visual mode (e.g. vipga=)
 " align around "=" in a paragraph.
 xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip=),
 " align around "=" in a paragraph.
 " nmap ga <Plug>(EasyAlign)
-"}}}
 
-" Other: vim-radical, vim-speedating, vim-repeat
+" Other: vim-radical, vim-repeat
 " vim-radical use gA to show four different representations of a number.
-" use <ctrl-a> to increase date and <ctrl-x> to decrease date under the
 " cursor.
 "}}}
 
-" Searching:  {{{
-" Setup Vim's search{{{
+" Searching: {{{
+" Setup Vim's search
 set incsearch           " search as characters are entered
 set hlsearch            " highlight matches
 " turn off search highlight
 nnoremap <leader><space> :nohlsearch<CR>
 " search repeated words.
 nnoremap <leader>rw <Esc>: /\(\<\w\+\>\)\_s*\<\1\><CR>
-" }}}
 
-" FZF{{{
+" FZF
 " makes it work like CtrlP
 let g:fzf_action = {
                         \ 'ctrl-s': 'split',
@@ -426,9 +408,8 @@ augroup fzf
         autocmd  FileType fzf set laststatus=0 noshowmode noruler
                                 \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 augroup END
-" }}}
 
-" BufExplorer, Nerdtree{{{
+" BufExplorer, Nerdtree
 " disable default key mapping for BufExplorer.
 let g:bufExplorerDisableDefaultKeyMapping=1
 " sort buffer by file extensions.
@@ -437,10 +418,8 @@ let g:winManagerWindowLayout = "BufExplorer"
 let g:winManagerWidth = 40
 nnoremap <leader>b :WMToggle<cr>
 nnoremap - :NERDTreeToggle<CR>
-" }}}
-" }}}
 
-" Tags: {{{
+" Tags:
 " launch tagbar
 nnoremap <leader>t :TagbarToggle<cr>
 "set vim-gutentags
@@ -464,20 +443,10 @@ let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
 
 " for universal ctags only, not exuberant ctags
 let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
-" }}}
+"}}}
 
 " Completion: {{{
-" Spell {{{
-set spell spelllang=en_us
-set dictionary-=/usr/share/dict/words dictionary+=/usr/share/dict/words
-set spellfile=~/.vim/spell/lizhao-spell.add
-" for word completeion
-inoremap <F2> <C-x><C-k>
-" launch word correction menu
-nnoremap <F2> z=
-" }}}
-
-" YouCompleteMe{{{
+" YouCompleteMe
 " set python interpreter for ycm server
 let g:ycm_server_python_interpreter='/usr/bin/python3'
 
@@ -496,18 +465,19 @@ let g:ycm_clangd_binary_path = exepath("clangd")
 " use clangd's caching and filtering algorithm
 let g:ycm_clangd_uses_ycmd_caching = 0
 
-"no diagnostic message
-let g:ycm_show_diagnostics_ui = 0
+"with diagnostic message, location list is populated
+let g:ycm_show_diagnostics_ui = 1
 let g:ycm_use_ultisnips_completer = 1
-" }}}
 
-" Snips{{{
+" let YCM do semantic code highlighting
+let g:ycm_enable_semantic_highlighting=1
+
+" Snips
 " config ulti-snips
 let g:UltiSnipsExpandTrigger="<c-l>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-h>"
-" }}}
-" }}}
+"}}}
 
 " Writing: {{{
 " IMPORTANT: grep will sometimes skip displaying the file name if you
@@ -544,10 +514,10 @@ let g:vim_markdown_strikethrough = 1 " enable strike through using ~~xxx~~
 let g:mkdp_auto_start = 0 "open preview window automatically
 autocmd FileType markdown nnoremap <leader>lv :MarkdownPreview
 autocmd FileType markdown nnoremap <leader>ls :MarkdownPreviewStop
-" }}}
+"}}}
 
 " Programming: {{{
-" Neomake and Neoformat {{{
+" Neomake and Neoformat
 " use F10 toggle quick fix window
 function! ToggleQuickFix()
         if empty(filter(getwininfo(), 'v:val.quickfix'))
@@ -565,9 +535,8 @@ let g:neoformat_only_msg_on_error = 1 "only msg when there is an error
 " invoke the formatter for current buffer
 " then run linters on the file
 nnoremap <F12> <Esc>:Neoformat<CR>:Neomake<CR>
-"}}}
 
-" AsyncRun:{{{
+" AsyncRun:
 " asyncrun root markers.
 let g:asyncrun_rootmarks = ['.svn', '.git', '.root', '_darcs', 'build.xml', '.project']
 
@@ -596,30 +565,17 @@ command! -bang -bar -nargs=* Gpush execute 'AsyncRun<bang> -cwd=' .
                         \ fnameescape(FugitiveGitDir()) 'git push' <q-args>
 command! -bang -bar -nargs=* Gfetch execute 'AsyncRun<bang> -cwd=' .
                         \ fnameescape(FugitiveGitDir()) 'git fetch' <q-args>
-" }}}
 
-" Rooter: {{{
+" Rooter:
 " Rooter is needed to handle the case where a workspace is composed of
 " multiple projects and the "root" of the workspace is the outmost folder
 " that contains all projects. The idea is like a workspace in ROS.
 let g:rooter_patterns = ['.workspace']
 let g:rooter_manual_only = 1 "manual only
 nnoremap <leader>rt :Rooter<CR>:pwd<CR>
-" }}}
-" }}}
+"}}}
 
 " C: {{{
-let g:neomake_c_enabled_makers = ['clang']
-let g:neomake_c_clang_maker = {
-                        \ 'exe': 'clang',
-                        \ 'args': ['-Wall', '-Wextra', '-fsyntax-only',
-                        \ '-Wno-error=unused-command-line-argument',
-                        \ '-Qunused-arguments',
-                        \ '-fwrapv', '-fno-delete-null-pointer-checks', '-pthread',
-                        \ '-I', '.', '-I', 'src', '-I', 'include', '-I', '..', '-I', '../include',
-                        \ ],
-                        \ }
-
 let g:neoformat_enabled_c = ['clangformat']
 
 " rename the variable under cursor
@@ -647,23 +603,10 @@ autocmd  FileType c nnoremap <silent> <F7> :YcmCompleter GoToDeclaration <cr>
 autocmd  FileType c nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
 " Press F9 jump to a header, or definition, or declaration.
 autocmd FileType c nnoremap <silent> <F9> :AsyncRun rm $(VIM_FILEDIR)/$(VIM_FILENOEXT) $(VIM_FILEDIR)/$(VIM_FILENOEXT).o <cr>
-" }}}
+"}}}
 
 " C++: {{{
-let g:neomake_cpp_enabled_makers = ['clang', 'cppcheck']
-let g:neomake_cpp_clang_maker = {
-                        \ 'exe': 'clang++',
-                        \ 'args': ['-Wall', '-Wextra', '-fsyntax-only', '-std=c++17',
-                        \ '-Wno-error=unused-command-line-argument',
-                        \ '-Qunused-arguments',
-                        \ '-fno-exceptions', '-fwrapv', '-fno-delete-null-pointer-checks',
-                        \ '-pthreads',
-                        \ '-Wno-sign-conversion',
-                        \ '-Wno-zero-as-null-pointer-constant',
-                        \ '-Wno-padded', '-Wno-unused-parameter',
-                        \ '-I', '.', '-I', 'src', '-I', 'include', '-I', '..', '-I', '../include',
-                        \ ],
-                        \ }
+let g:neomake_cpp_enabled_makers = ['cppcheck']
 let g:neomake_cpp_cppcheck_maker = { 'exe': 'cppcheck', 'args': ['--force'],}
 
 let g:neoformat_enabled_cpp = ['clangformat']
@@ -701,7 +644,7 @@ autocmd  FileType cpp nnoremap <silent> <F7> :vsp<cr>:YcmCompleter GoToDeclarati
 autocmd  FileType cpp nnoremap <silent> <F8> :vsp<cr>:YcmCompleter GoToDefinition <cr>
 " Press F9 jump to a header, or definition, or declaration.
 autocmd FileType cpp nnoremap <silent> <F9> :AsyncRun rm $(VIM_FILEDIR)/$(VIM_FILENOEXT) $(VIM_FILEDIR)/$(VIM_FILENOEXT).o <cr>
-" }}}
+"}}}
 
 " Python: {{{
 "python
@@ -727,12 +670,12 @@ let g:neoformat_enabled_python = ['black']
 let g:neoformat_python_yapf= {
                         \ 'exe': 'black',
                         \ }
-" }}}
+"}}}
 
 " Bash: {{{
 " for bash
 let g:neomake_shell_enabled_makers = ['shellcheck']
-" }}}
+"}}}
 
 " Some useful shortcuts: {{{
 " move vertically by visual line
@@ -781,7 +724,7 @@ nnoremap <leader>sv :source $MYVIMRC<CR>
 
 " change pwd to the folder of the current file, and echo
 nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
-"  }}}
+"}}}
 
 " set modelines=2
 " vim:fdm=marker:foldlevel=0
