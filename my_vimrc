@@ -16,16 +16,14 @@ Plug 'ByLiZhao/vim-literate'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 " different representation of numbers.
-Plug 'glts/vim-magnum'
-Plug 'glts/vim-radical'
+Plug 'glts/vim-magnum'    "big number library in VimScript
+Plug 'glts/vim-radical'   "number format
 Plug 'svermeulen/vim-cutlass' "make cut better
 Plug 'machakann/vim-highlightedyank' "highlight yank
 Plug 'svermeulen/vim-subversive' " replace
 Plug 'tomtom/tcomment_vim'  " comments
 Plug 'godlygeek/tabular'    "align texts
 Plug 'junegunn/vim-easy-align'  "align texts.
-" enhance sessions
-Plug 'tpope/vim-obsession'
 " }}}
 
 " Searching: {{{
