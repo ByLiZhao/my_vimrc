@@ -55,7 +55,6 @@ Plug 'michaeljsmith/vim-indent-object'
 Plug 'ericcurtin/CurtineIncSw.vim'
 Plug 'elzr/vim-json'
 Plug 'cespare/vim-toml'
-Plug 'neomake/neomake'
 Plug 'sbdchd/neoformat'
 Plug 'skywind3000/asyncrun.vim'
 " auto set pwd to project rooter
@@ -532,13 +531,10 @@ function! ToggleQuickFix()
 endfunction
 nnoremap <silent> <F10> :call ToggleQuickFix()<CR>
 
-" Neomake open the error and warning list automatically:
-let g:neomake_open_list = 2
-
-let g:neoformat_only_msg_on_error = 1 "only msg when there is an error
+"only msg when there is an error
+let g:neoformat_only_msg_on_error = 1
 " invoke the formatter for current buffer
-" then run linters on the file
-nnoremap <F12> <Esc>:Neoformat<CR>:Neomake<CR>
+nnoremap <F12> <Esc>:Neoformat<CR>
 
 " AsyncRun:
 " asyncrun root markers.
@@ -638,25 +634,6 @@ autocmd FileType cpp nnoremap <silent> <F9> :AsyncRun rm -f $(VIM_FILEDIR)/$(VIM
 "}}}
 
 " Python: {{{
-"python
-let g:neomake_python_enabled_makers = ['python', 'pylint', 'pyflakes', 'mypy']
-" let g:neomake_python_python_exe = 'python3'
-" let g:neomake_python_pylint_exe = 'pylint'
-let g:neomake_python_pylint_maker = {
-                        \ 'args': [
-                        \ '-d', 'C0103, C0111',
-                        \ '-f', 'text',
-                        \ '--msg-template="{path}:{line}:{column}:{C}: [{symbol}] {msg}"',
-                        \ '-r', 'n'
-                        \ ],
-                        \ 'errorformat':
-                        \ '%A%f:%l:%c:%t: %m,' .
-                        \ '%A%f:%l: %m,' .
-                        \ '%A%f:(%l): %m,' .
-                        \ '%-Z%p^%.%#,' .
-                        \ '%-G%.%#',
-                        \ }
-
 let g:neoformat_enabled_python = ['black']
 let g:neoformat_python_yapf= {
                         \ 'exe': 'black',
