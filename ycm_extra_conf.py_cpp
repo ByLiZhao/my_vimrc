@@ -15,5 +15,6 @@ def Settings(**kwargs):
             '-I', 'src', \
             '-I', '..', \
             '-I', '../include', \
+            '-I', '../src', \
             ],
     }
