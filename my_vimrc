@@ -223,8 +223,11 @@ augroup filegroup
 augroup END
 
 " Spell
+" words file is from 'https://github.com/dwyl/english-words'
+" the file is 'words_alpha'.
 set spell spelllang=en_us
-set dictionary-=/usr/share/dict/words dictionary+=/usr/share/dict/words
+" set dictionary-=/usr/share/dict/words dictionary+=/usr/share/dict/words
+set directory=~/.vim/spell/words.txt
 set spellfile=~/.vim/spell/lizhao-spell.add
 " for word completeion
 inoremap <F2> <C-x><C-k>
