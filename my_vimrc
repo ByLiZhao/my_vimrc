@@ -634,15 +634,23 @@ autocmd FileType cpp nnoremap <silent> <F9> :AsyncRun rm -f $(VIM_FILEDIR)/$(VIM
 "}}}
 
 " Python: {{{
+" Press F4 to check python code with flake8
+autocmd  FileType python nnoremap <silent> <F4> :AsyncRun flake8
+                        \ "$(VIM_FILEPATH)" <cr>
+" Press F5 run the current file from current file
+autocmd  FileType python nnoremap <silent> <F5> :AsyncRun -mode=term -pos=right -raw -cwd=$(VIM_FILEDIR)
+                        \ python3  "$(VIM_FILEPATH)" <cr>
+" F6 and F7 undefined
+" Press F8 to look up the symbol under the cursor and jump to its definition
+autocmd  FileType python nnoremap <silent> <F8> :YcmCompleter GoToDefinition <cr>
+" Press F9 to run 'mypy' on the curent file for static typing check
+autocmd FileType python nnoremap <silent> <F9> :AsyncRun mypy
+                        \ "$(VIM_FILEPATH)" <cr>
+
 let g:neoformat_enabled_python = ['black']
 let g:neoformat_python_yapf= {
                         \ 'exe': 'black',
                         \ }
-"}}}
-
-" Bash: {{{
-" for bash
-let g:neomake_shell_enabled_makers = ['shellcheck']
 "}}}
 
 " Some useful shortcuts: {{{
