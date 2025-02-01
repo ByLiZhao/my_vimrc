@@ -8,15 +8,15 @@ Plug 'vim-airline/vim-airline-themes'
 
 " Editing Enhancement:
 Plug 'tpope/vim-sensible'
-Plug 'sjl/gundo.vim'    "undo and redo
-" input special characters
-Plug 'ByLiZhao/vim-literate'
 " minor things that make certain things convenient.
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 " different representation of numbers.
 Plug 'glts/vim-magnum'    "big number library in VimScript
 Plug 'glts/vim-radical'   "number format
+Plug 'sjl/gundo.vim'    "undo and redo
+" input special characters
+Plug 'ByLiZhao/vim-literate'
 Plug 'svermeulen/vim-cutlass' "make cut better
 Plug 'machakann/vim-highlightedyank' "highlight yank
 Plug 'svermeulen/vim-subversive' " replace
@@ -27,8 +27,8 @@ Plug 'junegunn/vim-easy-align'  "align texts.
 " Searching:
 Plug 'jlanzarotta/bufexplorer'
 Plug 'vim-scripts/winmanager'
-Plug 'preservim/nerdtree'
-Plug 'junegunn/fzf'
+Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'junegunn/fzf', {'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 " Tags:
@@ -37,9 +37,9 @@ Plug 'preservim/tagbar' "tag displaying.
 Plug 'ludovicchabant/vim-gutentags'
 
 " Completion:
-Plug 'Valloric/YouCompleteMe'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
+Plug 'Valloric/YouCompleteMe', {'do': 'python3 ./install.py --all'}
 
 " Writing:
 Plug 'vim-latex/vim-latex', {'for': 'tex'}
