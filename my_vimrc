@@ -44,7 +44,7 @@ Plug 'Valloric/YouCompleteMe', {'do': 'python3 ./install.py --all'}
 " Writing:
 Plug 'vim-latex/vim-latex', {'for': 'tex'}
 " Syntax highlighting, matching rules and mappings for the original Markdown and extensions
-Plug 'plasticboy/vim-markdown'
+Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
 " add an argument text object 'aa' and 'ia'
 Plug 'vim-scripts/argtextobj.vim'
 " add indentation based text objext 'ii' and 'ai' and 'aI'
@@ -52,7 +52,7 @@ Plug 'michaeljsmith/vim-indent-object'
 
 " Programming:
 " switch between C/C++ header and source files
-Plug 'ericcurtin/CurtineIncSw.vim'
+Plug 'ericcurtin/CurtineIncSw.vim', { 'for': ['c', 'cpp'] }
 Plug 'elzr/vim-json'
 Plug 'cespare/vim-toml'
 Plug 'sbdchd/neoformat'
