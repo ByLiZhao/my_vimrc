@@ -1,0 +1,786 @@
+" This is a stripped down version of my personal vimrc intended to be used on
+" servers with very limited configurability. Since many tools used with Vim
+" on my personal computers are not available on these servers, only tools
+" that require minimal dependence are included.
+
+" Plugins: {{{
+call plug#begin('~/.vim/plugged')
+
+" General: {{{
+Plug 'altercation/vim-colors-solarized'
+Plug 'morhetz/gruvbox'
+Plug 'sjl/gundo.vim'    "undo and redo
+" }}}
+
+" Editing Enhancement: {{{
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-speeddating'
+" different representation of numbers.
+Plug 'glts/vim-magnum'
+Plug 'glts/vim-radical'
+Plug 'svermeulen/vim-cutlass' "make cut better
+Plug 'machakann/vim-highlightedyank' "highlight yank
+Plug 'svermeulen/vim-subversive' " replace
+Plug 'tomtom/tcomment_vim'  " comments
+" add an argument text object 'aa' and 'ia'
+Plug 'vim-scripts/argtextobj.vim'
+" add indentation based text objext 'ii' and 'ai' and 'aI'
+Plug 'michaeljsmith/vim-indent-object'
+" }}}
+
+" Buffers and Files: {{{
+Plug 'jlanzarotta/bufexplorer'
+Plug 'vim-scripts/winmanager'
+Plug 'preservim/nerdtree'
+" }}}
+
+" Tags: {{{
+Plug 'majutsushi/tagbar' "tag displaying.
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'skywind3000/gutentags_plus'
+" }}}
+
+" " Completion: {{{
+" Plug 'ackyshake/VimCompletesMe'
+Plug 'Valloric/YouCompleteMe'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+" "}}}
+
+" Search {{{
+Plug 'kien/ctrlp.vim'
+" }}}
+
+" Project: {{{
+Plug 'skywind3000/asyncrun.vim'
+" auto set pwd to project rooter
+Plug 'airblade/vim-rooter'
+Plug 'embear/vim-localvimrc'
+Plug 'mh21/errormarker.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+Plug 'neomake/neomake'
+Plug 'sbdchd/neoformat'
+" }}}
+
+" C/C++: {{{
+Plug 'ericcurtin/CurtineIncSw.vim'
+" }}}
+
+" Status line: {{{
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+" }}}
+
+call plug#end()
+"}}}
+
+" General: {{{
+set nocompatible
+filetype plugin on
+" Don't access menu by using alt key combinations
+" for example,  don't use alt-f to access file menu
+set winaltkeys=no
+set foldenable          " enable folding
+set foldmethod=indent   " fold by indent
+" disable fold in insert mode
+augroup folds
+		au!
+		au InsertEnter * let w:oldfdm = &l:foldmethod | setlocal foldmethod=manual
+		au InsertLeave *
+								\ if exists('w:oldfdm') |
+								\   let &l:foldmethod = w:oldfdm |
+								\   unlet w:oldfdm |
+								\ endif |
+								\ normal! zv
+augroup END
+" press <space> to open all folds under cursor
+nnoremap <space> zA
+" }}}
+
+" Encoding {{{
+set fileencodings=utf-8,ucs-bom,shift-jis,latin1
+"set everything encoded by utf-8
+set fileencoding=utf-8
+set encoding=utf-8
+set termencoding=utf-8
+" }}}
+
+" Colorscheme{{{
+syntax enable
+colorscheme gruvbox
+set background=dark
+let g:airline_theme='gruvbox'
+let g:airline_gruvbox_bf='dark'
+let g:gruvbox_contrast_dark='high'
+let g:gruvbox_visibility='high'
+"
+" syntax enable
+" colorscheme solarized
+" set background=light
+" let g:airline_theme='solarized'
+" let g:airline_solarized_bg='light'
+" let g:solarized_contrast = "high"
+" let g:solarized_visibility= "high"
+" }}}
+
+" Font{{{
+set guifontset=
+if has('win32') || has("win64")
+		set guifont=Consolas\ 14
+		set guifontwide=Microsoft\ Yahei\ 14
+else
+		set guifont=Monospace\ 14
+		set guifontwide=Monospace\ 14
+
+endif
+" }}}
+
+" Indent{{{
+filetype indent on " load filetype-specific indent files
+" tabstop is the number of spaces a tab counts for. So, when Vim opens a file and reads a <TAB> character,
+" it uses that many spaces to visually show the <TAB>.
+set tabstop=4       " number of visual spaces per TAB
+" softabstop is the number of spaces a tab counts for when editing.
+"  So this value is the number of spaces that is inserted when you hit <TAB>
+"  and also the number of spaces that are removed when you backspace.
+set softtabstop=4   " number of spaces in tab when editing
+" expandtab turns <TAB>s into spaces.
+" So <TAB> just becomes a shortcut for "insert four spaces".
+set expandtab       " tabs are spaces
+" indent by 4
+set shiftwidth=4
+" }}}
+
+" File specific settings {{{
+" strips trailing whitespaces at the end of files. this
+" is called on buffer write in the autogroup below.
+function! <SID>StripTrailingWhitespaces()
+		" save last search & cursor position
+		let _s=@/
+		let l = line(".")
+		let c = col(".")
+		%s/\s\+$//e
+		let @/=_s
+		call cursor(l, c)
+endfunction
+
+augroup filegroup
+		autocmd!
+		"clear autocmds for current group
+		autocmd VimEnter * highlight clear SignColumn
+        " .h files are cpp files
+        autocmd BufEnter *.h set filetype=cpp
+		autocmd BufEnter,BufNewFile *.tex setlocal spell
+		autocmd BufEnter,BufNewFile *.latex setlocal spell
+		autocmd BufEnter,BufNewFile *.txt setlocal spell
+		autocmd BufEnter,BufNewFile *.text setlocal spell
+		autocmd BufEnter,BufNewFile readme setlocal spell
+		autocmd BufEnter,BufNewFile ReadMe setlocal spell
+		autocmd BufEnter,BufNewFile README setlocal spell
+		autocmd BufEnter,BufNewFile Readme setlocal spell
+		autocmd BufEnter,BufNewFile *.md setlocal spell
+		autocmd BufWritePre *.php,*.py,*.js,*.txt,*.text,*.hs,*.java,readme,README,ReadMe,Readme,*.cpp,*.hpp,*.c,*.h,*vimrc,*.md,*.markdown,*.Markdown,*.MarkDown,*.MD :call <SID>StripTrailingWhitespaces()
+		autocmd BufRead,BufNewFile *.c set filetype=c
+		autocmd FileType tex setlocal tabstop=2
+		autocmd FileType tex setlocal shiftwidth=2
+		autocmd FileType tex setlocal softtabstop=2
+		autocmd FileType cs setlocal noexpandtab
+		autocmd FileType cs setlocal list
+		autocmd FileType cs setlocal listchars=tab:+\ ,eol:-
+		autocmd FileType cs setlocal formatprg=par\ -w80\ -T4
+		autocmd FileType java setlocal noexpandtab
+		autocmd FileType java setlocal list
+		autocmd FileType java setlocal listchars=tab:+\ ,eol:-
+		autocmd FileType java setlocal formatprg=par\ -w80\ -T4
+		autocmd FileType php setlocal expandtab
+		autocmd FileType php setlocal list
+		autocmd FileType php setlocal listchars=tab:+\ ,eol:-
+		autocmd FileType php setlocal formatprg=par\ -w80\ -T4
+		autocmd FileType ruby setlocal tabstop=2
+		autocmd FileType ruby setlocal shiftwidth=2
+		autocmd FileType ruby setlocal softtabstop=2
+		autocmd FileType ruby setlocal commentstring=#\ %s
+		autocmd FileType python setlocal commentstring=#\ %s
+		autocmd FileType python setlocal tabstop=4
+		autocmd FileType python setlocal shiftwidth=4
+		autocmd FileType python setlocal softtabstop=4
+		autocmd FileType python setlocal expandtab
+		autocmd BufEnter *.cls setlocal filetype=java
+		autocmd BufEnter *.zsh-theme setlocal filetype=zsh
+		autocmd BufEnter Makefile setlocal noexpandtab
+        autocmd BufEnter CMakeLists.txt setlocal nospell
+		autocmd BufEnter *.sh setlocal tabstop=2
+		autocmd BufEnter *.sh setlocal shiftwidth=2
+		autocmd BufEnter *.sh setlocal softtabstop=2
+		autocmd BufEnter *.csv setlocal noexpandtab
+		autocmd FileType markdown setlocal noexpandtab
+		autocmd FileType markdown setlocal tabstop=4
+		autocmd FileType markdown setlocal shiftwidth=4
+		autocmd FileType markdown setlocal softtabstop=4
+		autocmd FileType markdown setlocal spell
+augroup END
+" }}}
+
+" Visual{{{
+set number " show line numbers
+set showcmd    " show command in bottom bar
+set cursorline          " highlight current line
+hi CursorLine   term=bold cterm=none ctermbg=gray ctermfg=black
+set wildmenu            " visual autocomplete for command menu
+set wildmode=longest:full,full  "matches full match
+set lazyredraw          " redraw only when we need to.
+set showmatch           " highlight matching [{()}]
+if has("gui_running")
+		let &colorcolumn=join(range(81,999),",") "set background color of line exceeding 81 letters.
+endif
+set wrap  " will automatically wrap long lines to multiple virtual lines.
+set linebreak  "only wrap at a character in the breakat option
+set nolist  " list disables linebreak
+set textwidth=0 "disable automatic word wrapping
+set wrapmargin=0 " prevent Vim from automatically inserting line breaks in newly entered text.
+set cmdheight=2
+if &term =~ "xterm\\|rxvt"
+		" the following may not work depending on the terminal emulator used.
+		" even if "echo &term" prints "xterm", it is may not xterm compatible.
+		let &t_SI.="\e[5 q" "SI = INSERT mode
+		let &t_SR.="\e[4 q" "SR = REPLACE mode
+		let &t_EI.="\e[1 q" "EI = NORMAL mode (ELSE)
+		"  1 -> blinking block
+		"  2 -> solid block
+		"  3 -> blinking underscore
+		"  4 -> solid underscore
+		"  5 -> blinking vertical bar
+		"  6 -> solid vertical bar
+endif
+" }}}
+
+" Backup, swap and undofile {{{
+if has("win32") || has("win64")
+		set backup
+		set backupdir='/C/Users/X01404983/Videos/.vim_temp/backup'
+
+		set directory^='/C/Users/X01404983/Videos/.vim_temp/swap'
+
+		set undofile
+		set undodir='/C/Users/X01404983/Videos/.vim_temp/undodir'
+else
+		"set writebackup " set backup actually override set writebackup
+		set backup
+		let s:backup_dir = expand('$HOME/.vim_temp/backup')
+		" if backup_dir doesn't exist, create it.
+		if !isdirectory(s:backup_dir)
+				silent! call mkdir(s:backup_dir, 'p')
+		endif
+		set backupdir=~/.vim_temp/backup,~/.temp,/var/tmp,/tmp "for backup files
+		set backupskip+=/tmp/*,/temp/*
+
+		let s:swap_dir = expand('~/.vim_temp/swap')
+		set directory^=~/.vim_temp/swap "append path to head of directory, use absolute path
+		if !isdirectory(s:swap_dir)
+				silent! call mkdir(s:swap_dir, 'p')
+		endif
+
+		set undofile " Maintain undo history between sessions
+		set undodir=~/.vim_temp/undodir
+		let s:undo_dir = expand('~/.vim_temp/undodir')
+		" create undo_dir if not existent.
+		if !isdirectory(s:undo_dir)
+				silent! call mkdir(s:undo_dir, 'p')
+		endif
+endif
+
+" toggle gundo
+let g:gundo_prefer_python3 = 1
+nnoremap <leader>u :GundoToggle<CR>
+" }}}
+
+" Editing Enhancement: {{{
+" Shortcuts to switch between windows, tabs, buffers, location list, and quick-fix list
+" leader-w to loop between windows.
+nnoremap <leader>w  <c-w>w
+" press [w to previous tab, same as gT,  and ]w to next tab, same as gt
+nnoremap <silent> [w <Esc>:update<CR>:tabprevious<CR>
+nnoremap <silent> ]w <Esc>:update<CR>:tabnext<CR>
+" press [t to previous matched tag,  and ]t to next matched tag.
+nnoremap <silent> [t <Esc>:update<CR>:tprevious<CR>
+nnoremap <silent> ]t <Esc>:update<CR>:tnext<CR>
+
+" press [a to previous file in arglist. ]a to next file in arglist.
+nnoremap <silent> [a <Esc>:update<CR>:previous<CR>
+nnoremap <silent> ]a <Esc>:update<CR>:next<CR>
+
+" press [b to previous buffer in buffer list,  ]b to next buffer in buffer
+" list.
+nnoremap <silent> [b <Esc>:update<CR>:bprevious<CR>
+nnoremap <silent> ]b <Esc>:update<CR>:bnext<CR>
+
+"press [q to previous location of quick-fix list, and ]q to next location in
+"quick-fix list.
+nnoremap <silent> [q <Esc>:update<CR>:cprevious<CR>
+nnoremap <silent> ]q <Esc>:update<CR>:cnext<CR>
+
+" press [l to previous location of location list,  and ]l to next location.
+nnoremap <silent> [l <Esc>:update<CR>:lprevious<CR>
+nnoremap <silent> ]l <Esc>:update<CR>:endif<CR> :lnext<CR>
+" }}}
+
+" Insert backslash, pairs {{{
+" two leader insert one backslash
+inoremap <leader><leader> \
+" insert () [] {} <> pairings.
+inoremap <leader>( ()<Left>
+inoremap <leader>[ []<Left>
+inoremap <leader>{ {}<Left>
+inoremap <leader>< <><Left>
+inoremap <leader>" ""<Left>
+inoremap <leader>' ''<Left>
+inoremap <leader>` ``<Left>
+" italic in markdown
+inoremap <leader>- **<Left>
+" Bold in markdown
+inoremap <leader>_ ****<Left><Left>
+" type jj to move out of surroudings.
+inoremap jj <right><right>
+" }}}
+
+" Change pairs {{{
+" Use vim-surround manipulate surroudings.
+" use 'cs"'' to change double quote to single quote.
+" use 'cst"' to change xml tag to double quote
+" use 'ds"' to remote double quote
+" use 'ys<text-object><surrounding-marker>' to add surrounding
+" 'ysiwb' equals to 'ysiw)'
+" 'yasb' wraps the current sentence in ().
+" 'S<surrounding-marker>' in visual mode add surrounding to the selected
+" }}}
+
+"Select between pairs. {{{
+"select everything between surroundings,
+" Notice that with nested surroundings, following commands are different from
+" "va(" or "va)". 'va(' and 'va)' matches the surrounding contains the cursor.
+" select between brackets.
+" cursor at (, matching the next ) that matches a (
+nnoremap <leader>( <Esc>/)<CR>:nohlsearch<CR>v[(
+" cursor at ), matching the next previous ( that matches a )
+nnoremap <leader>) <Esc>?(<CR>:nohlsearch<CR>v])
+"select between square bracket
+" cursor at [, matching the next ] that matches a [
+nnoremap <leader>[ <Esc>/]<CR>:nohlsearch<CR>v%
+" cursor at ], matching the next previous [ that matches a ]
+nnoremap <leader>] <Esc>?[<CR>:nohlsearch<CR>v%
+"select between braces
+" cursor at {, matching the } that matches a {
+nnoremap <leader>{ <Esc>/}<CR>:nohlsearch<CR>v[{
+" cursor at }, matching the next previous { that matches a }
+nnoremap <leader>} <Esc>?{<CR>:nohlsearch<CR>v]}
+" }}}
+
+" Cut: vim-cutlass {{{
+" gm to add marker, because m is remapped
+" vim's built-in gm command is shadowed.
+nnoremap gm m
+" set vim-cutlass
+" let m, mm, and M denote "move"
+nnoremap m d
+xnoremap m d
+nnoremap mm dd
+nnoremap M D
+" }}}
+
+" Replace: vim-subsersive {{{
+" define new text object, ie = inner entire buffer
+" only use it with vim-subsersive.
+onoremap ie :exec "normal! ggVG"<cr>
+" s for substitute an text object with content in the register.
+nmap s <plug>(SubversiveSubstitute)
+nmap ss <plug>(SubversiveSubstituteLine)
+nmap S <plug>(SubversiveSubstituteToEndOfLine)
+
+" example: <leader>siwip to replace all instances of the current word under the cursor
+" that exist within the paragraph under the cursor.
+" <leader>sl_ to replace all instances of the character under the cursor on the current line.
+nmap <leader>s <plug>(SubversiveSubstituteRange)
+" first select the current word with 'viw', replace all instance of it in the
+" current parapgrah by '<leader>sip
+xmap <leader>s <plug>(SubversiveSubstituteRange)
+" replace current word, only match complete words, for example, '<leader>ssip'
+" replaces all instances of current word in the current paragraph, but only
+" with perfect matching.
+nmap <leader>ss <plug>(SubversiveSubstituteWordRange)
+" }}}
+
+" vim-radical, vim-speeddating and vim-repeat {{{
+" vim-radical use gA to show four different representations of a number.
+" use <ctrl-a> to increase date and <ctrl-x> to decrease date under the
+" cursor.
+" }}}
+
+" Setup Vim's search{{{
+set incsearch           " search as characters are entered
+set hlsearch            " highlight matches
+" turn off search highlight
+nnoremap <leader><space> :nohlsearch<CR>
+" search repeated words.
+nnoremap <leader>rw <Esc>: /\(\<\w\+\>\)\_s*\<\1\><CR>
+" }}}
+
+" BufExplorer, Nerdtree {{{
+" disable default key mapping for BufExplorer.
+let g:bufExplorerDisableDefaultKeyMapping=1
+" sort buffer by file extensions.
+let g:bufExplorerSortBy='extension'
+let g:winManagerWindowLayout = "BufExplorer"
+let g:winManagerWidth = 40
+nnoremap <leader>b :WMToggle<cr>
+nnoremap - :NERDTreeToggle<CR>
+" }}}
+
+" Tags: {{{
+" launch tagbar
+nnoremap <leader>t :TagbarToggle<cr>
+"set vim-gutentags
+" enable gtags module, depending on GNU global,
+" for languages natively supported by gtags, don't use pygments
+let $GTAGSLABEL = 'native-pygments'
+" for languages not natively supported by gtags, use pygments, which can be installed by pip
+let $GTAGSCONF = '/local/1/home/svcegcts/johnzli/home_local/share/gtags/gtags.conf'
+" The configuration does not work for large projects.
+
+" let g:gutentags_modules = ['ctags', 'gtags_cscope']
+let g:gutentags_modules = ['ctags']
+
+"set root of project folder
+let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
+"name of tags file
+let g:gutentags_ctags_tagfile = '.tags'
+" put tag files in the following folder
+let s:vim_tags = expand('~/.vim_temp/tags')
+" create it if not existent.
+if !isdirectory(s:vim_tags)
+        silent! call mkdir(s:vim_tags, 'p')
+endif
+let g:gutentags_cache_dir = '~/.vim_temp/tags'
+"set ctags parameters
+let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extras=+q']
+let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
+let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+
+" for universal ctags only, not exuberant ctags
+let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
+
+" disable key mappings by gutentags_plus
+let g:gutentags_plus_nomap = 1
+" Find symbol (reference) under cursor
+noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
+" Find symbol definition under cursor
+noremap <silent> <leader>gg :GscopeFind g <C-R><C-W><cr>
+" Functions calling this function
+noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
+" Function called by this function
+noremap <silent> <leader>gd :GscopeFind d <C-R><C-W><cr>
+" Find this text string
+noremap <silent> <leader>gt :GscopeFind t <C-R><C-W><cr>
+" Find this egrep pattern
+noremap <silent> <leader>ge :GscopeFind e <C-R><C-W><cr>
+" Find file name under cursor
+noremap <silent> <leader>gf :GscopeFind f <C-R>=expand("<cfile>")<cr><cr>
+" Find files #including the file under the cursor
+noremap <silent> <leader>gi :GscopeFind i <C-R>=expand("<cfile>")<cr><cr>
+" Find places where this symbol is assigned a value
+noremap <silent> <leader>ga :GscopeFind a <C-R><C-W><cr>
+" Find current word in ctags database
+noremap <silent> <leader>gz :GscopeFind z <C-R><C-W><cr>
+
+let g:gutentags_define_advanced_commands = 1
+" }}}
+
+" Spell {{{
+if has('gui_running')
+		set spell spelllang=en_us
+else
+		set nospell
+endif
+set dictionary=/local/1/home/svcegcts/johnzli/.vim/spell/words.txt
+set spellfile=~/.vim/spell/lizhao-spell.add
+" for word completeion
+inoremap <F2> <C-x><C-k>
+" launch word correction menu
+nnoremap <F2> z=
+" }}}
+
+" YouCompleteMe{{{
+" set python interpreter for ycm server
+let g:ycm_server_python_interpreter='/local/1/home/svcegcts/johnzli/home_local/bin'
+
+let g:ycm_add_preview_to_completeopt = 1
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_complete_in_comments = 1
+
+" press <F1> in normal mode to show documentation
+" of the identifier under cursor.
+nmap <F1> <plug>(YCMHover)
+
+" Let clangd fully control code completion
+" Use installed clangd, not YCM-bundled clangd which doesn't get updates.
+let g:ycm_clangd_binary_path = exepath("clangd")
+" use clangd's caching and filtering algorithm
+let g:ycm_clangd_uses_ycmd_caching = 0
+
+"no diagnostic message
+let g:ycm_show_diagnostics_ui = 0
+let g:ycm_use_ultisnips_completer = 1
+
+" rename the variable under cursor
+autocmd FileType cpp nnoremap <leader>rn :YcmCompleter RefactorRename<space>
+autocmd FileType c nnoremap <leader>rn :YcmCompleter RefactorRename<space>
+" }}}
+
+" Snips{{{
+" config ulti-snips
+let g:UltiSnipsExpandTrigger="<c-l>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-h>"
+" }}}
+
+" Use F10 toggle quick fix window {{{
+function! ToggleQuickFix()
+		if empty(filter(getwininfo(), 'v:val.quickfix'))
+				copen
+		else
+				cclose
+		endif
+endfunction
+nnoremap <silent> <F10> :call ToggleQuickFix()<cr>
+" }}}
+
+" Building: {{{
+" make related custom commands.
+" Run "make" asynchronously
+command AsyncMake AsyncRun -cwd=<root> make -j$(nproc)
+" Run "make run" asynchronously.
+command AsyncMakeRun AsyncRun -cwd=<root> -mode=term -pos=right -raw make run
+" Run "make test" asynchronously.
+command AsyncMakeTest AsyncRun -cwd=<root> -mode=term -pos=right make test
+" Run "make clean" asynchronously.
+command AsyncMakeClean AsyncRun -cwd=<root> -mode=term -pos=right -raw make clean
+
+" Cmake related custom commands.
+" :CMake creates a build directory and generates cmake project
+command CMake AsyncRun -cwd=<root> -mode=term -pos=right -raw mkdir -p build&& cd build&& cmake ..
+" :CMakeBuild builds current cmake project in subdirectory build.
+command CMakeBuild AsyncRun -cwd=<root> cmake --build build -j $(nproc)
+" :CMakeInstall install the built project, CMake 3.15+ only
+command CMakeInstall AsyncRun -cwd=<root> -mode=term -pos=right -raw cmake --install build
+" :CMakeClean removes the whole build directory
+command CMakeClean AsyncRun -cwd=<root> -mode=term -pos=right -raw rm -rf build
+" :CMakeTest to run all the test
+command CMakeTest AsyncRun -cwd=<root> -mode=term -pos=right -raw cd build& ctest
+" }}}
+
+" AsyncRun: {{{
+" asyncrun root markers.
+let g:asyncrun_rootmarks = ['.svn', '.git', '.root', '_darcs', 'build.xml', '.project']
+
+" open quick fix after async_run
+let g:asyncrun_open = 6
+
+" ring when async_run returns
+let g:asyncrun_bell = 1
+
+" let errormarker work with Asyncrun
+let g:asyncrun_auto = "make"
+
+" let AsyncRun work with airline
+let g:asyncrun_status = ''
+let g:airline_section_error = airline#section#create_right(['%{g:asyncrun_status}'])
+
+" let AsyncRun work with makeprg.
+" Asyncrun first pick up the command specified by vim's "makeprg", then add
+" any arguments passed by the user. The resulted command is executed in a
+" vim terminal at last.
+command! -bang -nargs=* -complete=file Make AsyncRun -program=make @ <args>
+
+" let AsyncRun work with vim-fugitive
+" run 'Gpush' and 'Gfetch' through AsyncRun.
+command! -bang -bar -nargs=* Gpush execute 'AsyncRun<bang> -cwd=' .
+						\ fnameescape(FugitiveGitDir()) 'git push' <q-args>
+command! -bang -bar -nargs=* Gfetch execute 'AsyncRun<bang> -cwd=' .
+						\ fnameescape(FugitiveGitDir()) 'git fetch' <q-args>
+" }}}
+
+" Git::: {{{
+let g:airline#extensions#branch#enabled=1
+" }}}
+
+" Rooter: {{{
+" Rooter is needed to handle the case where a workspace is composed of
+" multiple projects and the "root" of the workspace is the outmost folder
+" that contains all projects.
+let g:rooter_patterns = ['.workspace']
+let g:rooter_manual_only = 1 "manual only
+nnoremap <leader>rt :Rooter<CR>:pwd<CR>
+" }}}
+
+" YouCompleteMe{{{
+" set python interpreter for ycm server
+let g:ycm_server_python_interpreter='/local/1/home/svcegcts/johnzli/home_local/bin/python3'
+
+" do not show detail information of a completion candidate in a top window
+let g:ycm_add_preview_to_completeopt = 0
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_complete_in_comments = 1
+
+" press <F1> in normal mode to show documentation
+" of the identifier under cursor.
+nmap <F1> <plug>(YCMHover)
+
+" Let clangd fully control code completion
+" Use installed clangd, not YCM-bundled clangd which doesn't get updates.
+let g:ycm_clangd_binary_path = exepath("clangd")
+" use clangd's caching and filtering algorithm
+let g:ycm_clangd_uses_ycmd_caching = 0
+
+"no diagnostic message
+let g:ycm_show_diagnostics_ui = 1
+" let g:ycm_use_ultisnips_completer = 1
+
+" do not add header automatically
+let g:ycm_clangd_args=['--header-insertion=never']
+" }}}
+
+" C/C++: {{{
+" h is interpreted as C++ header.
+let g:c_syntax_for_h=0
+
+"C
+let g:neomake_c_enabled_makers = [] " no default linter for C
+let g:neoformat_enabled_c = ['clangformat']
+
+"C++
+let g:neomake_cpp_enabled_makers = [] " no default linter for C++
+let g:neoformat_enabled_cpp = ['clangformat']
+
+"invoke the formatter for current buffer
+nnoremap <F12> <Esc>:Neoformat<CR>
+inoremap <F12> <Esc>:Neoformat<CR>
+
+" open location list automatically when Neomake finishes linter tasks.
+let g:neomake_open_list = 2
+
+" define the following for cpp, c projects
+nnoremap <leader>h <Esc>:Rooter<CR>:call CurtineIncSw()<CR>
+" Press F4 to compile current buffer
+autocmd  FileType cpp nnoremap <silent> <F4> :AsyncRun -cwd=$(VIM_FILEDIR) g++ -Wall -Wextra -std=c++20
+						\ -pthread -O2  -g
+						\ -I. -I src -I include -I.. -I../include -I../src -I../sp
+						\ "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+
+autocmd  FileType cpp nnoremap <silent> <leader>c :AsyncRun -cwd=$(VIM_FILEDIR) g++ -Wall -Wextra -std=c++20
+                        \ -S -fverbose-asm
+						\ -pthread -O2
+						\ -I. -I src -I include -I.. -I../include -I ../src -I../sp
+						\ "$(VIM_FILEPATH)"  <cr>
+
+autocmd  FileType c nnoremap <silent> <F4> :AsyncRun -cwd=$(VIM_FILEDIR) gcc -Wall -Wextra
+						\ -pthread -O2
+						\ -I. -I src -I include -I.. -I../include -I../src
+						\ "$(VIM_FILEPATH)" -o  "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+
+autocmd FileType c nnoremap <silent> <leader>c :AsyncRun -cwd=$(VIM_FILEDIR) gcc -Wall -Wextra
+                        \ -S -fverbose-asm
+						\ -pthread -O2
+						\ -I. -I src -I include -I.. -I../include -I../src
+						\ "$(VIM_FILEPATH)"  <cr>
+
+" press F9 to remove files generated by F4 and <leader>\.
+autocmd FileType cpp noremap <silent> <F9> :AsyncRun rm -f "$(VIM_FILEDIR)/$(VIM_FILENOEXT).s" "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+autocmd FileType c noremap <silent> <F9> :AsyncRun rm -f "$(VIM_FILEDIR)/$(VIM_FILENOEXT).s" "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+
+" Press F5 run the executable from current file
+autocmd  FileType cpp nnoremap <silent> <F5> :AsyncRun -mode=term -pos=right -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+autocmd  FileType c nnoremap <silent> <F5> :AsyncRun -mode=term -pos=right -raw -cwd=$(VIM_FILEDIR) "$(VIM_FILEDIR)/$(VIM_FILENOEXT)" <cr>
+
+" Press F6 to Looks up the symbol under the cursor and jumps to its declaration.
+" Supported in filetypes: c, cpp, objc, objcpp, cuda, cs, go, java, javascript, python, rust, typescript
+autocmd  FileType cpp nnoremap <silent> <F6> :YcmCompleter GoToDeclaration <cr>
+autocmd  FileType c nnoremap <silent> <F6> :YcmCompleter GoToDeclaration <cr>
+autocmd  FileType cuda nnoremap <silent> <F6> :YcmCompleter GoToDeclaration <cr>
+
+" Press F7 to kooks up the symbol under the cursor and jumps to its definition
+" Supported in filetypes: c, cpp, objc, objcpp, cuda, cs, go, java, javascript, python, rust, typescript
+" For C-family languages, only works when the definition is in current TU.
+autocmd  FileType cpp nnoremap <silent> <F7> :YcmCompleter GoToDefinition <cr>
+autocmd  FileType c nnoremap <silent> <F7> :YcmCompleter GoToDefinition <cr>
+autocmd  FileType cuda nnoremap <silent> <F7> :YcmCompleter GoToDefinition <cr>
+
+" Press F8 jump to a header, or definition, or declaration.
+autocmd FileType cpp nnoremap <silent> <F8> :YcmCompleter GoTo<CR>
+autocmd FileType c nnoremap <silent> <F8> :YcmCompleter GoTo<CR>
+
+iabbrev Doc
+\ /**
+\@brief Retrieves the PCI DBDF numbers of the associated device/card
+\@param[out] pDomain - The PCI domain index of the associated device/card
+\@param[out] pBus - The PCI bus index of the associated device/card
+\@param[out] pDevice - The PCI device index of the associated device/card
+\@param[out] pFunction - The PCI function index of the associated device/card
+\@returns A pointer to a UUID struct
+\/
+
+" }}}
+
+" Some useful shortcuts: {{{
+" move vertically by visual line
+nnoremap j gj
+nnoremap k gk
+nnoremap gj j
+nnoremap gk k
+
+" toggle between number and relativenumber
+function! ToggleNumber()
+		if(&relativenumber == 1)
+				set norelativenumber
+				set number
+		else
+				set relativenumber
+		endif
+endfunc
+nnoremap <leader>n :call ToggleNumber()<CR>
+
+" jk is escape
+inoremap jk <esc>
+" Press j and k to enter terminal normal mode.
+tnoremap jk <C-\><C-n>
+
+" Press F1 quit terminal window from insert mode
+tnoremap <F1> <C-\><C-n>:q!<cr>
+" <leader>t to open a terminal on the right, ready to type
+nnoremap <leader>x <Esc>: vert term <CR> <C-w><C-r>
+
+" press <F3> in normal mode will sync syntax from start
+nnoremap <F3> <Esc>:syntax sync fromstart<CR>
+
+" press <F3> in visual mode to execute the selected as shell command in a vim
+" terminal
+xnoremap <F3> "xy:term<CR><c-w>"x<CR>
+
+" Press <F3> to enter "overstrike" mode in insert mode
+inoremap <F3> <insert>
+
+" edit vimrc/zshrc and load vimrc bindings
+nnoremap <leader>ev :vsp $MYVIMRC<CR>
+nnoremap <leader>ez :vsp ~/.zshrc<CR>
+nnoremap <leader>sv :source $MYVIMRC<CR>
+
+" change pwd to the folder of the current file, and echo
+nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
+"  }}}
+
+" set modelines=2
+" vim:fdm=marker:foldlevel=0
+
