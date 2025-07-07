@@ -39,7 +39,6 @@ Plug 'preservim/nerdtree'
 " Tags: {{{
 Plug 'majutsushi/tagbar' "tag displaying.
 Plug 'ludovicchabant/vim-gutentags'
-Plug 'skywind3000/gutentags_plus'
 " }}}
 
 " " Completion: {{{
@@ -109,21 +108,14 @@ set termencoding=utf-8
 " }}}
 
 " Colorscheme{{{
+" set terminal corlorscheme to Tango Dark
+" and put 'export TERM=xterm-256color' in .bashrc
 syntax enable
 colorscheme gruvbox
 set background=dark
-let g:airline_theme='gruvbox'
-let g:airline_gruvbox_bf='dark'
+let g:airline_theme='simple'
 let g:gruvbox_contrast_dark='high'
 let g:gruvbox_visibility='high'
-"
-" syntax enable
-" colorscheme solarized
-" set background=light
-" let g:airline_theme='solarized'
-" let g:airline_solarized_bg='light'
-" let g:solarized_contrast = "high"
-" let g:solarized_visibility= "high"
 " }}}
 
 " Font{{{
@@ -228,7 +220,7 @@ augroup END
 set number " show line numbers
 set showcmd    " show command in bottom bar
 set cursorline          " highlight current line
-hi CursorLine   term=bold cterm=none ctermbg=gray ctermfg=black
+hi CursorLine   term=bold cterm=bold
 set wildmenu            " visual autocomplete for command menu
 set wildmode=longest:full,full  "matches full match
 set lazyredraw          " redraw only when we need to.
@@ -442,16 +434,9 @@ nnoremap - :NERDTreeToggle<CR>
 " launch tagbar
 nnoremap <leader>t :TagbarToggle<cr>
 "set vim-gutentags
-" enable gtags module, depending on GNU global,
-" for languages natively supported by gtags, don't use pygments
-let $GTAGSLABEL = 'native-pygments'
-" for languages not natively supported by gtags, use pygments, which can be installed by pip
-let $GTAGSCONF = '/local/1/home/svcegcts/johnzli/home_local/share/gtags/gtags.conf'
-" The configuration does not work for large projects.
-
-" let g:gutentags_modules = ['ctags', 'gtags_cscope']
+" use below if working with C projects
+" let g:gutentags_modules = ['ctags', 'cscope']
 let g:gutentags_modules = ['ctags']
-
 "set root of project folder
 let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
 "name of tags file
@@ -467,34 +452,10 @@ let g:gutentags_cache_dir = '~/.vim_temp/tags'
 let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extras=+q']
 let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
 let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
-
 " for universal ctags only, not exuberant ctags
 let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
-
-" disable key mappings by gutentags_plus
-let g:gutentags_plus_nomap = 1
-" Find symbol (reference) under cursor
-noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
-" Find symbol definition under cursor
-noremap <silent> <leader>gg :GscopeFind g <C-R><C-W><cr>
-" Functions calling this function
-noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
-" Function called by this function
-noremap <silent> <leader>gd :GscopeFind d <C-R><C-W><cr>
-" Find this text string
-noremap <silent> <leader>gt :GscopeFind t <C-R><C-W><cr>
-" Find this egrep pattern
-noremap <silent> <leader>ge :GscopeFind e <C-R><C-W><cr>
-" Find file name under cursor
-noremap <silent> <leader>gf :GscopeFind f <C-R>=expand("<cfile>")<cr><cr>
-" Find files #including the file under the cursor
-noremap <silent> <leader>gi :GscopeFind i <C-R>=expand("<cfile>")<cr><cr>
-" Find places where this symbol is assigned a value
-noremap <silent> <leader>ga :GscopeFind a <C-R><C-W><cr>
-" Find current word in ctags database
-noremap <silent> <leader>gz :GscopeFind z <C-R><C-W><cr>
-
-let g:gutentags_define_advanced_commands = 1
+" to print debug msgs
+" let g:gutentags_trace = 1
 " }}}
 
 " Spell {{{
