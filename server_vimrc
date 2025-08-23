@@ -165,15 +165,6 @@ augroup filegroup
 		autocmd VimEnter * highlight clear SignColumn
         " .h files are cpp files
         autocmd BufEnter *.h set filetype=cpp
-		autocmd BufEnter,BufNewFile *.tex setlocal spell
-		autocmd BufEnter,BufNewFile *.latex setlocal spell
-		autocmd BufEnter,BufNewFile *.txt setlocal spell
-		autocmd BufEnter,BufNewFile *.text setlocal spell
-		autocmd BufEnter,BufNewFile readme setlocal spell
-		autocmd BufEnter,BufNewFile ReadMe setlocal spell
-		autocmd BufEnter,BufNewFile README setlocal spell
-		autocmd BufEnter,BufNewFile Readme setlocal spell
-		autocmd BufEnter,BufNewFile *.md setlocal spell
 		autocmd BufWritePre *.php,*.py,*.js,*.txt,*.text,*.hs,*.java,readme,README,ReadMe,Readme,*.cpp,*.hpp,*.c,*.h,*vimrc,*.md,*.markdown,*.Markdown,*.MarkDown,*.MD :call <SID>StripTrailingWhitespaces()
 		autocmd BufRead,BufNewFile *.c set filetype=c
 		autocmd FileType tex setlocal tabstop=2
@@ -203,7 +194,6 @@ augroup filegroup
 		autocmd BufEnter *.cls setlocal filetype=java
 		autocmd BufEnter *.zsh-theme setlocal filetype=zsh
 		autocmd BufEnter Makefile setlocal noexpandtab
-        autocmd BufEnter CMakeLists.txt setlocal nospell
 		autocmd BufEnter *.sh setlocal tabstop=2
 		autocmd BufEnter *.sh setlocal shiftwidth=2
 		autocmd BufEnter *.sh setlocal softtabstop=2
@@ -212,7 +202,6 @@ augroup filegroup
 		autocmd FileType markdown setlocal tabstop=4
 		autocmd FileType markdown setlocal shiftwidth=4
 		autocmd FileType markdown setlocal softtabstop=4
-		autocmd FileType markdown setlocal spell
 augroup END
 " }}}
 
@@ -415,6 +404,8 @@ set incsearch           " search as characters are entered
 set hlsearch            " highlight matches
 " turn off search highlight
 nnoremap <leader><space> :nohlsearch<CR>
+" toggle cursorline highlighting on and off
+nnoremap <leader>j :set cursorline!<CR>
 " search repeated words.
 nnoremap <leader>rw <Esc>: /\(\<\w\+\>\)\_s*\<\1\><CR>
 " }}}
@@ -459,13 +450,16 @@ let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
 " }}}
 
 " Spell {{{
-if has('gui_running')
-		set spell spelllang=en_us
-else
-		set nospell
+if !has('gui_running')
+    " Tell Vim the terminal cannot draw squiggly underlines to mark misspelled
+    " words, fall back to straight ones
+    set t_Cs=
 endif
+set spell spelllang=en_us
 set dictionary=/local/1/home/svcegcts/johnzli/.vim/spell/words.txt
 set spellfile=~/.vim/spell/lizhao-spell.add
+set nospell
+nnoremap <leader>rs :setlocal spell! spelllang=en_us<CR>
 " for word completeion
 inoremap <F2> <C-x><C-k>
 " launch word correction menu
@@ -720,7 +714,7 @@ tnoremap jk <C-\><C-n>
 
 " Press F1 quit terminal window from insert mode
 tnoremap <F1> <C-\><C-n>:q!<cr>
-" <leader>t to open a terminal on the right, ready to type
+" open a terminal on the right, ready to type
 nnoremap <leader>x <Esc>: vert term <CR> <C-w><C-r>
 
 " press <F3> in normal mode will sync syntax from start
