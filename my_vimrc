@@ -513,10 +513,6 @@ let g:vim_markdown_toml_frontmatter = 1 " enable TOML frontmatter
 let g:vim_markdown_json_frontmatter = 1 " enable Json frontmatter
 let g:vim_markdown_strikethrough = 1 " enable strike through using ~~xxx~~
 
-" markdown-preview.nvim
-let g:mkdp_auto_start = 0 "open preview window automatically
-autocmd FileType markdown nnoremap <leader>lv :MarkdownPreview
-autocmd FileType markdown nnoremap <leader>ls :MarkdownPreviewStop
 "}}}
 
 " Programming: {{{
