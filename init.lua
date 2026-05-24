@@ -26,7 +26,6 @@ require("lazy").setup({
   spec = {
     -- add your plugins here
     { "ellisonleao/gruvbox.nvim", priority = 1000 , config = true, opts = ...},
-    { "neovim/nvim-lspconfig", branch = "master"},
     { "nvim-tree/nvim-web-devicons", opts = {} },
     { 'nvim-telescope/telescope.nvim', tag = '0.1.8', dependencies = { 'nvim-lua/plenary.nvim' } },
     { 'hrsh7th/nvim-cmp',  dependencies = { 'hrsh7th/cmp-nvim-lsp', 
