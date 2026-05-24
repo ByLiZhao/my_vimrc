@@ -46,7 +46,6 @@ require("lazy").setup({
 					  "nvim-telescope/telescope.nvim", }, },
    { "folke/trouble.nvim", opts = {}, cmd = "Trouble", },
    { "lewis6991/gitsigns.nvim" },
-   { 'numToStr/Comment.nvim', opts = {}, },
    { 'mhartington/formatter.nvim' },
   },
   -- Configure any other settings here. See the documentation for more details.
@@ -110,5 +109,4 @@ require("nvim-tree").setup()
 require('lualine').setup{options = { theme = 'gruvbox' }}
 require("overseer").setup{}
 require('neogit').setup{}
-require('Comment').setup{}
 require("formatter").setup{}
